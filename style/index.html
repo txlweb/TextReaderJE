@@ -1,0 +1,128 @@
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<p></p>
+<!--<input type="color" id="color" hidden>弃用方案,因为没有onchage事件.-->
+<script src="/main.js" type="text/javascript"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="/style.css">
+<title>TextReader 局域网共享(BETA)</title>
+<body class="style_body" id="body">
+	<block class="bar">
+		<p class="title" ><a href="/" width="0px" height="0px" class="hw"><img width="20px" height="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAABMklEQVR42u2YyQ6FIAxF/f+t8xCjC+MQY9Qf7EtNeCmoKAHUBYurRAQOLZSqBwDeV6TVOAxDiKLorzzP4RWYIAg4ECbf9+ExmGEYgFoEB0/TdLuzZwhqHUa0QlEUcOY2LHddB1ZgqFtwoGVZDgeq65oDLssSjMKoumBdVw7ortukldM07daHitnpJO60Pa3AbUpB4jgG3V2H/c3zDEow4rZt21YrfmRZxgE1TQO3YMSZmIquGBLoBBFQCqPqY1X1fS9dg9ulqioQQ7vNM0jcnSxM7OKCDYtcnWtYHsdxH1VtW+XIOkwboYlzRQcGyzjuzmxPw9Bl4WAcjINxMA7GwXwexmSqqQ3zVHLFcu1DGJrB44syYQdULCeiOmsr5k9JksBlQv6EDhPyt4DE7yfvS3+ufvEBBDEEbYiPAAAAAElFTkSuQmCC"/></a> TextReader 局域网共享(BETA)<a onclick="DisplaySetting()" id="set_btn" class="hw">设置</a></p>
+		
+	</block>
+	<block id="load" class="load">
+		<view class="loader_window">
+			<view class="loader"></view>
+			<br>
+			<t class="loader_txt">PleaseWait...</t>
+		</view>
+	</block>
+	<!--<block id="consoleshell" class="consoleshell"><h1>ConsoleLogs</h1></block>-->
+
+	<block id="setting" class="setting" style="display: none;" hidden>
+		<block class="settingbg" onclick="DisplaySetting()"></block>
+		<block class="window" id="settingwindow">
+	    	<h1 >设置<Dimg onclick="DisplaySetting()" class="close" unfold="1"></Dimg></h1>
+	    	<hr>
+	    	<br>
+			<t>字号</t>
+			<btn onclick="FontSizeRemove()">A-</btn><t id="size">0px</t><btn onclick="FontSizeAdd()">A+</btn>
+			<br><br><br>
+			<t>行间距</t>
+			<btn onclick="MarginSizeRemove()">P-</btn><t id="psize">0px</t><btn onclick="MarginSizeAdd()">P+</btn>
+			<br><br><br>
+			<block style="display:flex;">
+				<t style="align-self:center;">背景颜色</t>
+				<color class="colorselector style_green_view" onclick="chagestyle('style_green_view')"></color>
+				<color class="colorselector style_gray_view" onclick="chagestyle('style_gray_view')"></color>
+				<color class="colorselector style_yellow_view" onclick="chagestyle('style_yellow_view')"></color>
+				<color class="colorselector style_pink" onclick="chagestyle('style_pink')"></color>
+				<color class="colorselector" onclick="spcolor()" id="colorset">SET</color>
+			</block>
+			<br>
+			<br>
+			<t>更改文本颜色</t><button onclick="ChageTextColor(prompt('自定义颜色码(示例:#f5aec0,空则恢复默认.)'))">更改</button>
+			<br>
+			<br>
+			<t>选择图片为背景:</t>
+			<input type="text" id="image" placeholder="图片链接..">
+			<button onclick="ChageBGImage();">确定</button>
+			<br><br>
+			<block id="phone" hidden>
+				<t>手机设置</t><br>
+				<!--<t>保持与PC一致性能:</t><button id="hpb" onclick="hpchage()">点击开启</button><br>-->
+			</block>
+
+			<br>
+			<block>
+				点击左右翻页模式:<t onclick="LRMODE(this);" id="LRMODECHAGE">OFF</t>
+				<br>
+				启用Ajax以提升速度:<t onclick="AJMODE(this);" id="AJMODECHAGE">OFF</t>
+			</block>
+			<br>
+			<a href="findfile.html">上传/搜索teip</a>
+			<br><br>
+			<!-- <t onclick="displaybeta()">SHELL (CHILK OPEN)</t>
+			<br><br>
+			<block id="betasettings" style="display: none;">
+				<t>Shell:</t><input type="text" id="shell" placeholder="JavaScript Code..."><button onclick="shell()">do</button>
+				<br><br>
+				<t id="shellreturn">Nothing rturn</t>
+				<br><br>
+				<p>您可以在上方执行全部JavaScript代码以及内置的自定义函数.</p>
+			</block> -->
+		</block>
+	</block>
+	<script type="text/javascript">
+
+	</script>
+	<block id="bg" class="bg"></block>
+	<block id="NP" onclick="NextPage();"></block>
+	<block id="LP" onclick="LastPage();"></block>
+
+	</block>
+	<block id="pl" hidden>
+		<block class="sreach" id="shb">
+			<input class="st" type="text" id="sreach" placeholder="章节名...">
+			<button class="sb" onclick="sreach(document.getElementById('sreach').value)">
+				<block class="sbi"></block>
+			</button>
+		</block>
+
+		<block class="displaynone" id="shrd">
+			<block class="shrd" onclick="document.getElementById('shrd').className = 'displaynone';"></block>
+			<block class="shr" id="shr"></block>
+		</block>
+		<block class="plms" onclick="vwlist('NULL')"></block>
+		<block id="pagelist" class="pagelist"></block>
+	</block>
+	<div id="textbar" class="texter displaynone style_green_view">
+		<s id="mark" title="加入书签" onclick="CenterMark()" class="mark_on"></s>
+		<s id="mark_off" title="取消书签" onclick="CenterMark()" class="mark" hidden></s>
+		<!-- id="textbar"-->
+		#textbara
+			<br>
+	<br>
+	</div>
+	</div>
+	<div class="info">
+		<img src="/favicon.ico" width="12px">
+		<t>TextReader JE BETA</t>
+		<br>
+		<t>@IDlike [W] 2.4.2 AL <t id="time"></t></t>
+	</div>
+	<br>
+	<br>
+	<block id="chagepagebar">
+		<t id="dbug"></t>
+		<block id="NextPage" class="NextPage">
+			<h1>继续上拉跳转到下一章</h1>
+		</block>
+		<br>
+		<block id="href">
+			<h1>-jump-</h1>
+		</block>
+	</block>
+</body>
+<script type="text/javascript" src="/ajax.js"></script>

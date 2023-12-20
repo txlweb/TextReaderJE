@@ -1,0 +1,89 @@
+package com.teipreader.Main;
+
+import java.io.*;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class TextReaderLibVb {
+    public static String MainPath = Config_dirs.MainPath;
+    public static void allClose(Closeable... closeables) {
+        for (Closeable closeable : closeables) {
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static List<String> ReadCFGFile(String strFilePath) {
+        File file = new File(strFilePath);
+        List<String> rstr = new ArrayList<>();
+        if (!file.exists() || file.isDirectory()) {
+            System.out.println((char) 27 + "[31m[E]: 找不到文件." + (char) 27 + "[39;49m");
+        } else {
+            FileInputStream fileInputStream = null;
+            InputStreamReader inputStreamReader = null;
+            BufferedReader bufferedReader = null;
+            try {
+                fileInputStream = new FileInputStream(file);
+                inputStreamReader = new InputStreamReader(fileInputStream,EncodingDetect.getJavaEncode(strFilePath));
+                bufferedReader = new BufferedReader(inputStreamReader);
+                String str;
+                while ((str = bufferedReader.readLine()) != null) {
+                    rstr.add(str);
+                }
+                return rstr;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                allClose(bufferedReader, inputStreamReader, fileInputStream);
+            }
+        }
+        return rstr;
+    }
+
+
+    public static String GetList_HTML_TYPE(String name) {
+        List<String> List = ReadCFGFile(MainPath + "/" + name + "/main.index");//读列表
+        String[] TList = null;
+        int n = List.size();
+        String LsHTML = "";
+        for (int i = 0; i < n; i++) {
+            TList = List.get(i).split("&D&");//标题&D&起始行&D&结束行
+            if(TList.length == 2){
+                LsHTML = MessageFormat.format("{0}<a href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>", LsHTML, name, i+1, i+1, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], TList[0]);
+            }
+        }
+        return LsHTML.replace(",","");
+    }
+    public static String GetMainText_HTML_TYPE(String name, int id) {//id只吃int
+        return TextReaderLibVa.StrFixMainText(GetMainText_C(name,id), name, id, GetMaxTexts(name));
+    }
+    public static String GetMainText_C(String name, int id) {//id只吃int
+        List<String> List = ReadCFGFile(MainPath + "/" + name + "/main.txt");
+        List<String> List1 = ReadCFGFile(MainPath + "/" + name + "/main.index");
+        if(List1.size() < id) return "";
+        String[] TList = List1.get(id-1).split("&D&");//标题&D&起始行
+        String[] TList2 = null;
+        if (List1.size() > id+1) {
+            TList2 = List1.get(id).split("&D&");
+        } else {
+            TList2 = new String[2];
+            TList2[1] = String.valueOf(List.size());
+        }
+        StringBuilder LsHTML = new StringBuilder();
+        //添加换行
+        System.out.println(Arrays.toString(TList2));
+        for (int i = Integer.parseInt(TList[1]); i < Integer.parseInt(TList2[1]); i++) {
+            String s = List.get(i);
+            LsHTML.append(s).append("<br/>");
+        }
+        return LsHTML.toString();
+    }
+    public static int GetMaxTexts(String name) {
+        List<String> List = ReadCFGFile(MainPath + "/" + name + "/main.index");//读列表
+        return List.size();//没有证明文件损坏
+    }
+}
