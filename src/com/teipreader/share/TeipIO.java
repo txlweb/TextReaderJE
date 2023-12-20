@@ -1,5 +1,7 @@
 package com.teipreader.share;
 
+import com.teipreader.Main.IniLib;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,8 +21,18 @@ public class TeipIO {
             if (files != null) {
                 for (File value : files) {
                     if (value.isDirectory()) {
-                        if (!IsHidden(value.getName()))
-                            Blist = String.format("%s,{\"name\":\"%s\",\"pack\":\"THIS_SERVER\"}", Blist, value.getName());
+                        if (!IsHidden(value.getName())){
+                            if (!IsFile(MainPath+"/"+value.getName()+"/resource.ini")){
+                                Blist = String.format("%s,{\"name\":\"%s\",\"pack\":\"THIS_SERVER\"}", Blist, value.getName());
+                            }else {
+                                Blist = String.format("%s,{\"name\":\"%s\",\"by\":\"%s\",\"ot\":\"%s\",\"md5\":\"%s\"}", Blist,
+                                        IniLib.GetThing(MainPath+"/"+value.getName()+"/resource.ini","conf","title"),
+                                        IniLib.GetThing(MainPath+"/"+value.getName()+"/resource.ini","conf","by"),
+                                        IniLib.GetThing(MainPath+"/"+value.getName()+"/resource.ini","conf","ot"),
+                                        value.getName()
+                                        );
+                            }
+                        }
                     }
                 }
             }

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import static com.teipreader.Main.TextReaderLibVa.IsFile;
 import static com.teipreader.Main.TextReaderLibVa.ReadCFGFile;
 
 public class WebServer extends Thread implements Main{
@@ -96,7 +97,13 @@ class RequestHandler implements Runnable {
             if (path.contains("/list.html")) {
                 String[] a = path.split("/");
                 RET_HTML = new StringBuilder("<h1 id=\"title\">章节目录</h1>");
-                RET_HTML.append("<a href=\"/api/dwtxt/").append(URLDecoder.decode(a[1], StandardCharsets.UTF_8)).append(".txt?").append(URLDecoder.decode(a[1], StandardCharsets.UTF_8)).append("\">[下载本小说]</a><br>");
+                String xx = "";
+                if (IsFile(Config_dirs.MainPath+"/"+URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/resource.ini")){
+                    xx = IniLib.GetThing(Config_dirs.MainPath+"/"+URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/resource.ini","conf","title");
+                }else {
+                    xx = URLDecoder.decode(a[1], StandardCharsets.UTF_8);
+                }
+                RET_HTML.append("<a href=\"/api/dwtxt/").append(xx).append(".txt?").append(URLDecoder.decode(a[1], StandardCharsets.UTF_8)).append("\">[下载本小说]</a><br>");
                 RET_HTML.append(TextReaderLibVa.GetList_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8)));
                 if (!path.contains("?NOUI")) {
                     RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));

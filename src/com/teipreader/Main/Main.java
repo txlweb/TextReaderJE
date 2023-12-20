@@ -25,6 +25,11 @@ public interface Main {
         System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/T-e-i-p-R-e-a-d-e-r-J-a-v-a-E-d-i-t-i-o");
         System.out.println("编译JDK版本: 11.0.16.1 你的JDK版本:" + System.getProperty("java.version"));
         System.out.println("如果需要帮助请查看jar包内的readme.md");
+        if(false) {
+            TeipMakerLib.autoMake("测试转换.txt", "test.zip", "测试1", "-", ".*第.*章.*", "unk", "unk");
+            TeipMakerLib.Unzip("test.zip",Config_dirs.MainPath);
+            return;
+        }
         if(args.length > 0){
             System.out.println((char) 27 + "[36m- Command Help -");
             System.out.println("获取帮助 -h -help (共计1个参数)");
