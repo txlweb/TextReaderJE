@@ -23,7 +23,7 @@ public class TeipIO {
                     if (value.isDirectory()) {
                         if (!IsHidden(value.getName())){
                             if (!IsFile(MainPath+"/"+value.getName()+"/resource.ini")){
-                                Blist = String.format("%s,{\"name\":\"%s\",\"pack\":\"THIS_SERVER\"}", Blist, value.getName());
+                                Blist = String.format("%s,{\"name\":\"%s\",\"pack\":\"THIS_SERVER\",\"md5\":\"%s\",\"by\":\"未知的作者\",\"ot\":\"未知\"}", Blist, value.getName(), value.getName());
                             }else {
                                 Blist = String.format("%s,{\"name\":\"%s\",\"by\":\"%s\",\"ot\":\"%s\",\"md5\":\"%s\"}", Blist,
                                         IniLib.GetThing(MainPath+"/"+value.getName()+"/resource.ini","conf","title"),

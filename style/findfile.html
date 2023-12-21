@@ -124,7 +124,7 @@
                 for (let i = 0; i < obj.data.length; i++) {
                     if(obj.data[i].name != ""){
                         if(s=="" || obj.data[i].name.includes(s))
-                        fl.innerHTML = fl.innerHTML + "<div onclick=\"send_data('/api/web_dl/?="+host+"/dl/?"+obj.data[i].name+"')\"><img src='"+ic+"'><a>"+obj.data[i].name+"("+host+")</a></div>";
+                        fl.innerHTML = fl.innerHTML + "<div onclick=\"send_data('/api/web_dl/?="+host+"/dl/?"+obj.data[i].md5+"')\"><img src='"+ic+"'><a title='"+obj.data[i].md5+"'>标题: "+obj.data[i].name+"("+host+")<br>作者:"+obj.data[i].by+"<br>"+obj.data[i].ot+"</a></div>";
                     }
                 }
             }
