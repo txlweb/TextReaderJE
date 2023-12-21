@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.teipreader.Main.Main
-Created-By: IDlike
-Signature-Version: beta1.2.6-19520
-Name: TextReader JavaEdition
-
