@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.teipreader.Main.TextReaderLibVa.IsFile;
+
 public class TextReaderLibVb {
     public static String MainPath = Config_dirs.MainPath;
     public static void allClose(Closeable... closeables) {
@@ -50,6 +52,14 @@ public class TextReaderLibVb {
         String[] TList = null;
         int n = List.size();
         String LsHTML = "";
+        if(IsFile(MainPath + "/" + name + "/resource.ini")){
+            String ot = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","ot");
+            String by = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","by");
+            String tit = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","title");
+            if (ot!=null && by!=null && tit!=null){
+                LsHTML = "<h1>"+tit+"</h1><p>作者: "+by+"</p><p>简介: "+ot+"</p>";
+            }
+        }
         for (int i = 0; i < n; i++) {
             TList = List.get(i).split("&D&");//标题&D&起始行&D&结束行
             if(TList.length == 2){

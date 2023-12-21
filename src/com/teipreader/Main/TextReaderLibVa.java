@@ -53,6 +53,14 @@ public class TextReaderLibVa {
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/list.info");//读列表
         int n = List.size();
         String LsHTML = "";
+        if(IsFile(MainPath + "/" + name + "/resource.ini")){
+            String ot = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","ot");
+            String by = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","by");
+            String tit = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","title");
+            if (ot!=null && by!=null && tit!=null){
+                LsHTML = "<h1>"+tit+"</h1><p>作者: "+by+"</p><p>简介: "+ot+"</p>";
+            }
+        }
         for (int i = 0; i < n; i++) {
             //生成列表
             LsHTML = MessageFormat.format("{0}<a href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>", LsHTML, name, i + 1, i + 1, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], List.get(i));
