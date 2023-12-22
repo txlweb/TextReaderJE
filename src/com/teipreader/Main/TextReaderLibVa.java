@@ -10,7 +10,7 @@ public class TextReaderLibVa {
     public static void allClose(Closeable... closeables) {
         for (Closeable closeable : closeables) {
             try {
-                closeable.close();
+                if(closeable != null) closeable.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -116,10 +116,12 @@ public class TextReaderLibVa {
                 for (File value : files) {
                     if (value.isDirectory()) {
                         if (!IsHidden(value.getName()) | is_vh) {
-                            if (!IsFile(MainPath+"/"+value.getName()+"/resource.ini"))
+                            if (!IsFile(MainPath + "/" + value.getName() + "/resource.ini"))
                                 Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), value.getName());
-                            else
-                                Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath+"/"+value.getName()+"/resource.ini","conf","title"));
+                            else {
+                                Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
+                                System.out.println(value.getName());
+                            }
                         }
                     }
                 }

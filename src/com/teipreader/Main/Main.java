@@ -21,7 +21,7 @@ import java.util.Objects;
 public interface Main {
     public static void main(String[] args) throws IOException {
         System.setProperty("file.encoding", "UTF-8");
-        System.out.println((char) 27 + "[33mTextReader   " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m 1.2.6 JavaEdition(Build 19520)");
+        System.out.println((char) 27 + "[33mTextReader   " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m 1.2.6 JavaEdition(Build 19560)");
         System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/T-e-i-p-R-e-a-d-e-r-J-a-v-a-E-d-i-t-i-o");
         System.out.println("编译JDK版本: 11.0.16.1 你的JDK版本:" + System.getProperty("java.version"));
         System.out.println("如果需要帮助请查看jar包内的readme.md");

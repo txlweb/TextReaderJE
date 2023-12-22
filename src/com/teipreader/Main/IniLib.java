@@ -1,6 +1,10 @@
 package com.teipreader.Main;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 
@@ -9,6 +13,12 @@ import static com.teipreader.Main.TextReaderLibVa.ReadCFGFile;
 
 public class IniLib {
     public static String GetThing(String FileName,String Node,String key){//will return key
+        //如果文件尾部没有换行符,就要添加,否则报错
+        try {
+            Files.write(Paths.get(FileName), "\r\n".getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         List<String> lines =  ReadCFGFile(FileName);
         boolean getLN = false;
         for (String line : lines) {

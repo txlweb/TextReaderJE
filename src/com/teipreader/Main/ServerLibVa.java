@@ -3,14 +3,16 @@ package com.teipreader.Main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ServerLibVa {
     public static String StylePath = Config_dirs.StylePath;
 
-    public static String AddTitle(String Old) {
+    public static String AddTitle(String Old) throws UnsupportedEncodingException {
         List<String> List = ReadCFGFile(StylePath + "/index.html");// 读列表
         int n = List.size();
         StringBuilder Final = new StringBuilder();
