@@ -2,6 +2,7 @@ package com.teipreader.Main;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -11,10 +12,27 @@ import static com.teipreader.Main.TextReaderLibVa.ReadCFGFile;
 
 
 public class IniLib {
-    public static String GetThing(String FileName, String Node, String key) {//will return key
-        //如果文件尾部没有换行符,就要添加,否则报错
+    public static boolean lastLineisCRLF(String filename) {
+        RandomAccessFile raf = null;
         try {
-            Files.write(Paths.get(FileName), "\r\n".getBytes(), StandardOpenOption.APPEND);
+            raf = new RandomAccessFile(filename, "r");
+            long pos = raf.length() - 2;
+            if (pos < 0) return false; // too short
+            raf.seek(pos);
+            return raf.read() == '\r' && raf.read() == '\n';
+        } catch (IOException e) {
+            return false;
+        } finally {
+            if (raf != null) try {
+                raf.close();
+            } catch (IOException ignored) {
+            }
+        }
+    }
+    public static String GetThing(String FileName, String Node, String key) {//will return key
+        //如果文件尾部没有换行符,就要添加,否则会报错!!!!
+        try {
+            if(!lastLineisCRLF(FileName)) Files.write(Paths.get(FileName), "\r\n".getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
