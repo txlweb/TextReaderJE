@@ -5,8 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import java.util.regex.Pattern;
 
 public class WebServer {
     public static void StartServer() {
@@ -54,33 +52,36 @@ class RequestHandler implements Runnable {
             String path = parts[1];
             String fullPath = root + path;
             String RET_HTML = "";
-            if(Config_dirs.Use_Server_LOG_DEBUG) System.out.println((char) 27 + "[33m[Server]:" + path + (char) 27 + "[39;49m");
+            if (Config_dirs.Use_Server_LOG_DEBUG)
+                System.out.println((char) 27 + "[33m[Server]:" + path + (char) 27 + "[39;49m");
             if (path.contains("/list.json")) {
                 RET_HTML = TeipIO.PathScan();
             }
-            if(path.contains("/dl/")){
+            if (path.contains("/dl/")) {
                 String[] a = path.split("\\?");
-                if(Config_dirs.Use_Server_LOG) System.out.println((char) 27 + "[33m[Server]:为小说建立文档@"+ URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"@zip" + (char) 27 + "[39;49m");
-                if(new File(Config_dirs.MainPath+"/"+URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()) {
+                if (Config_dirs.Use_Server_LOG)
+                    System.out.println((char) 27 + "[33m[Server]:为小说建立文档@" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "@zip" + (char) 27 + "[39;49m");
+                if (new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()) {
                     TeipIO.GetZip(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
                     sendFile(out, new File("tmp.zip"));//goto end
                     in.close();
                     out.close();
                     client.close();
                     return;
-                }else{
-                    if(Config_dirs.Use_Server_LOG) System.out.println((char) 27 + "[33m[Server]: [E]: 不能为不存在的小说建立文档." + (char) 27 + "[39;49m");
+                } else {
+                    if (Config_dirs.Use_Server_LOG)
+                        System.out.println((char) 27 + "[33m[Server]: [E]: 不能为不存在的小说建立文档." + (char) 27 + "[39;49m");
                     RET_HTML = "[E]: 没有这个文章可以下载!";
                 }
             }
-            if(RET_HTML.isEmpty()){
-                RET_HTML = "<meta charset=\"UTF-8\">"+
-                        "<h1>Open Teip Share Server</h1>"+
-                        "<h2>开放teip共享平台节点为您服务</h2>"+
-                        "<p>感谢您为共享开放平台做出的共献! 您打开了这个功能就是在为社区添砖加瓦!</p>"+
-                        "<p>正是因为有许多像您一样的具有共享精神的人士参与到社区中,才使得社区具备了活力!</p>"+
-                        "<p>独乐乐不如众乐乐,如果您拥有的书源丰富,而且可以较长时间在线且具有公网IP的话可以在github上为项目中的/style/API_list.json添砖加瓦!"+
-                        "<p>期待您的加入,在此,IDlike对每一个启用这项功能的人表示感谢!</p>"+
+            if (RET_HTML.isEmpty()) {
+                RET_HTML = "<meta charset=\"UTF-8\">" +
+                        "<h1>Open Teip Share Server</h1>" +
+                        "<h2>开放teip共享平台节点为您服务</h2>" +
+                        "<p>感谢您为共享开放平台做出的共献! 您打开了这个功能就是在为社区添砖加瓦!</p>" +
+                        "<p>正是因为有许多像您一样的具有共享精神的人士参与到社区中,才使得社区具备了活力!</p>" +
+                        "<p>独乐乐不如众乐乐,如果您拥有的书源丰富,而且可以较长时间在线且具有公网IP的话可以在github上为项目中的/style/API_list.json添砖加瓦!" +
+                        "<p>期待您的加入,在此,IDlike对每一个启用这项功能的人表示感谢!</p>" +
                         "<p>如果您是这项功能的受益者,请不要忘记感谢提供服务的人,或是为他们提供一些帮助,/style/API_list.json内他们的留言.</p>"
                 ;
             }
@@ -118,8 +119,8 @@ class RequestHandler implements Runnable {
         String statusLine = "HTTP/1.1 " + statusCode + " " + statusText + "\r\n";
         String header = "Content-Type: " + contentType + "\r\n" +
                 "Content-Length: " + data.length + "\r\n"
-                +"Access-Allow-Control-Origin: * \r\n"+
-                "Connection: close\r\n"+
+                + "Access-Allow-Control-Origin: * \r\n" +
+                "Connection: close\r\n" +
                 "\r\n";
         out.write(statusLine.getBytes());
         out.write(header.getBytes());

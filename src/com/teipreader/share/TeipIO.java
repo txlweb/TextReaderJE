@@ -13,6 +13,7 @@ import java.util.zip.ZipOutputStream;
 
 public class TeipIO {
     public static String MainPath = Config_dirs.MainPath;
+
     public static String PathScan() {
         File file = new File(MainPath);
         String Blist = "{\"code\":\"0\", \"data\":[{\"name\":\"\",\"pack\":\"THIS_SERVER\"}";
@@ -21,29 +22,29 @@ public class TeipIO {
             if (files != null) {
                 for (File value : files) {
                     if (value.isDirectory()) {
-                        if (!IsHidden(value.getName())){
-                            if (!IsFile(MainPath+"/"+value.getName()+"/resource.ini")){
+                        if (!IsHidden(value.getName())) {
+                            if (!IsFile(MainPath + "/" + value.getName() + "/resource.ini")) {
                                 Blist = String.format("%s,{\"name\":\"%s\",\"pack\":\"THIS_SERVER\",\"md5\":\"%s\",\"by\":\"未知的作者\",\"ot\":\"未知\"}", Blist, value.getName(), value.getName());
-                            }else {
+                            } else {
                                 Blist = String.format("%s,{\"name\":\"%s\",\"by\":\"%s\",\"ot\":\"%s\",\"md5\":\"%s\"}", Blist,
-                                        IniLib.GetThing(MainPath+"/"+value.getName()+"/resource.ini","conf","title"),
-                                        IniLib.GetThing(MainPath+"/"+value.getName()+"/resource.ini","conf","by"),
-                                        IniLib.GetThing(MainPath+"/"+value.getName()+"/resource.ini","conf","ot"),
+                                        IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"),
+                                        IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "by"),
+                                        IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "ot"),
                                         value.getName()
-                                        );
+                                );
                             }
                         }
                     }
                 }
             }
-            return Blist+"]}";
+            return Blist + "]}";
         }
         return "{\"code\":\"-1\"}";
     }
 
     public static void GetZip(String name) {
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream("tmp.zip"))) {
-            compressFolder(MainPath+"/"+name, name, zipOutputStream);
+            compressFolder(MainPath + "/" + name, name, zipOutputStream);
             System.out.println("Folder compressed successfully!");
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,9 +55,10 @@ public class TeipIO {
         File t = new File(MainPath + "/" + name + "/hidden.info");
         return t.isFile();
     }
+
     public static int GetMaxTexts(String name) {
         //LibVb
-        if(IsFile(MainPath + "/" + name + "/main.index")){
+        if (IsFile(MainPath + "/" + name + "/main.index")) {
             List<String> List = com.teipreader.Main.TextReaderLibVb.ReadCFGFile(MainPath + "/" + name + "/main.index");
             return List.size();
         }
@@ -64,9 +66,11 @@ public class TeipIO {
         List<String> List = com.teipreader.Main.TextReaderLibVb.ReadCFGFile(MainPath + "/" + name + "/list.info");
         return List.size();
     }
-    public static boolean IsFile(String File_name){
+
+    public static boolean IsFile(String File_name) {
         return new File(File_name).exists();
     }
+
     public static void addToZipFile(String fileName, String fileAbsolutePath, ZipOutputStream zipOutputStream) throws IOException {
         // 创建ZipEntry对象并设置文件名
         ZipEntry entry = new ZipEntry(fileName);
@@ -84,6 +88,7 @@ public class TeipIO {
         // 完成当前文件的压缩
         zipOutputStream.closeEntry();
     }
+
     public static void compressFolder(String sourceFolder, String folderName, ZipOutputStream zipOutputStream) throws IOException {
         File folder = new File(sourceFolder);
         File[] files = folder.listFiles();

@@ -1,6 +1,6 @@
 package com.teipreader.Main;
-import java.io.*;
 
+import java.io.IOException;
 
 
 public class RunShare extends Thread implements Main {
@@ -12,6 +12,7 @@ public class RunShare extends Thread implements Main {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public void runShare() throws IOException {
         try {

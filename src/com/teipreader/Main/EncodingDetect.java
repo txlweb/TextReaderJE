@@ -5,23 +5,24 @@ import java.net.URL;
 
 /**
  * <Detect encoding .>
- *  Copyright (C) <2009>  <Fluck,ACC http://androidos.cc/dev>
- *
- *   This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
+ * Copyright (C) <2009>  <Fluck,ACC http://androidos.cc/dev>
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * com.teipreader.Main.EncodingDetect.java<br>
  * 自动获取文件的编码
+ *
  * @author Billows.Van
- * @since Create on 2010-01-27 11:19:00
  * @version 1.0
+ * @since Create on 2010-01-27 11:19:00
  */
 public class EncodingDetect {
 //    public static void main(String[] args) {
@@ -33,10 +34,11 @@ public class EncodingDetect {
 
     /**
      * 得到文件的编码
+     *
      * @param filePath 文件路径
      * @return 文件的编码
      */
-    public static String getJavaEncode(String filePath){
+    public static String getJavaEncode(String filePath) {
         BytesEncodingDetect s = new BytesEncodingDetect();
         String fileCode = BytesEncodingDetect.javaname[s.detectEncoding(new File(filePath))];
         return fileCode;
@@ -46,17 +48,17 @@ public class EncodingDetect {
 
         BufferedReader fr;
         try {
-            String myCode = code!=null&&!"".equals(code) ? code : "UTF8";
+            String myCode = code != null && !"".equals(code) ? code : "UTF8";
             InputStreamReader read = new InputStreamReader(new FileInputStream(
                     file), myCode);
 
             fr = new BufferedReader(read);
             String line = null;
-            int flag=1;
+            int flag = 1;
             // 读取每一行，如果结束了，line会为空
             while ((line = fr.readLine()) != null && line.trim().length() > 0) {
-                if(flag==1) {
-                    line=line.substring(1);//去掉文件头
+                if (flag == 1) {
+                    line = line.substring(1);//去掉文件头
                     flag++;
                 }
                 // 每一行创建一个Student对象，并存入数组中
@@ -64,7 +66,7 @@ public class EncodingDetect {
             }
             fr.close();
 
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -72,26 +74,19 @@ public class EncodingDetect {
 }
 
 class BytesEncodingDetect extends Encoding {
-    // Frequency tables to hold the GB, Big5, and EUC-TW character
-    // frequencies
-    int GBFreq[][];
-
-    int GBKFreq[][];
-
-    int Big5Freq[][];
-
-    int Big5PFreq[][];
-
-    int EUC_TWFreq[][];
-
-    int KRFreq[][];
-
-    int JPFreq[][];
-
     // int UnicodeFreq[94][128];
     // public static String[] nicename;
     // public static String[] codings;
     public boolean debug;
+    // Frequency tables to hold the GB, Big5, and EUC-TW character
+    // frequencies
+    int[][] GBFreq;
+    int[][] GBKFreq;
+    int[][] Big5Freq;
+    int[][] Big5PFreq;
+    int[][] EUC_TWFreq;
+    int[][] KRFreq;
+    int[][] JPFreq;
 
     public BytesEncodingDetect() {
         super();
@@ -107,17 +102,17 @@ class BytesEncodingDetect extends Encoding {
         initialize_frequencies();
     }
 
-    public static void main(String argc[]) {
+    public static void main(String[] argc) {
         BytesEncodingDetect sinodetector;
         int result = OTHER;
         int i;
         sinodetector = new BytesEncodingDetect();
         for (i = 0; i < argc.length; i++) {
-            if (argc[i].startsWith("http://") == true) {
+            if (argc[i].startsWith("http://")) {
                 try {
                     result = sinodetector.detectEncoding(new URL(argc[i]));
                 } catch (Exception e) {
-                    System.err.println("Bad URL " + e.toString());
+                    System.err.println("Bad URL " + e);
                 }
             } else if (argc[i].equals("-d")) {
                 sinodetector.debug = true;
@@ -144,11 +139,10 @@ class BytesEncodingDetect extends Encoding {
             while ((bytesread = chinesestream.read(rawtext, byteoffset, rawtext.length - byteoffset)) > 0) {
                 byteoffset += bytesread;
             }
-            ;
             chinesestream.close();
             guess = detectEncoding(rawtext);
         } catch (Exception e) {
-            System.err.println("Error loading or using URL " + e.toString());
+            System.err.println("Error loading or using URL " + e);
             guess = -1;
         }
         return guess;
@@ -4491,61 +4485,34 @@ class BytesEncodingDetect extends Encoding {
 }
 
 class Encoding {
+    public final static int SIMP = 0;
+    public final static int TRAD = 1;
     // Supported com.teipreader.Main.Encoding Types
     public static int GB2312 = 0;
-
     public static int GBK = 1;
-
     public static int GB18030 = 2;
-
     public static int HZ = 3;
-
     public static int BIG5 = 4;
-
     public static int CNS11643 = 5;
-
     public static int UTF8 = 6;
-
     public static int UTF8T = 7;
-
     public static int UTF8S = 8;
-
     public static int UNICODE = 9;
-
     public static int UNICODET = 10;
-
     public static int UNICODES = 11;
-
     public static int ISO2022CN = 12;
-
     public static int ISO2022CN_CNS = 13;
-
     public static int ISO2022CN_GB = 14;
-
     public static int EUC_KR = 15;
-
     public static int CP949 = 16;
-
     public static int ISO2022KR = 17;
-
     public static int JOHAB = 18;
-
     public static int SJIS = 19;
-
     public static int EUC_JP = 20;
-
     public static int ISO2022JP = 21;
-
     public static int ASCII = 22;
-
     public static int OTHER = 23;
-
     public static int TOTALTYPES = 24;
-
-    public final static int SIMP = 0;
-
-    public final static int TRAD = 1;
-
     // Names of the encodings as understood by Java
     public static String[] javaname;
 

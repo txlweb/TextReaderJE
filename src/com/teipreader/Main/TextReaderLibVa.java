@@ -7,15 +7,17 @@ import java.util.List;
 
 public class TextReaderLibVa {
     public static String MainPath = Config_dirs.MainPath;
+
     public static void allClose(Closeable... closeables) {
         for (Closeable closeable : closeables) {
             try {
-                if(closeable != null) closeable.close();
+                if (closeable != null) closeable.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
     public static List<String> ReadCFGFile(String strFilePath) {
         File file = new File(strFilePath);
         List<String> rstr = new ArrayList<>();
@@ -42,35 +44,36 @@ public class TextReaderLibVa {
         }
         return rstr;
     }
-    public static boolean IsFile(String File_name){
+
+    public static boolean IsFile(String File_name) {
         return new File(File_name).exists();
     }
 
     public static String GetList_HTML_TYPE(String name) {
         //LibVb
-        if(IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetList_HTML_TYPE(name);
+        if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetList_HTML_TYPE(name);
         //LibVa
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/list.info");//读列表
         int n = List.size();
         String LsHTML = "";
-        if(IsFile(MainPath + "/" + name + "/resource.ini")){
-            String ot = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","ot");
-            String by = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","by");
-            String tit = IniLib.GetThing(MainPath + "/" + name + "/resource.ini","conf","title");
-            if (ot!=null && by!=null && tit!=null){
-                LsHTML = "<h1>"+tit+"</h1><p>作者: "+by+"</p><p>简介: "+ot+"</p>";
+        if (IsFile(MainPath + "/" + name + "/resource.ini")) {
+            String ot = IniLib.GetThing(MainPath + "/" + name + "/resource.ini", "conf", "ot");
+            String by = IniLib.GetThing(MainPath + "/" + name + "/resource.ini", "conf", "by");
+            String tit = IniLib.GetThing(MainPath + "/" + name + "/resource.ini", "conf", "title");
+            if (ot != null && by != null && tit != null) {
+                LsHTML = "<h1>" + tit + "</h1><p>作者: " + by + "</p><p>简介: " + ot + "</p>";
             }
         }
         for (int i = 0; i < n; i++) {
             //生成列表
             LsHTML = MessageFormat.format("{0}<a href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>", LsHTML, name, i + 1, i + 1, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], List.get(i));
         }
-        return LsHTML.replace(",","");
+        return LsHTML.replace(",", "");
     }
 
     public static String GetMainText_HTML_TYPE(String name, int id) {//id只吃int
         //断点-如果是LibVb处理则直接返回
-        if(IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMainText_HTML_TYPE(name, id);
+        if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMainText_HTML_TYPE(name, id);
         //LibVa处理方法
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/" + id + ".txt");//逐行读(不能用/n,这样显示会没有换行)
         StringBuilder LsHTML = new StringBuilder();
@@ -80,9 +83,9 @@ public class TextReaderLibVa {
     }
 
 
-    public static String GetMainText_C(String name, int id){//id只吃int
+    public static String GetMainText_C(String name, int id) {//id只吃int
         //LibVb
-        if(IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMainText_C(name,id);
+        if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMainText_C(name, id);
         //LibVa
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/" + id + ".txt");
         StringBuilder LsHTML = new StringBuilder();
@@ -104,7 +107,7 @@ public class TextReaderLibVa {
         //Fixd = MessageFormat.format("{0}<a href=\"/{1}/list.html\">目录</a>", Fixd, name);
         Fixd = MessageFormat.format("{0}<a href=\"/{1}/{2}.html\">{3}</a></bar>", Fixd, name, id + 1, langunges.langunges[Config_dirs.LanguageID][2]);
         Fixd = MessageFormat.format("{0}<br><pointer id=\"poin\" now=\"{1}\" max=\"{2}\"></pointer>", Fixd, id, maxid);
-        return Fixd.replace(",","");
+        return Fixd.replace(",", "");
     }
 
     public static String PathScan(boolean is_vh) {
@@ -120,7 +123,7 @@ public class TextReaderLibVa {
                                 Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), value.getName());
                             else {
                                 Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
-                                System.out.println(value.getName());
+                                if (Config_dirs.Use_Server_LOG_DEBUG) System.out.println(value.getName());
                             }
                         }
                     }
@@ -138,7 +141,7 @@ public class TextReaderLibVa {
 
     public static int GetMaxTexts(String name) {
         //LibVb
-        if(IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMaxTexts(name);
+        if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMaxTexts(name);
         //LibVa
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/list.info");
         return List.size();

@@ -15,10 +15,11 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import static com.teipreader.Main.Config_dirs.MainPath;
-import static com.teipreader.Main.IniLib.SetThing;
 import static com.teipreader.Main.TextReaderLibVa.IsFile;
 
 public class TeipMakerLib {
+    private static final char[] hexCode = "0123456789abcdef".toCharArray();
+
     public static void allClose(Closeable... closeables) {
         for (Closeable closeable : closeables) {
             try {
@@ -28,6 +29,7 @@ public class TeipMakerLib {
             }
         }
     }
+
     public static List<String> ReadCFGFile(String strFilePath) {
         File file = new File(strFilePath);
         List<String> rstr = new ArrayList<>();
@@ -54,21 +56,22 @@ public class TeipMakerLib {
         }
         return rstr;
     }
-    public static void autoMake(String FileName ,String saveAs,String Title,String Img_src,String Rule,String Author,String info) throws IOException {
-        System.out.println("正在处理小说: "+Title+" | 切章规则: "+Rule+" | 是否有图标: "+IsFile(Img_src));
-        if(!new File(FileName).exists()) return;//检查文件是否存在
+
+    public static void autoMake(String FileName, String saveAs, String Title, String Img_src, String Rule, String Author, String info) throws IOException {
+        System.out.println("正在处理小说: " + Title + " | 切章规则: " + Rule + " | 是否有图标: " + IsFile(Img_src));
+        if (!new File(FileName).exists()) return;//检查文件是否存在
         //System.out.println(getFileHash256(FileName));
         String md5 = getFileMD5(FileName);
         System.out.println(md5);
         //清理文件
-        if(new File(md5).exists()) new File(md5).delete();
+        if (new File(md5).exists()) new File(md5).delete();
         new File(md5).mkdir();
         //复制文件
-        CopyFileToThis(new File(FileName), new File(md5+"/main.txt"));
-        if(new File(Img_src).exists()) CopyFileToThis(new File(Img_src), new File(md5+"/icon.jpg"));
+        CopyFileToThis(new File(FileName), new File(md5 + "/main.txt"));
+        if (new File(Img_src).exists()) CopyFileToThis(new File(Img_src), new File(md5 + "/icon.jpg"));
         //处理章节信息
-        WriteFileToThis("main.index",preTxt(FileName,Rule));
-        if(new File("main.index").exists()) CopyFileToThis(new File("main.index"), new File(md5+"/main.index"));
+        WriteFileToThis("main.index", preTxt(FileName, Rule));
+        if (new File("main.index").exists()) CopyFileToThis(new File("main.index"), new File(md5 + "/main.index"));
         //添加ini配置项
 //        [conf]
 //        icon=
@@ -76,8 +79,8 @@ public class TeipMakerLib {
 //        by=
 //        ot=
         new File("resource.ini").delete();
-        WriteFileToThis("resource.ini","[conf]\r\nicon = icon.jpg\r\ntitle = "+Title+"\r\nby = "+Author+"\r\not = "+info+"");
-        CopyFileToThis(new File("resource.ini"), new File(md5+"/resource.ini"));
+        WriteFileToThis("resource.ini", "[conf]\r\nicon = icon.jpg\r\ntitle = " + Title + "\r\nby = " + Author + "\r\not = " + info);
+        CopyFileToThis(new File("resource.ini"), new File(md5 + "/resource.ini"));
         //        SetThing("./"+Title+"/resource.ini","conf","icon","icon.jpg");
 //        SetThing("./"+Title+"/resource.ini","conf","title",Title);
 //        SetThing("./"+Title+"/resource.ini","conf","by",Author);
@@ -90,8 +93,9 @@ public class TeipMakerLib {
             e.printStackTrace();
         }
         deleteFileByIO(md5);
-        if(new File(md5).exists()) new File(md5).delete();
+        if (new File(md5).exists()) new File(md5).delete();
     }
+
     public static void deleteFileByIO(String filePath) {
         File file = new File(filePath);
         File[] list = file.listFiles();
@@ -102,16 +106,18 @@ public class TeipMakerLib {
         }
         file.delete();
     }
-    public static void Unzip(String from,String to){
+
+    public static void Unzip(String from, String to) {
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(from))) {
-            unzipFiles(zipInputStream,to );
+            unzipFiles(zipInputStream, to);
             System.out.println("Files unzipped successfully!");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public static String preTxt(String txt,String Rule) {
-        if(Objects.equals(Rule, "")) Rule = ".*第.*章.*";
+
+    public static String preTxt(String txt, String Rule) {
+        if (Objects.equals(Rule, "")) Rule = ".*第.*章.*";
         List<String> List = ReadCFGFile(txt);
         StringBuilder T_LIST = new StringBuilder();
         for (int i = 0; i < List.size(); i++) {
@@ -124,9 +130,10 @@ public class TeipMakerLib {
             }
         }
         T_LIST.append("\r\n");
-        System.out.println("共计: "+T_LIST.length()+"章");
-        return T_LIST.toString().replace(",","");//防逗号
+        System.out.println("共计: " + T_LIST.length() + "章");
+        return T_LIST.toString().replace(",", "");//防逗号
     }
+
     public static void V1ToV2(String V1Name, String V2Save) throws IOException {
         StringBuilder mainTXT = new StringBuilder();
         StringBuilder ListTXT = new StringBuilder();
@@ -136,7 +143,7 @@ public class TeipMakerLib {
         for (int i = 0; i < List.size(); i++) {
             mainTXT.append(List.get(i)).append("\r\n");
             ListTXT.append(List.get(i)).append("&D&").append(longer).append("\r\n");
-            List<String> tl = ReadCFGFile((MainPath + "/" + V1Name + "/"+(i+1)+".txt").replace(",",""));//读列表
+            List<String> tl = ReadCFGFile((MainPath + "/" + V1Name + "/" + (i + 1) + ".txt").replace(",", ""));//读列表
             for (String s : tl) {
                 mainTXT.append(s).append("\r\n");
                 longer++;
@@ -145,32 +152,33 @@ public class TeipMakerLib {
         }
         //格式化完毕
         //清理
-        if(new File(V2Save).exists()) new File(V2Save).delete();
+        if (new File(V2Save).exists()) new File(V2Save).delete();
         new File(V2Save).mkdir();
-        if(new File("main.index").exists()) new File(V2Save).delete();
-        if(new File("main.txt").exists()) new File(V2Save).delete();
+        if (new File("main.index").exists()) new File(V2Save).delete();
+        if (new File("main.txt").exists()) new File(V2Save).delete();
         //写入
         WriteFileToThis("main.index", String.valueOf(ListTXT));
         WriteFileToThis("main.txt", String.valueOf(mainTXT));
         //复制
-        if(new File("main.index").exists()) CopyFileToThis(new File("main.index"), new File(V2Save+"/main.index"));
-        if(new File("main.index").exists()) CopyFileToThis(new File("main.txt"), new File(V2Save+"/main.txt"));
+        if (new File("main.index").exists()) CopyFileToThis(new File("main.index"), new File(V2Save + "/main.index"));
+        if (new File("main.index").exists()) CopyFileToThis(new File("main.txt"), new File(V2Save + "/main.txt"));
         //清理
-        if(new File("main.index").exists()) new File(V2Save).delete();
-        if(new File("main.txt").exists()) new File(V2Save).delete();
-        if(new File(V2Save+".teip2").exists()) new File(V2Save).delete();
+        if (new File("main.index").exists()) new File(V2Save).delete();
+        if (new File("main.txt").exists()) new File(V2Save).delete();
+        if (new File(V2Save + ".teip2").exists()) new File(V2Save).delete();
         //打包
-        try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(V2Save+".teip2"))) {
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(V2Save + ".teip2"))) {
             compressFolder(V2Save, V2Save, zipOutputStream);
             System.out.println("Folder compressed successfully!");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(new File(V2Save).exists()) new File(V2Save).delete();
+        if (new File(V2Save).exists()) new File(V2Save).delete();
     }
+
     public static void GetTextWithThis(String Name) throws IOException {
-        if(IsFile(MainPath + "/" + Name + "/main.txt")){
-            if(new File("main.txt").exists()) new File("main.txt").delete();
+        if (IsFile(MainPath + "/" + Name + "/main.txt")) {
+            if (new File("main.txt").exists()) new File("main.txt").delete();
             List<String> List = ReadCFGFile(MainPath + "/" + Name + "/main.txt");
             StringBuilder T_LIST = new StringBuilder();
             for (String s : List) {
@@ -183,37 +191,40 @@ public class TeipMakerLib {
         List<String> List = ReadCFGFile(MainPath + "/" + Name + "/list.info");//读列表
         for (int i = 0; i < List.size(); i++) {
             mainTXT.append(List.get(i)).append("\r\n");
-            List<String> tl = ReadCFGFile((MainPath + "/" + Name + "/"+(i+1)+".txt").replace(",",""));//读列表
+            List<String> tl = ReadCFGFile((MainPath + "/" + Name + "/" + (i + 1) + ".txt").replace(",", ""));//读列表
             for (String s : tl) {
                 mainTXT.append(s).append("\r\n");
             }
         }
-        if(new File("main.txt").exists()) new File("main.txt").delete();
+        if (new File("main.txt").exists()) new File("main.txt").delete();
         WriteFileToThis("main.txt", String.valueOf(mainTXT));
     }
-    public static void WriteFileToThis(String file_name, String data){
+
+    public static void WriteFileToThis(String file_name, String data) {
         try {
             File file = new File(file_name);
-            if(file.exists()){
+            if (file.exists()) {
                 file.delete();
                 file.createNewFile();
-            }else{
+            } else {
                 file.createNewFile();
             }
-            FileWriter fileWriter = new FileWriter(file.getName(),true);
+            FileWriter fileWriter = new FileWriter(file.getName(), true);
             BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
             bufferWriter.write(data);
             bufferWriter.close();
             System.out.println("Done");
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public static void CopyFileToThis(File source, File dest) throws IOException {
         try (FileChannel inputChannel = new FileInputStream(source).getChannel(); FileChannel outputChannel = new FileOutputStream(dest).getChannel()) {
             outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
         }
     }
+
     public static void compressFolder(String sourceFolder, String folderName, ZipOutputStream zipOutputStream) throws IOException {
         File folder = new File(sourceFolder);
         File[] files = folder.listFiles();
@@ -230,6 +241,7 @@ public class TeipMakerLib {
             }
         }
     }
+
     public static void addToZipFile(String fileName, String fileAbsolutePath, ZipOutputStream zipOutputStream) throws IOException {
         // 创建ZipEntry对象并设置文件名
         ZipEntry entry = new ZipEntry(fileName);
@@ -247,6 +259,7 @@ public class TeipMakerLib {
         // 完成当前文件的压缩
         zipOutputStream.closeEntry();
     }
+
     public static void unzipFiles(ZipInputStream zipInputStream, String outputFolder) throws IOException {
         byte[] buffer = new byte[1024];
         ZipEntry entry;
@@ -272,9 +285,10 @@ public class TeipMakerLib {
             zipInputStream.closeEntry();
         }
     }
-    private static final char[] hexCode = "0123456789abcdef".toCharArray();
+
     /**
      * 计算文件的MD5
+     *
      * @param fileName 文件的绝对路径
      * @return
      */
@@ -308,10 +322,11 @@ public class TeipMakerLib {
 
     /**
      * 计算文件的Hash256值
+     *
      * @param fileName 文件的绝对路径
      * @return
      */
-    public static String getFileHash256(String fileName){
+    public static String getFileHash256(String fileName) {
         File file = new File(fileName);
         FileInputStream fis = null;
         String sha256 = "";
@@ -340,6 +355,7 @@ public class TeipMakerLib {
         }
         return sha256;
     }
+
     private static String byte2hexLower(byte[] b) {
         String hs = "";
         String stmp = "";

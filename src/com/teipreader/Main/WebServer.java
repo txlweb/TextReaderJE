@@ -12,27 +12,7 @@ import java.util.regex.Pattern;
 import static com.teipreader.Main.TextReaderLibVa.IsFile;
 import static com.teipreader.Main.TextReaderLibVa.ReadCFGFile;
 
-public class WebServer extends Thread implements Main{
-    @Override
-    public void run() {
-        StartServer();
-    }
-    /**
-     * @throws IOException
-     */
-    @Override
-    public void runShare() throws IOException {
-        StartServer();
-    }
-
-    /**
-     * @throws IOException
-     */
-    @Override
-    public void runServer() throws IOException {
-        StartServer();
-    }
-
+public class WebServer extends Thread implements Main {
     public static void StartServer() {
         int port = Config_dirs.NormPort;
         String root = Config_dirs.StylePath;
@@ -57,6 +37,27 @@ public class WebServer extends Thread implements Main{
             }
         }
     }
+
+    @Override
+    public void run() {
+        StartServer();
+    }
+
+    /**
+     * @throws IOException
+     */
+    @Override
+    public void runShare() throws IOException {
+        StartServer();
+    }
+
+    /**
+     * @throws IOException
+     */
+    @Override
+    public void runServer() throws IOException {
+        StartServer();
+    }
 }
 
 class RequestHandler implements Runnable {
@@ -80,7 +81,8 @@ class RequestHandler implements Runnable {
             String fullPath = root + path;
             boolean IsSendData = false;
             StringBuilder RET_HTML = new StringBuilder();
-            if(Config_dirs.Use_Server_LOG_DEBUG) System.out.println((char) 27 + "[33m[Server]:" + path + (char) 27 + "[39;49m");
+            if (Config_dirs.Use_Server_LOG_DEBUG)
+                System.out.println((char) 27 + "[33m[Server]:" + path + (char) 27 + "[39;49m");
             if (path.contains("/imgsrcs/?id=")) {
                 String[] a = path.split("=");
                 fullPath = URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "/icon.jpg";
@@ -98,9 +100,9 @@ class RequestHandler implements Runnable {
                 String[] a = path.split("/");
                 RET_HTML = new StringBuilder("<h1 id=\"title\">章节目录</h1>");
                 String xx = "";
-                if (IsFile(Config_dirs.MainPath+"/"+URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/resource.ini")){
-                    xx = IniLib.GetThing(Config_dirs.MainPath+"/"+URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/resource.ini","conf","title");
-                }else {
+                if (IsFile(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "/resource.ini")) {
+                    xx = IniLib.GetThing(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "/resource.ini", "conf", "title");
+                } else {
                     xx = URLDecoder.decode(a[1], StandardCharsets.UTF_8);
                 }
                 RET_HTML.append("<a href=\"/api/dwtxt/").append(xx).append(".txt?").append(URLDecoder.decode(a[1], StandardCharsets.UTF_8)).append("\">[下载本小说]</a><br>");
@@ -108,7 +110,8 @@ class RequestHandler implements Runnable {
                 if (!path.contains("?NOUI")) {
                     RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));
                 }
-                if(Config_dirs.Use_Server_LOG) System.out.println((char) 27 + "[33m[Server]:"+ URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"@List" + (char) 27 + "[39;49m");
+                if (Config_dirs.Use_Server_LOG)
+                    System.out.println((char) 27 + "[33m[Server]:" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "@List" + (char) 27 + "[39;49m");
                 IsSendData = true;
             }
             if (path.contains("/api/openFile/")) {
@@ -118,21 +121,21 @@ class RequestHandler implements Runnable {
             }
             if (path.contains("/api/include/?")) {
                 String[] a = path.split("\\?");
-                TeipMakerLib.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8),Config_dirs.MainPath);
+                TeipMakerLib.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Config_dirs.MainPath);
                 RET_HTML = new StringBuilder("Complete to import file.");
                 IsSendData = true;
             }
             if (path.contains("/api/mktxt/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
-                TeipMakerLib.autoMake(a[1],"tmp.zip",a[2],a[3],a[4],a[5],a[6]);
-                TeipMakerLib.Unzip("tmp.zip",Config_dirs.MainPath);
+                TeipMakerLib.autoMake(a[1], "tmp.zip", a[2], a[3], a[4], a[5], a[6]);
+                TeipMakerLib.Unzip("tmp.zip", Config_dirs.MainPath);
                 RET_HTML = new StringBuilder(String.format("Complete to import file. parameters:%s,%s,%s,%s", a[1], a[2], a[3], a[4]));
                 IsSendData = true;
             }
             if (path.contains("/api/webReq/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
-                Download.Dw_File(a[1],"tmp.json");
-                List<String> lines =  ReadCFGFile("tmp.json");
+                Download.Dw_File(a[1], "tmp.json");
+                List<String> lines = ReadCFGFile("tmp.json");
                 for (String line : lines) {
                     RET_HTML.append(line);
                 }
@@ -147,9 +150,9 @@ class RequestHandler implements Runnable {
             }
             if (path.contains("/api/web_dl/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?=");
-                Download.Dw_File(a[1],"tmp.teip");
-                TeipMakerLib.Unzip("tmp.teip",Config_dirs.MainPath);
-                RET_HTML = new StringBuilder("Complete to import file from URL"+a[1]+".");
+                Download.Dw_File(a[1], "tmp.teip");
+                TeipMakerLib.Unzip("tmp.teip", Config_dirs.MainPath);
+                RET_HTML = new StringBuilder("Complete to import file from URL" + a[1] + ".");
                 IsSendData = true;
             }
             Pattern compile = Pattern.compile(".*/[0-9].*.html.*");
@@ -163,28 +166,31 @@ class RequestHandler implements Runnable {
                     RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
                     RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));
                 }
-                if(Config_dirs.Use_Server_LOG) System.out.println((char) 27 + "[33m[Server]:"+ URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"@" + Integer.parseInt(b[0].replace(",","")) + (char) 27 + "[39;49m");
+                if (Config_dirs.Use_Server_LOG)
+                    System.out.println((char) 27 + "[33m[Server]:" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "@" + Integer.parseInt(b[0].replace(",", "")) + (char) 27 + "[39;49m");
                 IsSendData = true;
             }
             Pattern compile1 = Pattern.compile(".*/.*/.*.res");
             java.util.regex.Matcher matcher1 = compile1.matcher(path);
             if (matcher1.matches()) {
                 String[] a = path.split("/");
-                fullPath = Config_dirs.MainPath+"/"+URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/"+URLDecoder.decode(a[2], StandardCharsets.UTF_8);
+                fullPath = Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "/" + URLDecoder.decode(a[2], StandardCharsets.UTF_8);
                 if (!new File(fullPath).isFile()) fullPath = root + "/noimg.png";
             }
             if (path.contains("/api/dwtxt/") && !IsSendData) {
                 String[] a = path.split("\\?");
-                if(Config_dirs.Use_Server_LOG) System.out.println((char) 27 + "[33m[Server]:为小说建立文档@"+ URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"@txt" + (char) 27 + "[39;49m");
-                if(new File(Config_dirs.MainPath+"/"+URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()){
+                if (Config_dirs.Use_Server_LOG)
+                    System.out.println((char) 27 + "[33m[Server]:为小说建立文档@" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "@txt" + (char) 27 + "[39;49m");
+                if (new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()) {
                     TeipMakerLib.GetTextWithThis(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
                     sendFile(out, new File("main.txt"));//goto end
                     in.close();
                     out.close();
                     client.close();
                     return;
-                }else {
-                    if(Config_dirs.Use_Server_LOG) System.out.println((char) 27 + "[33m[Server]: [E]: 不能为不存在的小说建立文档." + (char) 27 + "[39;49m");
+                } else {
+                    if (Config_dirs.Use_Server_LOG)
+                        System.out.println((char) 27 + "[33m[Server]: [E]: 不能为不存在的小说建立文档." + (char) 27 + "[39;49m");
                     RET_HTML = new StringBuilder("[E]: 没有这个文章可以下载!");
                 }
                 IsSendData = true;
@@ -193,11 +199,12 @@ class RequestHandler implements Runnable {
                 RET_HTML = new StringBuilder("<h1 id=\"title\">小说列表</h1>");
                 if (path.contains("?")) {
                     RET_HTML.append(TextReaderLibVa.PathScan(true));
-                }else{
+                } else {
                     RET_HTML.append(TextReaderLibVa.PathScan(false));
                 }
                 RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));
-                if(Config_dirs.Use_Server_LOG) System.out.println((char) 27 + "[33m[Server]:"+ " 主页" + (char) 27 + "[39;49m");
+                if (Config_dirs.Use_Server_LOG)
+                    System.out.println((char) 27 + "[33m[Server]:" + " 主页" + (char) 27 + "[39;49m");
 
                 IsSendData = true;
             }
