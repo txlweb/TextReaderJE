@@ -197,12 +197,19 @@ class RequestHandler implements Runnable {
             }
             if (path.contains("/app") && !IsSendData) {
                 RET_HTML = new StringBuilder("<h1 id=\"title\">小说列表</h1>");
-                if (path.contains("?")) {
-                    RET_HTML.append(TextReaderLibVa.PathScan(true));
-                } else {
-                    RET_HTML.append(TextReaderLibVa.PathScan(false));
+
+                String[] A = path.split("\\?");
+                if(path.contains("?")&A.length>1){
+                    if (Objects.equals(A[1], "VH")) {
+                        RET_HTML.append(TextReaderLibVa.PathScan(true,""));
+                    } else {
+                        RET_HTML.append(TextReaderLibVa.PathScan(false,URLDecoder.decode(A[1], StandardCharsets.UTF_8)));
+                    }
+                }else {
+                    RET_HTML.append(TextReaderLibVa.PathScan(true,""));
                 }
-                RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));
+
+                RET_HTML = new StringBuilder(ServerLibVa.AddTitle_index(RET_HTML.toString()));
                 if (Config_dirs.Use_Server_LOG)
                     System.out.println((char) 27 + "[33m[Server]:" + " 主页" + (char) 27 + "[39;49m");
 

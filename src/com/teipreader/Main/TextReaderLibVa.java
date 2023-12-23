@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TextReaderLibVa {
     public static String MainPath = Config_dirs.MainPath;
@@ -110,7 +111,7 @@ public class TextReaderLibVa {
         return Fixd.replace(",", "");
     }
 
-    public static String PathScan(boolean is_vh) {
+    public static String PathScan(boolean is_vh, String key) {
         File file = new File(MainPath);
         String Blist = "";
         if (file.isDirectory()) {
@@ -119,10 +120,16 @@ public class TextReaderLibVa {
                 for (File value : files) {
                     if (value.isDirectory()) {
                         if (!IsHidden(value.getName()) | is_vh) {
-                            if (!IsFile(MainPath + "/" + value.getName() + "/resource.ini"))
-                                Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), value.getName());
-                            else {
-                                Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
+                            if (!IsFile(MainPath + "/" + value.getName() + "/resource.ini")) {
+                                if(value.getName().contains(key))
+                                    Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), value.getName());
+                            }else {
+                                if(Objects.equals(key, "")){
+                                    Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
+                                }else {
+                                    if (IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title").contains(key))
+                                        Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
+                                }
                                 if (Config_dirs.Use_Server_LOG_DEBUG) System.out.println(value.getName());
                             }
                         }

@@ -24,9 +24,9 @@ public interface Main {
         //在windows下进行调试,小说目录有乱码是正常的,需要编译了之后再启动!!
         //编码问题很大,linux下则没有这种问题.
         System.setProperty("file.encoding", "UTF-8");
-        System.out.println((char) 27 + "[33mTextReader   " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m 1.2.6 JavaEdition(Build 19560)");
-        System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/T-e-i-p-R-e-a-d-e-r-J-a-v-a-E-d-i-t-i-o");
-        System.out.println("编译JDK版本: 11.0.16.1 你的JDK版本:" + System.getProperty("java.version"));
+        System.out.println((char) 27 + "[33mTextReader   " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m 1.2.7 JavaEdition(Build 19900)");
+        System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/TextReaderJE/");
+        //System.out.println("编译JDK版本: 11.0.16.1 你的JDK版本:" + System.getProperty("java.version"));
         System.out.println("如果需要帮助请查看jar包内的readme.md");
         if (false) {
             TeipMakerLib.autoMake("测试转换.txt", "test.zip", "测试1", "-", ".*第.*章.*", "unk", "unk");
@@ -45,7 +45,7 @@ public interface Main {
                     "    MainPath=./rom   #主路径    \n" +
                             "    Port=8080        #端口\n" +
                             "    UseShare=enable  #启用/禁止分享服务\n" +
-                            "    LogRank=1        #日志等级 0=禁止提示 1=用户级日志 2=调试级提示");
+                            "    LogRank=1        #日志等级 0=禁止日志 1=用户级日志 2=调试级日志");
             System.out.println("- Page 1 of 1 -");
             System.out.println(Arrays.toString(args));
             if (Objects.equals(args[0], "-make") || Objects.equals(args[0], "-m") & args.length >= 6) {

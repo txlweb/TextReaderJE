@@ -1,0 +1,23 @@
+
+<style>
+    #search_in{
+        font-size: 22px;
+        border: 3px solid rgb(254, 98, 13);
+        border-radius: 5px;
+        background: white;
+        color: rgb(254, 98, 13);
+        width: 400px;
+    }
+    #search_ot{
+        height: 34px;
+        width: 42px;
+        background: rgb(254, 98, 13);
+        border-radius: 0 5px 5px 0;
+    }
+</style>
+<br>
+
+<div style="display: flex;justify-content: center;align-items: flex-end;" onload="inline_init()">
+    <input id="search_in" value="" placeholder="搜索小说(可以搜索tag/标题/作者/简介)"><button id="search_ot" onclick="inline_s()"><block class="sbi"></block></button>
+</div>
+<div>快捷tags:<div id="fast-tag"></div></div>

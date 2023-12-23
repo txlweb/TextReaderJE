@@ -2,6 +2,7 @@ package com.teipreader.Main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 
 public class Config_dirs {
@@ -26,22 +27,22 @@ public class Config_dirs {
             IniLib.SetThing("./config.ini", "settings", "UseShare", "enable");
         }
         String Gl_UseShare = IniLib.GetThing("./config.ini", "settings", "UseShare");
-        if (Gl_UseShare != null) {
+        if (!Objects.equals(Gl_UseShare, "UnknowThing")) {
             Use_Share = Gl_UseShare.equals("enable");
         }
         String Gl_MainPath = IniLib.GetThing("./config.ini", "settings", "MainPath");
-        if (Gl_MainPath != null) {
+        if (!Objects.equals(Gl_MainPath, "UnknowThing")) {
             if (!new File(Gl_MainPath).isDirectory()) new File(Gl_MainPath).mkdir();
             MainPath = Gl_MainPath;
         }
         String Gl_Port = IniLib.GetThing("./config.ini", "settings", "Port");
-        if (Gl_Port != null) {
+        if (!Objects.equals(Gl_Port, "UnknowThing")) {
             if (Integer.parseInt(Gl_Port) > 0 & Integer.parseInt(Gl_Port) < 25565) {
                 NormPort = Integer.parseInt(Gl_Port);
             }
         }
         String Gl_LogRank = IniLib.GetThing("./config.ini", "settings", "LogRank");
-        if (Gl_LogRank != null) {
+        if (!Objects.equals(Gl_LogRank, "UnknowThing")) {
             Use_Server_LOG = false;
             Use_Server_LOG_DEBUG = false;
             if (Gl_LogRank.equals("1")) {

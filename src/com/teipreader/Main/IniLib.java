@@ -51,7 +51,7 @@ public class IniLib {
                 getLN = false;
             }
         }
-        return null;
+        return "UnknowThing";
     }
 
     public static void SetThing(String FileName, String Node, String key, String Value) {//will return key

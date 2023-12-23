@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteTargetsManager">
+    <targets>
+      <target name="ubuntu@192.168.1.103:22" type="ssh/sftp" uuid="3f68baf7-0ea0-4231-a9be-a0be468048b7">
+        <config>
+          <option name="projectRootOnTarget" value="/home/ubuntu/TextReaderJE" />
+          <option name="serverName" value="ubuntu@192.168.1.103:22 password" />
+        </config>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config>
+            <option name="javaVersionString" value="11.0.21" />
+          </config>
+        </ContributedStateBase>
+      </target>
+    </targets>
+  </component>
+</project>

@@ -35,11 +35,12 @@ function Init() {
 	info = function(){
 		console.log('TextReader BETA1.0', "\n    _..,----,.._\n .-;'-.,____,.-';\n(( |            |\n `))            ; \n  ` \          /\n  .-' `,.____.,' '-.\n(     '------'     )\n `-=..________..-\n 要来一杯Java吗? [Dog]");
 		console.log('TextReader by.IDSOFT@IDlike');
-		console.log('Vre.1.5.8 update at 2023/1/3');
+		console.log('JavaEdition(WebCore) Vre.2.5.5-20839 update at 2023/12/23');
 		console.log('本软件仅供学习交流使用,请勿商用,严禁在拥有公网ip或配置了内网穿透的主机上使用本软件,一切由本软件引起的纠纷官司均与开发者无关.');
 		console.log('基础信息:');
 		console.log(os);
 	}
+	info()
 	var poinmain = document.getElementById('poin');
 	if (!poinmain) {
 		var chagepage = document.getElementById('chagepagebar');
@@ -118,6 +119,7 @@ function Init() {
 		setCookie("MarginTopPxs", 20, 60 * 60 * 24 * 365);
 	SetBrs();
 	setInterval("clock_up();", 500);
+	inline_init();
 }
 function clock_up(){
 	let time = new Date();
@@ -608,3 +610,31 @@ obj = obj.substring(0,index);
 
 return obj;
 }
+
+
+//插件-搜索
+function inline_s(){
+	window.location.href = "?"+document.getElementById("search_in").value;
+}
+function inline_init() {
+	const xhr = new XMLHttpRequest();
+	const fast_tag = document.getElementById("fast-tag");
+	fast_tag.innerHTML = "";
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4) {
+			const obj = JSON.parse(xhr.responseText);
+			if(obj.code!=="0"){
+				alert("E:没有配置文件,请参考手册配置.");
+				return;
+			}
+			for (let i = 0; i < obj.conf_tags.length; i++) {
+				if(obj.conf_tags[i].name !== ""){
+					fast_tag.innerHTML = fast_tag.innerHTML + "<a href='?"+obj.conf_tags[i].key+"'>"+obj.conf_tags[i].name+"</a>";
+				}
+			}
+		}
+	}
+	xhr.open('get',"/config.json");
+	xhr.send(null);
+}
+//window.onload =  function (){inline_init();}

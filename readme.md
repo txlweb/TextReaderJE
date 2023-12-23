@@ -2,9 +2,9 @@
 这是一款由IDlike制作的小说阅读器，使用java编写服务端。<br>
 其他的内容还在开发，莫急
 ## 作者在GitHub上
-作者仓库[https://github.com/txlweb](https://github.com/txlweb)
+作者[https://github.com/txlweb](https://github.com/txlweb)
 
-这个仓库[https://github.com/txlweb/T-e-i-p-R-e-a-d-e-r-J-a-v-a-E-d-i-t-i-o](https://github.com/txlweb/T-e-i-p-R-e-a-d-e-r-J-a-v-a-E-d-i-t-i-o)
+这个仓库[https://github.com/txlweb/TextReaderJE/](https://github.com/txlweb/TextReaderJE/)
 ## 一些帮助
 * 使用以下命令可以启动服务
 > java -jar TextReaderJavaEdition.jar
@@ -15,13 +15,20 @@
 >> [settings]<br>
 >> MainPath=./rom<br>
 >> Port=8080 #端口<br>
->> LogRank=1 #0=禁止提示 1=仅重要 2=全部提示<br>
+>> LogRank=1 #日志等级 0=禁止日志 1=用户级日志 2=调试级日志<br>
 >> UseShare=enable #启用分享服务(启用这个会在默认8090端口分享你本机的小说)<br>
 
 > config_share.ini<br>
 >> [settings]<br>
 >> Port=8090 #端口<br>
->> LogRank=1 #0=禁止提示 1=仅重要 2=全部提示<br>
+>> LogRank=1 #日志等级 0=禁止日志 1=用户级日志 2=调试级日志<br>
+
+> resource.ini (小说信息)<br>
+>> [conf]<br>
+>> icon=icon.jpg<br>
+>> title=测试V2<br>
+>> by=测试作者2<br>
+>> ot=测试简介2 测试简介 测试简介 测试简介 测试简介<br>
 * 命令行帮助
 > java -jar TextReaderJavaEdition.jar
 >> 导入txt文件 -m, -make txt文件名 保存的压缩包 小说标题 小说图片 切章规则(.*第.**章.* * )<br>

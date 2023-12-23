@@ -4,6 +4,7 @@ import com.teipreader.Main.IniLib;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 
 public class Config_dirs {
@@ -28,13 +29,13 @@ public class Config_dirs {
             MainPath = Gl_MainPath;
         }
         String Gl_Port = IniLib.GetThing("./config_share.ini", "settings", "Port");
-        if (Gl_Port != null) {
+        if (!Objects.equals(Gl_Port, "UnknowThing")) {
             if (Integer.parseInt(Gl_Port) > 0 & Integer.parseInt(Gl_Port) < 25565) {
                 NormPort = Integer.parseInt(Gl_Port);
             }
         }
         String Gl_LogRank = IniLib.GetThing("./config_share.ini", "settings", "LogRank");
-        if (Gl_LogRank != null) {
+        if (!Objects.equals(Gl_LogRank, "UnknowThing")) {
             Use_Server_LOG = false;
             Use_Server_LOG_DEBUG = false;
             if (Gl_LogRank.equals("1")) {

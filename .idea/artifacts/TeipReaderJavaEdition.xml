@@ -4,6 +4,10 @@
     <root id="archive" name="TeipReaderJavaEdition.jar">
       <element id="module-output" name="TextReaderJE" />
       <element id="file-copy" path="$PROJECT_DIR$/readme.md" />
+      <element id="archive" name="style.zip">
+        <element id="dir-copy" path="$PROJECT_DIR$/style" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/favicon.ico" />
     </root>
   </artifact>
 </component>
