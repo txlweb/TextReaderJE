@@ -127,7 +127,9 @@ public class TextReaderLibVa {
                                 if(Objects.equals(key, "")){
                                     Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
                                 }else {
-                                    if (IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title").contains(key))
+                                    String things =IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title")+IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "by")+IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "ot")+value.getPath();
+                                    //标题+作者+简介+md5真值
+                                    if (things.contains(key))
                                         Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
                                 }
                                 if (Config_dirs.Use_Server_LOG_DEBUG) System.out.println(value.getName());
