@@ -73,7 +73,7 @@ public class CartoonMake {
         //写入index文件
         new File("tmp.index").delete();
         //Index:  [章节名]&D&[开始id] 没有index就默认的整个文件做一张
-        if(Objects.equals(Index, "")){
+        if(Objects.equals(Index, "-")){
             WriteFileToThis("tmp.index","整个文件&D&0");
         }else {
             WriteFileToThis("tmp.index",Index);
