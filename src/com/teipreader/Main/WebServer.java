@@ -206,7 +206,7 @@ class RequestHandler implements Runnable {
                         RET_HTML.append(TextReaderLibVa.PathScan(false,URLDecoder.decode(A[1], StandardCharsets.UTF_8)));
                     }
                 }else {
-                    RET_HTML.append(TextReaderLibVa.PathScan(true,""));
+                    RET_HTML.append(TextReaderLibVa.PathScan(false,""));
                 }
 
                 RET_HTML = new StringBuilder(ServerLibVa.AddTitle_index(RET_HTML.toString()));
