@@ -3,10 +3,42 @@
 <!--<input type="color" id="color" hidden>弃用方案,因为没有onchage事件.-->
 <script src="/main.js" type="text/javascript"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	#scroll-progress {
+		position: fixed;
+		top: 88px;
+		left: 0;
+		width: 1%;
+		height: 7px;
+		background-color: #ff0000; /* 自定义进度条颜色 */
+		opacity: 0.8; /* 自定义进度条透明度 */
+		z-index: 9999; /* 确保进度条显示在最顶层 */
+		border-radius: 4px;
+	}
+</style>
+<script>
 
+	function updateScrollProgress() {
+		scrollProgresss = document.getElementById('scroll-progress');
+		scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+		scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+		var progresss = (scrollTop / (scrollHeight - window.innerHeight)) * 100;
+		scrollProgresss.style.width = progresss + '%';
+		scrollProgresss.style.backgroundColor = "rgb("+progresss*2.5+",0,"+(255-progresss*2.5)+")";
+
+	}
+
+	function scrollHandler() {
+		updateScrollProgress()
+	}
+
+	window.addEventListener('scroll', scrollHandler);
+</script>
 <link rel="stylesheet" type="text/css" href="/style.css">
 <title>TextReader 局域网共享(BETA)</title>
+
 <body class="style_body" id="body">
+<div id="scroll-progress"></div>
 	<block class="bar">
 		<p class="title" ><a href="/" width="0px" height="0px" class="hw"><img width="20px" height="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAABMklEQVR42u2YyQ6FIAxF/f+t8xCjC+MQY9Qf7EtNeCmoKAHUBYurRAQOLZSqBwDeV6TVOAxDiKLorzzP4RWYIAg4ECbf9+ExmGEYgFoEB0/TdLuzZwhqHUa0QlEUcOY2LHddB1ZgqFtwoGVZDgeq65oDLssSjMKoumBdVw7ortukldM07daHitnpJO60Pa3AbUpB4jgG3V2H/c3zDEow4rZt21YrfmRZxgE1TQO3YMSZmIquGBLoBBFQCqPqY1X1fS9dg9ulqioQQ7vNM0jcnSxM7OKCDYtcnWtYHsdxH1VtW+XIOkwboYlzRQcGyzjuzmxPw9Bl4WAcjINxMA7GwXwexmSqqQ3zVHLFcu1DGJrB44syYQdULCeiOmsr5k9JksBlQv6EDhPyt4DE7yfvS3+ufvEBBDEEbYiPAAAAAElFTkSuQmCC"/></a> TextReader 局域网共享(BETA)<a onclick="DisplaySetting()" id="set_btn" class="hw">设置</a></p>
 		

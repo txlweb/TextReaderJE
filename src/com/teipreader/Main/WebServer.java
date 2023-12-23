@@ -86,10 +86,8 @@ class RequestHandler implements Runnable {
             if (path.contains("/imgsrcs/?id=")) {
                 String[] a = path.split("=");
                 fullPath = URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "/icon.jpg";
-                //System.out.println(fullPath);         
                 if (!new File(fullPath).isFile()) {
                     fullPath = URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "/icon.png";
-                    //System.out.println(fullPath);
                 }
                 if (!new File(fullPath).isFile()) {
                     fullPath = root + "/noimg.png";
@@ -129,7 +127,14 @@ class RequestHandler implements Runnable {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
                 TeipMakerLib.autoMake(a[1], "tmp.zip", a[2], a[3], a[4], a[5], a[6]);
                 TeipMakerLib.Unzip("tmp.zip", Config_dirs.MainPath);
-                RET_HTML = new StringBuilder(String.format("Complete to import file. parameters:%s,%s,%s,%s", a[1], a[2], a[3], a[4]));
+                RET_HTML = new StringBuilder(String.format("Complete to import file. parameters:%s,%s,%s,%s,%s,%s", a[1], a[2], a[3], a[4], a[5], a[6]));
+                IsSendData = true;
+            }
+            if (path.contains("/api/mkpdf/?")) {
+                String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
+                com.teipreader.LibCartoon.CartoonMake.MakeCartoon_by_pdf(a[1],a[6] , "tmp.zip", a[2], a[3], a[4], a[5]);
+                TeipMakerLib.Unzip("tmp.zip", Config_dirs.MainPath);
+                RET_HTML = new StringBuilder(String.format("Complete to import file. parameters:%s,%s,%s,%s,%s,%s", a[1], a[2], a[3], a[4], a[5], a[6]));
                 IsSendData = true;
             }
             if (path.contains("/api/webReq/?")) {

@@ -18,6 +18,9 @@
     width: 100%;
     left: 0px;
 }
+img{
+    max-width: 100%;
+}
 p{
     max-width: 99%;
     /*word-break: break-all;

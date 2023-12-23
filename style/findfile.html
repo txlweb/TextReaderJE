@@ -23,7 +23,7 @@
 <body onload="loadDir('.');c(0)">
 <a href="/"><h1>[0] 返回主页</h1></a>
 <h1 onclick="c(0)" id="c1"> [1]功能-导入teip文件(本地)</h1>
-<h1 onclick="c(1)" id="c2"> [2]功能-导入txt文件(本地)</h1>
+<h1 onclick="c(1)" id="c2"> [2]功能-导入txt/pdf文件(本地)</h1>
 <h1 onclick="c(2)" id="c3"> [3]功能-在线搜索(远程)</h1>
 <hr>
 <div id="t1">
@@ -32,13 +32,24 @@
 </div>
 
 <div id="t2">
-<label>
-    小说txt文件(相对jar包路径)=<input value="./test.txt" id="tf"><br>
-    小说标题=<input value="test" id="nm"><br>
-    小说图片(可以没有)=<input value="none" id="im"><br>
-    切章规则(正则匹配)=<input value=".*第.*章.*" id="rl"><br>
-    <button onclick="a()">开始切章并加入</button>
-</label>
+    <label>
+        小说txt文件(相对jar包路径)=<input value="./test.txt" id="tf"><br>
+        小说标题=<input value="test" id="nm"><br>
+        小说图片(可以没有)=<input value="none" id="im"><br>
+        切章规则(正则匹配)=<input value=".*第.*章.*" id="rl"><br>
+        作者=<input value="未知作者" id="an"><br>
+        简介=<input value="无简介" id="sp"><br>
+        <button onclick="a()">开始切章并加入</button>
+    </label><br><br>
+    <label>
+        PDF文件(相对jar包路径)=<input value="./test.pdf" id="pf"><br>
+        标题=<input value="test" id="tt"><br>
+        图片(可以没有)=<input value="none" id="pim"><br>
+        作者=<input value="未知作者" id="ana"><br>
+        简介=<input value="无简介" id="spa"><br>
+        切章索引=<textarea id="inx">整个文件&D&0</textarea>
+        <button onclick="b()">加入</button>
+    </label>
 </div>
 
 <div id="t3"><h3>在线搜索(请在/style/API_list.json中增加站点)</h3>
@@ -103,7 +114,10 @@
 
     }
     function a(){
-        send_data("/api/mktxt/?"+document.getElementById("tf").value+"?"+document.getElementById("nm").value+"?"+document.getElementById("im").value+"?"+document.getElementById("rl").value+"?");
+        send_data("/api/mktxt/?"+document.getElementById("tf").value+"?"+document.getElementById("nm").value+"?"+document.getElementById("im").value+"?"+document.getElementById("rl").value+"?"+document.getElementById("an").value+"?"+document.getElementById("sp").value+"?");
+    }
+    function b(){
+        send_data("/api/mkpdf/?"+document.getElementById("pf").value+"?"+document.getElementById("tt").value+"?"+document.getElementById("pim").value+"?"+document.getElementById("ana").value+"?"+document.getElementById("spa").value+"?"+document.getElementById("inx").value+"?");
     }
     function send_data(URI){
         document.getElementById("iframe_a").src = URI;
