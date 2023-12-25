@@ -4,10 +4,13 @@ import com.teipreader.LibCartoon.CartoonMake;
 
 import java.awt.*;
 import java.io.*;
+import java.math.BigInteger;
 import java.net.URI;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.zip.ZipOutputStream;
+import java.util.Scanner;
 
 import static com.teipreader.Main.TeipMakerLib.*;
 
@@ -154,14 +157,22 @@ public interface Main {
 
         if(!is_debug){
             if(!Blist.equals(Cheek_code)){
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("目前资源版本: S-"+getMD5(Blist)+"(旧)");
+                System.out.println((char) 27 + "[32m   ↓ 替换" + (char) 27 + "[39;49m");
+                System.out.println("内置资源版本: S-"+getMD5(Cheek_code)+"(新)");
+                System.out.println("回车键继续,建议先备份style文件夹.");
+                scanner.nextLine();
+                System.out.println("正在清除原资源..");
                 deleteFileByIO("./style/");
-                System.out.println((char) 27 + "[31m[I]: 程序需要重启,因为style文件夹需要重新释放." + (char) 27 + "[39;49m");
-                main(args);
+                System.out.println((char) 27 + "[31m[I]: 资源修复完成,请重启应用." + (char) 27 + "[39;49m");
+
                 return;
+
             }
         }else {
             if(!Blist.equals(Cheek_code)){
-                System.out.println((char) 27 + "[31m[I]: 校验style时发现差异,暂时忽略." + (char) 27 + "[39;49m");
+                System.out.println((char) 27 + "[31m[I]: 资源版本有差异,调试模式下已忽略." + (char) 27 + "[39;49m");
             }
             System.out.println((char) 27 + "[34m[DEBUG]: Cheek code: "+Blist);
         }
@@ -191,4 +202,14 @@ public interface Main {
     void runShare() throws IOException;
 
     void runServer() throws IOException;
+    public static String getMD5(String str) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(str.getBytes());
+            return new BigInteger(1, md.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

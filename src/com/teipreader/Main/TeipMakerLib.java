@@ -110,7 +110,7 @@ public class TeipMakerLib {
     public static void Unzip(String from, String to) {
         try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(from))) {
             unzipFiles(zipInputStream, to);
-            System.out.println("Files unzipped successfully!");
+            //System.out.println("Files unzipped successfully!");
         } catch (IOException e) {
             e.printStackTrace();
         }
