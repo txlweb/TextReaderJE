@@ -7,7 +7,7 @@
 这个仓库[https://github.com/txlweb/TextReaderJE/](https://github.com/txlweb/TextReaderJE/)
 
 ## 一些建议
-建议使用DEBUG版本,因为这个版本不会强制审查style,从而可以使用插件.
+建议使用DEBUG启动器启动正常版,因为这个版本不会强制审查style且库文件齐全,从而可以使用全部功能.
 
 建议使用V2格式的小说或使用epub格式文件直接导入,不要再制作V1小说了!
 
