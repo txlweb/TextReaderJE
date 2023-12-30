@@ -629,7 +629,7 @@ function inline_init() {
 			}
 			for (let i = 0; i < obj.conf_tags.length; i++) {
 				if(obj.conf_tags[i].name !== ""){
-					fast_tag.innerHTML = fast_tag.innerHTML + "<a href='?"+obj.conf_tags[i].key+"'>"+obj.conf_tags[i].name+"</a>";
+					fast_tag.innerHTML = fast_tag.innerHTML + "<a class='book_block' href='?"+obj.conf_tags[i].key+"'>"+obj.conf_tags[i].name+"</a>";
 				}
 			}
 		}

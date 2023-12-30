@@ -1,4 +1,6 @@
-package com.teipreader.Main;
+package com.teipreader.LibTextParsing;
+
+import com.teipreader.Main.Config_dirs;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

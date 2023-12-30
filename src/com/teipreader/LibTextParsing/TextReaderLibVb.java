@@ -1,4 +1,9 @@
-package com.teipreader.Main;
+package com.teipreader.LibTextParsing;
+
+import com.teipreader.Main.Config_dirs;
+import com.teipreader.Main.EncodingDetect;
+import com.teipreader.Main.IniLib;
+import com.teipreader.Main.langunges;
 
 import java.io.*;
 import java.text.MessageFormat;
@@ -6,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.teipreader.Main.TextReaderLibVa.IsFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 
 public class TextReaderLibVb {
     public static String MainPath = Config_dirs.MainPath;
@@ -65,7 +70,7 @@ public class TextReaderLibVb {
         for (int i = 0; i < n; i++) {
             TList = List.get(i).split("&D&");//标题&D&起始行&D&结束行
             if (TList.length == 2) {
-                LsHTML = MessageFormat.format("{0}<a href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>", LsHTML, name, i + 1, i + 1, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], TList[0]);
+                LsHTML = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>", LsHTML, name, i + 1, i + 1, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], TList[0]);
             }
         }
         return LsHTML.replace(",", "");

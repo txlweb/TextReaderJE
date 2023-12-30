@@ -1,6 +1,6 @@
 package com.teipreader.Main;
 
-import com.teipreader.LibCartoon.CartoonMake;
+import com.teipreader.LibTextParsing.CartoonMake;
 
 import java.awt.*;
 import java.io.*;
@@ -35,6 +35,7 @@ public interface Main {
         String build = "20000";
         //
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock")!=null;
+        is_debug=true;
         if(is_debug){
             System.out.println("调试模式已开启");
         }

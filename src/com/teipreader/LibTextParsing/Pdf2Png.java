@@ -1,4 +1,4 @@
-package com.teipreader.LibCartoon;
+package com.teipreader.LibTextParsing;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
 
 public class Pdf2Png {
 //    public static void main(String[] args) {

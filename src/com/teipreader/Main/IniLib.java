@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
-import static com.teipreader.Main.TextReaderLibVa.ReadCFGFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
 
 
 public class IniLib {

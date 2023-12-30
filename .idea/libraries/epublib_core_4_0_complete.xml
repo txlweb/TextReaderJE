@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="epublib-core-4.0-complete">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/epublib-core-4.0-complete.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

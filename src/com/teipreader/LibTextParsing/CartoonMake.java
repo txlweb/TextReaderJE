@@ -1,4 +1,4 @@
-package com.teipreader.LibCartoon;
+package com.teipreader.LibTextParsing;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.util.Objects;
 import java.util.zip.ZipOutputStream;
 
-import static com.teipreader.LibCartoon.Pdf2Png.pdf2png;
+import static com.teipreader.LibTextParsing.Pdf2Png.pdf2png;
 import static com.teipreader.Main.TeipMakerLib.*;
 
 public class CartoonMake {

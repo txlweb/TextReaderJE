@@ -1,4 +1,9 @@
-package com.teipreader.Main;
+package com.teipreader.LibTextParsing;
+
+import com.teipreader.Main.Config_dirs;
+import com.teipreader.Main.EncodingDetect;
+import com.teipreader.Main.IniLib;
+import com.teipreader.Main.langunges;
 
 import java.io.*;
 import java.text.MessageFormat;
@@ -53,6 +58,8 @@ public class TextReaderLibVa {
     public static String GetList_HTML_TYPE(String name) {
         //LibVb
         if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetList_HTML_TYPE(name);
+        //断点-如果是LibEPUB处理则直接返回
+        if (IsFile(MainPath + "/" + name + "/main.epub")) return epub_pre_to_HTML.GetList(name);
         //LibVa
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/list.info");//读列表
         int n = List.size();
@@ -67,7 +74,7 @@ public class TextReaderLibVa {
         }
         for (int i = 0; i < n; i++) {
             //生成列表
-            LsHTML = MessageFormat.format("{0}<a href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>", LsHTML, name, i + 1, i + 1, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], List.get(i));
+            LsHTML = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>", LsHTML, name, i + 1, i + 1, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], List.get(i));
         }
         return LsHTML.replace(",", "");
     }
@@ -75,6 +82,8 @@ public class TextReaderLibVa {
     public static String GetMainText_HTML_TYPE(String name, int id) {//id只吃int
         //断点-如果是LibVb处理则直接返回
         if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMainText_HTML_TYPE(name, id);
+        //断点-如果是LibEPUB处理则直接返回
+        if (IsFile(MainPath + "/" + name + "/main.epub")) return epub_pre_to_HTML.GetMainText_HTML_TYPE(name, id);
         //LibVa处理方法
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/" + id + ".txt");//逐行读(不能用/n,这样显示会没有换行)
         StringBuilder LsHTML = new StringBuilder();
@@ -87,6 +96,9 @@ public class TextReaderLibVa {
     public static String GetMainText_C(String name, int id) {//id只吃int
         //LibVb
         if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMainText_C(name, id);
+        //断点-如果是LibEPUB处理则直接返回
+        if (IsFile(MainPath + "/" + name + "/main.epub")) return epub_pre_to_HTML.GetMainText_C(name, id);
+
         //LibVa
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/" + id + ".txt");
         StringBuilder LsHTML = new StringBuilder();
@@ -98,15 +110,15 @@ public class TextReaderLibVa {
     //修补主要文本方式!
     public static String StrFixMainText(String MainText, String name, int id, int maxid) {
         String Fixd;
-        Fixd = MessageFormat.format("<br><br><bar><a href=\"/{0}/{1}.html\" id=\"last\">{2}</a>", name, id - 1, langunges.langunges[Config_dirs.LanguageID][1]);
-        Fixd = MessageFormat.format("{0}<a onclick=\"vwlist(''{1}/list.html'')\">{2}</a>", Fixd, name, langunges.langunges[Config_dirs.LanguageID][0]);
+        Fixd = MessageFormat.format("<br><br><bar><a class=\"book_block\" href=\"/{0}/{1}.html\" id=\"last\">{2}</a>", name, id - 1, langunges.langunges[Config_dirs.LanguageID][1]);
+        Fixd = MessageFormat.format("{0}<a class=\"book_block\" onclick=\"vwlist(''{1}/list.html'')\">{2}</a>", Fixd, name, langunges.langunges[Config_dirs.LanguageID][0]);
         //Fixd = MessageFormat.format("{0}<a href=\"/{1}/list.html\">目录</a>", Fixd, name);
-        Fixd = MessageFormat.format("{0}<a href=\"/{1}/{2}.html\" id=\"next\">{3}</a></bar>", Fixd, name, id + 1, langunges.langunges[Config_dirs.LanguageID][2]);
+        Fixd = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/{2}.html\" id=\"next\">{3}</a></bar>", Fixd, name, id + 1, langunges.langunges[Config_dirs.LanguageID][2]);
         Fixd = MessageFormat.format("{0}<div id=\"maintext\">{1}</div>", Fixd, MainText);
-        Fixd = MessageFormat.format("{0}<bar><a href=\"/{1}/{2}.html\">{3}</a>", Fixd, name, id - 1, langunges.langunges[Config_dirs.LanguageID][1]);
-        Fixd = MessageFormat.format("{0}<a onclick=\"vwlist(''{1}/list.html'')\">{2}</a>", Fixd, name, langunges.langunges[Config_dirs.LanguageID][0]);
+        Fixd = MessageFormat.format("{0}<bar><a class=\"book_block\" href=\"/{1}/{2}.html\">{3}</a>", Fixd, name, id - 1, langunges.langunges[Config_dirs.LanguageID][1]);
+        Fixd = MessageFormat.format("{0}<a class=\"book_block\" onclick=\"vwlist(''{1}/list.html'')\">{2}</a>", Fixd, name, langunges.langunges[Config_dirs.LanguageID][0]);
         //Fixd = MessageFormat.format("{0}<a href=\"/{1}/list.html\">目录</a>", Fixd, name);
-        Fixd = MessageFormat.format("{0}<a href=\"/{1}/{2}.html\">{3}</a></bar>", Fixd, name, id + 1, langunges.langunges[Config_dirs.LanguageID][2]);
+        Fixd = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/{2}.html\">{3}</a></bar>", Fixd, name, id + 1, langunges.langunges[Config_dirs.LanguageID][2]);
         Fixd = MessageFormat.format("{0}<br><pointer id=\"poin\" now=\"{1}\" max=\"{2}\"></pointer>", Fixd, id, maxid);
         return Fixd.replace(",", "");
     }
@@ -121,19 +133,24 @@ public class TextReaderLibVa {
                     if (value.isDirectory()) {
                         if (!IsHidden(value.getName()) | is_vh) {
                             if (!IsFile(MainPath + "/" + value.getName() + "/resource.ini")) {
-                                if(value.getName().contains(key))
-                                    Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), value.getName());
+                                if(value.getName().contains(key)) {
+                                    if(!IsFile(MainPath + "/" + value.getName() + "/main.epub"))
+                                        Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), value.getName());
+                                    else
+                                        Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), epub_pre_to_HTML.GetName(MainPath + "/" + value.getName() + "/main.epub"));
+
+                                }
                             }else {
                                 if(Objects.equals(key, "")){
-                                    Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
+                                    Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
                                 }else {
                                     String things =IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title")+IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "by")+IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "ot");
                                     //标题+作者+简介 或 md5真值完全一致
                                     if (things.contains(key) || value.getPath().equals(key)) {
                                         if(IsFile(MainPath + "/" + value.getName() + "/type_pdf.lock"))
-                                            Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>[IMG]{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
+                                            Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>[IMG]{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
                                         else
-                                            Blist = MessageFormat.format("{0}<a href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
+                                            Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
 
                                     }
                                 }

@@ -6,7 +6,7 @@ import java.io.IOException;
 import static com.teipreader.Main.Download.Dw_File;
 import static com.teipreader.Main.TeipMakerLib.CopyFileToThis;
 import static com.teipreader.Main.TeipMakerLib.autoMake;
-import static com.teipreader.Main.TextReaderLibVa.IsFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 import static com.teipreader.reptile.Rule_biquzw789.*;
 
 public class CurrencyLib {

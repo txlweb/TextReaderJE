@@ -1,5 +1,6 @@
 package com.teipreader.share;
 
+import com.teipreader.LibTextParsing.TextReaderLibVb;
 import com.teipreader.Main.IniLib;
 
 import java.io.File;
@@ -59,11 +60,11 @@ public class TeipIO {
     public static int GetMaxTexts(String name) {
         //LibVb
         if (IsFile(MainPath + "/" + name + "/main.index")) {
-            List<String> List = com.teipreader.Main.TextReaderLibVb.ReadCFGFile(MainPath + "/" + name + "/main.index");
+            List<String> List = TextReaderLibVb.ReadCFGFile(MainPath + "/" + name + "/main.index");
             return List.size();
         }
         //LibVa
-        List<String> List = com.teipreader.Main.TextReaderLibVb.ReadCFGFile(MainPath + "/" + name + "/list.info");
+        List<String> List = TextReaderLibVb.ReadCFGFile(MainPath + "/" + name + "/list.info");
         return List.size();
     }
 

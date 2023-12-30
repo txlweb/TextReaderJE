@@ -15,7 +15,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import static com.teipreader.Main.Config_dirs.MainPath;
-import static com.teipreader.Main.TextReaderLibVa.IsFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 
 public class TeipMakerLib {
     private static final char[] hexCode = "0123456789abcdef".toCharArray();

@@ -1,5 +1,8 @@
 package com.teipreader.Main;
 
+import com.teipreader.LibTextParsing.ServerLibVa;
+import com.teipreader.LibTextParsing.TextReaderLibVa;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,8 +12,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import static com.teipreader.Main.TextReaderLibVa.IsFile;
-import static com.teipreader.Main.TextReaderLibVa.ReadCFGFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
+import static com.teipreader.LibTextParsing.epub_pre_to_HTML.GetImage;
 
 public class WebServer extends Thread implements Main {
     public static void StartServer() {
@@ -92,6 +96,13 @@ class RequestHandler implements Runnable {
                 if (!new File(fullPath).isFile()) {
                     fullPath = root + "/noimg.png";
                 }
+                if(new File(a[1]+"/main.epub").isFile()){
+                    sendResponse(out, 200, "OK", "image/png", Objects.requireNonNull(GetImage(a[1]+"/main.epub")));
+                    in.close();
+                    out.close();
+                    client.close();
+                    return;
+                }
                 //System.out.println(fullPath);
             }
             if (path.contains("/list.html")) {
@@ -132,7 +143,7 @@ class RequestHandler implements Runnable {
             }
             if (path.contains("/api/mkpdf/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
-                com.teipreader.LibCartoon.CartoonMake.MakeCartoon_by_pdf(a[1],a[6] , "tmp.zip", a[2], a[3], a[4], a[5]);
+                com.teipreader.LibTextParsing.CartoonMake.MakeCartoon_by_pdf(a[1],a[6] , "tmp.zip", a[2], a[3], a[4], a[5]);
                 TeipMakerLib.Unzip("tmp.zip", Config_dirs.MainPath);
                 RET_HTML = new StringBuilder(String.format("Complete to import file. parameters:%s,%s,%s,%s,%s,%s", a[1], a[2], a[3], a[4], a[5], a[6]));
                 IsSendData = true;

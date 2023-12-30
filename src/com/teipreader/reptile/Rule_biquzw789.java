@@ -9,7 +9,7 @@ import java.util.List;
 import static com.teipreader.Main.Download.Dw_File;
 import static com.teipreader.Main.TeipMakerLib.Unzip;
 import static com.teipreader.Main.TeipMakerLib.autoMake;
-import static com.teipreader.Main.TextReaderLibVa.ReadCFGFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
 
 public class Rule_biquzw789 {
     public static void addToThis(String ID) throws IOException {
