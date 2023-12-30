@@ -3,4 +3,6 @@ Main-Class: com.teipreader.Main.Main
 Created-By: IDlike
 Signature-Version: beta1.2.6-19520
 Name: TextReader JavaEdition
+Class-Path: ./epublib-core-4.0-complete.jar ./pdfbox-app-2.0.30.jar
+
 

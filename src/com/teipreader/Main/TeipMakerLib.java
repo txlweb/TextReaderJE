@@ -58,12 +58,13 @@ public class TeipMakerLib {
         }
         return rstr;
     }
-    public static void MobiMake(String FileName) throws IOException {
+    public static void EpubMake(String FileName) throws IOException {
         if (!new File(FileName).exists()) return;//检查文件是否存在
         String md5 = getFileMD5(FileName);
         System.out.println(md5);
-        CopyFileToThis(new File(FileName), new File(md5 + "/main.mobi"));
-
+        if (new File(MainPath+"/"+md5).exists()) new File(MainPath+"/"+md5).delete();
+        new File(MainPath+"/"+md5).mkdir();
+        CopyFileToThis(new File(FileName), new File(MainPath+"/"+md5 + "/main.epub"));
     }
     public static void autoMake(String FileName, String saveAs, String Title, String Img_src, String Rule, String Author, String info) throws IOException {
         System.out.println("正在处理小说: " + Title + " | 切章规则: " + Rule + " | 是否有图标: " + IsFile(Img_src));

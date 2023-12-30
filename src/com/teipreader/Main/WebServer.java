@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
-import static com.teipreader.LibTextParsing.TextReaderLibVc.GetImage;
-import static com.teipreader.Main.TeipMakerLib.MobiMake;
+import static com.teipreader.LibTextParsing.TextReaderLibVc.GetImg;
+import static com.teipreader.LibTextParsing.TextReaderLibVc.GetTitImg;
 
 public class WebServer extends Thread implements Main {
     public static void StartServer() {
@@ -102,13 +102,21 @@ class RequestHandler implements Runnable {
                     fullPath = root + "/noimg.png";
                 }
                 if(new File(a[1]+"/main.epub").isFile()){
-                    sendResponse(out, 200, "OK", "image/png", Objects.requireNonNull(GetImage(a[1]+"/main.epub")));
+                    sendResponse(out, 200, "OK", "image/png", Objects.requireNonNull(GetTitImg(a[1]+"/main.epub")));
                     in.close();
                     out.close();
                     client.close();
                     return;
                 }
                 //System.out.println(fullPath);
+            }
+            if (path.contains("/EpubRes/?")) {
+                String[] a = path.split("\\?");
+                sendResponse(out, 200, "OK", "image/png", Objects.requireNonNull(GetImg(a[1], a[2])));
+                in.close();
+                out.close();
+                client.close();
+                return;
             }
             if (path.contains("/list.html")) {
                 String[] a = path.split("/");
@@ -138,7 +146,7 @@ class RequestHandler implements Runnable {
                 String[] b = a[1].split("\\.");
                 System.out.println(b[2]);
                 if(Objects.equals(b[2], "epub")){
-                    TeipMakerLib.MobiMake(a[1]);
+                    TeipMakerLib.EpubMake(a[1]);
                 }else {
                     TeipMakerLib.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Config_dirs.MainPath);
                 }
@@ -209,8 +217,12 @@ class RequestHandler implements Runnable {
                 if (Config_dirs.Use_Server_LOG)
                     System.out.println((char) 27 + "[33m[Server]:为小说建立文档@" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "@txt" + (char) 27 + "[39;49m");
                 if (new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()) {
-                    TeipMakerLib.GetTextWithThis(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
-                    sendFile(out, new File("main.txt"));//goto end
+                    if (IsFile(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/main.mobi")){
+                        sendFile(out, new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/main.mobi"));//goto end
+                    }else {
+                        TeipMakerLib.GetTextWithThis(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
+                        sendFile(out, new File("main.txt"));//goto end
+                    }
                     in.close();
                     out.close();
                     client.close();

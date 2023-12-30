@@ -1,6 +1,5 @@
 package com.teipreader.LibTextParsing;
 
-import com.teipreader.Lib.IniLib;
 import com.teipreader.Main.Config_dirs;
 import com.teipreader.Main.langunges;
 import nl.siegmann.epublib.domain.*;
@@ -17,11 +16,12 @@ import java.util.List;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.StrFixMainText;
 
 public class TextReaderLibVc {
-    //public static void main(String[] args) {
-//        GetList("Xian-Wei-Jing-Xia-De-Da-Ming-Ma-Bo-Yong.epub");
+    public static void main(String[] args) {
+        //Spine a = n
+        //GetList("Xian-Wei-Jing-Xia-De-Da-Ming-Ma-Bo-Yong.epub");
 //        GetPage("Xian-Wei-Jing-Xia-De-Da-Ming-Ma-Bo-Yong.epub","1");
     //GetImage("Xian-Wei-Jing-Xia-De-Da-Ming-Ma-Bo-Yong.epub");
-    //}
+    }
     public static String GetList_HTML_TYPE(String name){
         return GetList(Config_dirs.MainPath+"/"+name+"/main.epub");
     }
@@ -29,7 +29,7 @@ public class TextReaderLibVc {
         return StrFixMainText(GetMainText_C(name, id), name, id, GetMaxSize(Config_dirs.MainPath+"/"+name+"/main.epub"));
     }
     public static String GetMainText_C(String name, int id) {
-        return GetPage(Config_dirs.MainPath+"/"+name+"/main.epub", String.valueOf(id));
+        return GetPage(name, String.valueOf(id));
     }
     public static String GetList(String FileName){
         //FileName = Config_dirs.MainPath+"/"+FileName+"/main.epub";
@@ -39,6 +39,7 @@ public class TextReaderLibVc {
             //System.out.println(book.getContents());
             //System.out.println(book.getTableOfContents());
             List<Resource> ls = book.getContents();
+            //System.out.println(book.getTableOfContents().getTocReferences().get(1).getTitle());
             Metadata metadata = book.getMetadata();
             String LsHTML = "";
             //"\n\n封面图：";
@@ -47,30 +48,56 @@ public class TextReaderLibVc {
                     "\n\n语言：" + metadata.getLanguage();
             if(!metadata.getDescriptions().isEmpty())LsHTML = LsHTML +"\n\n<p>简介：" + metadata.getDescriptions().get(0) + "</p>";
             if(!metadata.getPublishers().isEmpty())LsHTML = LsHTML +"\n\n<p>出版社：" + metadata.getPublishers().get(0) + "</p>";
-            for (int i = 0; i < ls.size(); i++) {
-                LsHTML = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>\r\n", LsHTML, FileName, i + 1, i + 1, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], ls.get(i).getTitle());
+            if(book.getTableOfContents().getTocReferences() == null || book.getTableOfContents().getTocReferences().isEmpty()) {
+                LsHTML=LsHTML+"[目前正在查看资源列表,因为使用树状列表无法正常阅读!]";
+                for (int i = 0; i < ls.size(); i++) {
+                    LsHTML = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>\r\n", LsHTML, FileName, i, i, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], ls.get(i).getTitle());
+                }
+            }else {
+                c=0;
+                LsHTML = LsHTML+parseMenu(FileName,book.getTableOfContents().getTocReferences(),0,0);
+                if(c < ls.size()-1){
+                    LsHTML = "\r\n<h1>" + metadata.getTitles().get(0) + "</h1>" +
+                            "\n\n<p>作者：" + metadata.getAuthors().get(0) + "</p>" +
+                            "\n\n语言：" + metadata.getLanguage();
+                    LsHTML=LsHTML+"<p style=\"color:red;\">[目前正在查看资源列表,因为使用树状列表无法正常阅读!]</p>";
+                    for (int i = 0; i < ls.size(); i++) {
+                        LsHTML = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>\r\n", LsHTML, FileName, i, i, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], ls.get(i).getTitle());
+                    }
+                }
             }
+
             //System.out.println(LsHTML);
             return LsHTML;
-//            TableOfContents tableOfContents = book.getTableOfContents();
-//            System.out.println("目录资源数量为："+tableOfContents.size());
-//            //获取到目录对应的资源数据
-//            List<TOCReference> tocReferences = tableOfContents.getTocReferences();
-//            for (TOCReference tocReference : tocReferences) {
-//                Resource resource = tocReference.getResource();
-//                byte[] data = resource.getData();
-//                MediaType mediaType = resource.getMediaType();
-//                System.out.println(new String(data, StandardCharsets.UTF_8));
-//                System.out.println(mediaType.toString());
-//                if(tocReference.getChildren().size()>0){
-//                    //获取子目录的内容
-//                    GetList(FileName,tocReference.getChildren());
-//                }
-//            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         //return "";
+    }
+    static int c = 0;
+    private static String parseMenu(String FileName, List<TOCReference> refs, int ix,int ln) {
+
+        if (refs == null || refs.isEmpty()) {
+            return "";
+        }
+        String ret = "";
+        String p = "┝";
+        int i;
+        for (i = 0; i < refs.size(); i++) {
+            c++;
+            for (int j = 0; j < ln; j++) {
+                p=p+"--- ";
+            }
+            ret = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}#{5}: {6}</a>\r\n",
+                    ret, FileName, c, c,
+                    p, i + 1,
+                    refs.get(i).getTitle());
+            p = "┝";
+            System.out.println(i + ix);
+            ret = ret + parseMenu(FileName, refs.get(i).getChildren(), ix + i,ln+1);
+        }
+        ix = i;
+        return ret;
     }
     public static int GetMaxSize(String FileName){
         try {
@@ -94,8 +121,9 @@ public class TextReaderLibVc {
         }
         //return "";
     }
-    public static String GetPage(String FileName,String ID){
+    public static String GetPage(String Name,String ID){
         try {
+            String FileName = Config_dirs.MainPath+"/"+Name+"/main.epub";
             EpubReader reader = new EpubReader();
             Book book = reader.readEpub(new FileInputStream(FileName));
             Spine spine = book.getSpine();
@@ -109,7 +137,10 @@ public class TextReaderLibVc {
                 String href = resource.getHref();
                 String mediaType = resource.getMediaType().toString();
                 String content = new String(data, book.getContents().get(Integer.parseInt(ID)).getInputEncoding());
-                //System.out.println(content);
+                content=content.replace("<style","<!--");
+                content=content.replace("style>","-->");
+                content=content.replace("xlink:href=\"","xlink:href=\"/EpubRes/?"+Name+"?");
+
                 //System.out.println(mediaType);
                 if(i == Integer.parseInt(ID)) return content;
             }
@@ -140,12 +171,26 @@ public class TextReaderLibVc {
         }
         //return "";
     }
-    public static byte[] GetImage(String FileName){
+    public static byte[] GetTitImg(String FileName){
         try {
             EpubReader reader = new EpubReader();
             Book book = reader.readEpub(new FileInputStream(FileName));
             Resources spine = book.getResources();
             Resource a = spine.getById("cover");
+            if(a != null) return a.getData();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //return "不存在的章节!";
+        return null;
+    }
+    public static byte[] GetImg(String Name,String path){
+        String FileName = Config_dirs.MainPath+"/"+Name+"/main.epub";
+        try {
+            EpubReader reader = new EpubReader();
+            Book book = reader.readEpub(new FileInputStream(FileName));
+            Resources spine = book.getResources();
+            Resource a = spine.getByHref(path);
             if(a != null) return a.getData();
         } catch (IOException e) {
             throw new RuntimeException(e);

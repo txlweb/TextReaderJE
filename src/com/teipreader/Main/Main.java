@@ -59,7 +59,7 @@ public interface Main {
             System.out.println("获取帮助 -h -help (共计1个参数)");
             System.out.println("导入txt文件 -m, -make txt文件名 保存的压缩包 小说标题 小说图片 切章规则(建议为.*第.*章.*) 作者 简介 (共计8个参数)");
             System.out.println("导入pdf文件 -p, -pdfmake pdf文件名 索引(-为自动索引) 保存的压缩包 标题 图片 作者 简介 (共计8个参数)");
-            System.out.println("导入mobi文件 -b, -mobimake mobi文件名 (共计2个参数)");
+            System.out.println("导入epub文件 -b, -epubmake epub文件名 (共计2个参数)");
             System.out.println("导出txt文件 -o, -out 小说名 导出的txt名 (共计3个参数)");
             System.out.println("导入teip文件(V1&V2) -a, -add 文件名 (共计2个参数)");
             System.out.println("更改设置 -c, -config 键 值 (共计3个参数)");
@@ -82,7 +82,7 @@ public interface Main {
                 return;
             }
             if (Objects.equals(args[0], "-mobimake") || Objects.equals(args[0], "-b") & args.length >= 2) {
-                MobiMake(args[1]);
+                EpubMake(args[1]);
                 System.out.println("复制完成.");
                 System.out.println((char) 27 + "[39;49m");
                 return;
@@ -173,6 +173,8 @@ public interface Main {
         if(!is_debug){
             if(!Blist.toString().equals(Cheek_code)){
                 Scanner scanner = new Scanner(System.in);
+                System.out.println("[I]: 资源版本不一致!");
+                System.out.println("若要取消这个步骤,请在程序运行目录下创建文件 debug.lock");
                 System.out.println("内置资源版本: S-"+getMD5(Cheek_code)+"(新)");
                 System.out.println((char) 27 + "[32m   ↓ 替换" + (char) 27 + "[39;49m");
                 System.out.println("目前资源版本: S-"+getMD5(Blist.toString())+"(旧)");
@@ -181,7 +183,6 @@ public interface Main {
                 System.out.println("正在清除原资源..");
                 deleteFileByIO("./style/");
                 System.out.println((char) 27 + "[31m[I]: 资源修复完成,请重启应用." + (char) 27 + "[39;49m");
-
                 return;
 
             }

@@ -5,6 +5,18 @@
 作者[https://github.com/txlweb](https://github.com/txlweb)
 
 这个仓库[https://github.com/txlweb/TextReaderJE/](https://github.com/txlweb/TextReaderJE/)
+
+## 一些建议
+建议使用DEBUG版本,因为这个版本不会强制审查style,从而可以使用插件.
+
+建议使用V2格式的小说或使用epub格式文件直接导入,不要再制作V1小说了!
+
+关于共享,建议不要在公共网环境打开,内网可以互传小说.
+
+不建议使用PDF文件,因为会生成很多图片,占用空间.
+
+
+
 ## 一些帮助
 * 使用以下命令可以启动服务
 > java -jar TextReaderJavaEdition.jar
@@ -34,7 +46,7 @@
 >> 导入txt文件 -m, -make txt文件名 保存的压缩包 小说标题 小说图片 切章规则(.*第.**章.* * )别复制,自己手打<br>
 > 导出txt文件 -o, -out 小说名 导出的txt名<br>
 > 导入pdf文件 -p, -pdfmake pdf文件名 索引(-为自动索引) 保存的压缩包 标题 图片 作者 简介 (共计8个参数)<br>
-> 导入mobi文件 -b, -mobimake mobi文件名 (共计2个参数)<br>
+> 导入epub文件 -b, -epubmake epub文件名 (共计2个参数)<br>
 > 导入teip文件(V1&V2) -a, -add 文件名<br>
 > 更改设置 -c, -config 键 值 (与上文配置文件一致)<br>
 * 加入小说

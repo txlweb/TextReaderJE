@@ -8,10 +8,8 @@
         <element id="dir-copy" path="$PROJECT_DIR$/style" />
       </element>
       <element id="file-copy" path="$PROJECT_DIR$/favicon.ico" />
-      <element id="directory" name="lib">
-        <element id="library" level="project" name="epublib-core-4.0-complete" />
-        <element id="library" level="project" name="pdfbox-app-2.0.30" />
-      </element>
+      <element id="library" level="project" name="epublib-core-4.0-complete" />
+      <element id="library" level="project" name="pdfbox-app-2.0.30" />
     </root>
   </artifact>
 </component>
