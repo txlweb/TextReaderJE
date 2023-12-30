@@ -295,12 +295,6 @@ public class TeipMakerLib {
         }
     }
 
-    /**
-     * 计算文件的MD5
-     *
-     * @param fileName 文件的绝对路径
-     * @return
-     */
     public static String getFileMD5(String fileName) {
         File file = new File(fileName);
         try (InputStream stream = Files.newInputStream(file.toPath(), StandardOpenOption.READ)) {
@@ -311,10 +305,7 @@ public class TeipMakerLib {
                 digest.update(buf, 0, len);
             }
             return toHexString(digest.digest());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        } catch (NoSuchAlgorithmException e) {
+        } catch (IOException | NoSuchAlgorithmException e) {
             e.printStackTrace();
             return "";
         }
@@ -329,12 +320,7 @@ public class TeipMakerLib {
         return r.toString();
     }
 
-    /**
-     * 计算文件的Hash256值
-     *
-     * @param fileName 文件的绝对路径
-     * @return
-     */
+
     public static String getFileHash256(String fileName) {
         File file = new File(fileName);
         FileInputStream fis = null;
@@ -368,8 +354,8 @@ public class TeipMakerLib {
     private static String byte2hexLower(byte[] b) {
         String hs = "";
         String stmp = "";
-        for (int i = 0; i < b.length; i++) {
-            stmp = Integer.toHexString(b[i] & 0XFF);
+        for (byte value : b) {
+            stmp = Integer.toHexString(value & 0XFF);
             if (stmp.length() == 1) {
                 hs = hs + "0" + stmp;
             } else {

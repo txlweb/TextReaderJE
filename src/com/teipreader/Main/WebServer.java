@@ -52,17 +52,13 @@ public class WebServer extends Thread implements Main {
         StartServer();
     }
 
-    /**
-     * @throws IOException
-     */
+
     @Override
     public void runShare() throws IOException {
         StartServer();
     }
 
-    /**
-     * @throws IOException
-     */
+
     @Override
     public void runServer() throws IOException {
         StartServer();

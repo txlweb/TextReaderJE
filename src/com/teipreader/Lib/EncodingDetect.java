@@ -24,6 +24,7 @@ import java.net.URL;
  * @version 1.0
  * @since Create on 2010-01-27 11:19:00
  */
+@SuppressWarnings("CommentedOutCode")
 public class EncodingDetect {
 //    public static void main(String[] args) {
 //        String file = "./rom/V2测试/main.txt";
@@ -73,6 +74,7 @@ public class EncodingDetect {
     }
 }
 
+@SuppressWarnings("CommentedOutCode")
 class BytesEncodingDetect extends Encoding {
     // int UnicodeFreq[94][128];
     // public static String[] nicename;

@@ -9,9 +9,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class Pdf2Png {
-//    public static void main(String[] args) {
-//        System.out.println(pdf2png("./","test.pdf","jpg").toString());
-//    }
     /**
      * 使用pdfbox将整个pdf转换成图片
      *

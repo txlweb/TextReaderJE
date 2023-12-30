@@ -89,7 +89,7 @@ public class CartoonMake {
         //图片转base64直接传
         //写出资源
         new File("main.txt").delete();
-        WriteFileToThis("main.txt",pdf2png(PDF_File,"jpg","./"+md5).toString());
+        WriteFileToThis("main.txt", Objects.requireNonNull(pdf2png(PDF_File, "jpg", "./" + md5)).toString());
         CopyFileToThis(new File("main.txt"), new File(md5 + "/main.txt"));
         WriteFileToThis("type_pdf.lock","THIS IS A PDF!!");
         CopyFileToThis(new File("type_pdf.lock"), new File(md5 + "/type_pdf.lock"));
@@ -117,8 +117,6 @@ public class CartoonMake {
         return null;
     }
 
-    public static void main(String[] args) throws IOException {
-        MakeCartoon_by_pdf("test.pdf","","test_1.zip","测试pdf","-","-","-");
-    }
+
 
 }

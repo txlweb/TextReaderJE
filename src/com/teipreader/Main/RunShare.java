@@ -22,9 +22,7 @@ public class RunShare extends Thread implements Main {
         }
     }
 
-    /**
-     * @throws IOException
-     */
+
     @Override
     public void runServer() throws IOException {
         try {

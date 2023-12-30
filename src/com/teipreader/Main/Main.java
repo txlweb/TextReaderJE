@@ -241,7 +241,7 @@ public interface Main {
     void runShare() throws IOException;
 
     void runServer() throws IOException;
-    public static String getMD5(String str) {
+    static String getMD5(String str) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(str.getBytes());

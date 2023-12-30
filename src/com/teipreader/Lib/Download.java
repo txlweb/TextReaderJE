@@ -9,14 +9,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 public class Download {
-
-
-    /**
-     * 获取文件大小
-     *
-     * @param url
-     * @return
-     */
     public static long getFileSize(String url) {
         long fileSize = 0;
         try {
@@ -41,7 +33,6 @@ public class Download {
             InputStream inStream = conn.getInputStream();
             FileOutputStream fs = new FileOutputStream(save_as);
             byte[] buffer = new byte[1024];
-            int length;
             while ((byteread = inStream.read(buffer)) != 1) {
                 if (byteread == -1) {
                     break;
