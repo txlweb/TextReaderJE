@@ -192,13 +192,13 @@ class RequestHandler implements Runnable {
             }
             Pattern compile = Pattern.compile(".*/[0-9].*.html.*");
             java.util.regex.Matcher matcher = compile.matcher(path);
-            if (matcher.matches()) {
+            if (matcher.matches() && !IsSendData) {
                 String[] a = path.split("/");
                 String[] b = a[2].split(".html");
                 if (path.contains("?")) {
                     RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_C(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
                 } else {
-                    RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
+                    RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(new String(b[0].replace(",", "")))));
                     RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));
                 }
                 if (Config_dirs.Use_Server_LOG)

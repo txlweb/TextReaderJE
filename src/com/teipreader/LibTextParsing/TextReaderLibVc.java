@@ -93,7 +93,7 @@ public class TextReaderLibVc {
                     p, i + 1,
                     refs.get(i).getTitle());
             p = "┝";
-            System.out.println(i + ix);
+            //System.out.println(i + ix);
             ret = ret + parseMenu(FileName, refs.get(i).getChildren(), ix + i,ln+1);
         }
         ix = i;

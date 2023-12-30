@@ -152,6 +152,29 @@ public interface Main {
                 System.out.println((char) 27 + "[32m[I]: 释放完成!" + (char) 27 + "[39;49m");
             }
         }
+        if(!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()){
+            System.out.println((char) 27 + "[31m[I]: 初次启动程序,需要初始化库文件,请在完成后重启程序." + (char) 27 + "[39;49m");
+            System.out.println((char) 27 + "[32m[T]: 所用的库开源地址: " + (char) 27 + "[39;49m");
+            System.out.println((char) 27 + "[32m[T]: lib-epublib: https://github.com/psiegman/epublib/" + (char) 27 + "[39;49m");
+            System.out.println((char) 27 + "[32m[T]: lib-pdfbox: https://github.com/apache/pdfbox" + (char) 27 + "[39;49m");
+
+            InputStream in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("epublib-core-4.0-complete.jar")).openStream();
+            try (OutputStream ot = new FileOutputStream("./epublib-core-4.0-complete.jar")) {
+                byte[] bytes = new byte[1024];
+                int byteread;
+                while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
+            }
+            in.close();
+            in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("pdfbox-app-2.0.30.jar")).openStream();
+            try (OutputStream ot = new FileOutputStream("./pdfbox-app-2.0.30.jar")) {
+                byte[] bytes = new byte[1024];
+                int byteread;
+                while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
+            }
+            in.close();
+            System.out.println((char) 27 + "[32m[I]: 释放完成!请重启程序!" + (char) 27 + "[39;49m");
+            return;
+        }
         //检查style文件夹更新
 
         File filea = new File("./style/");
