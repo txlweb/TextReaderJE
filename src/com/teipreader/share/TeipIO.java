@@ -1,7 +1,8 @@
 package com.teipreader.share;
 
 import com.teipreader.LibTextParsing.TextReaderLibVb;
-import com.teipreader.Main.IniLib;
+import com.teipreader.Lib.IniLib;
+import com.teipreader.LibTextParsing.TextReaderLibVc;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,9 +26,13 @@ public class TeipIO {
                     if (value.isDirectory()) {
                         if (!IsHidden(value.getName())) {
                             if (!IsFile(MainPath + "/" + value.getName() + "/resource.ini")) {
-                                Blist = String.format("%s,{\"name\":\"%s\",\"pack\":\"THIS_SERVER\",\"md5\":\"%s\",\"by\":\"未知的作者\",\"ot\":\"未知\"}", Blist, value.getName(), value.getName());
+                                if(IsFile(MainPath + "/" + value.getName() + "/main.epub")){
+                                    Blist = Blist + TextReaderLibVc.GetInfo(value.getName());
+                                }else {
+                                    Blist = String.format("%s,{\"name\":\"[V1]%s\",\"pack\":\"THIS_SERVER\",\"md5\":\"%s\",\"by\":\"未知的作者\",\"ot\":\"未知\"}", Blist, value.getName(), value.getName());
+                                }
                             } else {
-                                Blist = String.format("%s,{\"name\":\"%s\",\"by\":\"%s\",\"ot\":\"%s\",\"md5\":\"%s\"}", Blist,
+                                Blist = String.format("%s,{\"name\":\"[V2]%s\",\"by\":\"%s\",\"ot\":\"%s\",\"md5\":\"%s\"}", Blist,
                                         IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"),
                                         IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "by"),
                                         IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "ot"),

@@ -1,5 +1,7 @@
 package com.teipreader.Main;
 
+import com.teipreader.Lib.IniLib;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;

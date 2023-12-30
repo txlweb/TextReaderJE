@@ -1,4 +1,6 @@
-package com.teipreader.Main;
+package com.teipreader.Lib;
+
+import com.teipreader.Main.TeipMakerLib;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,8 +1,8 @@
 package com.teipreader.LibTextParsing;
 
 import com.teipreader.Main.Config_dirs;
-import com.teipreader.Main.EncodingDetect;
-import com.teipreader.Main.IniLib;
+import com.teipreader.Lib.EncodingDetect;
+import com.teipreader.Lib.IniLib;
 import com.teipreader.Main.langunges;
 
 import java.io.*;

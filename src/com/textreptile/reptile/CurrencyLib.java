@@ -1,13 +1,12 @@
-package com.teipreader.reptile;
+package com.textreptile.reptile;
 
 import java.io.File;
 import java.io.IOException;
 
-import static com.teipreader.Main.Download.Dw_File;
+import static com.teipreader.Lib.Download.Dw_File;
 import static com.teipreader.Main.TeipMakerLib.CopyFileToThis;
 import static com.teipreader.Main.TeipMakerLib.autoMake;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
-import static com.teipreader.reptile.Rule_biquzw789.*;
 
 public class CurrencyLib {
     public static void main(String[] args) throws IOException {// PS:受害者是http://www.biquzw789.net/  (已被我爬破防了,他现在加了个下载需要登录)
@@ -21,14 +20,14 @@ public class CurrencyLib {
             System.out.println("DOWNLOAD-TASK: " + String.format("%06d", i) + "/" + 1000000);
             ID = String.format("%06d", i);
             if (new File("tmp-dw.txt").isFile()) new File("tmp-dw.txt").delete();
-            InitSrcCopy(ID);
-            System.out.println(GetDownloadURL(String.valueOf(i)));
-            Dw_File(GetDownloadURL(String.valueOf(i)), "tmp-dw.txt");
-            System.out.println(GetImage());
-            Dw_File(GetImage(), "tmp.jpg");
-            tit = GetTitle();
-            by = GetAuthor();
-            ot = GetInfo();
+            Rule_biquzw789.InitSrcCopy(ID);
+            System.out.println(Rule_biquzw789.GetDownloadURL(String.valueOf(i)));
+            Dw_File(Rule_biquzw789.GetDownloadURL(String.valueOf(i)), "tmp-dw.txt");
+            System.out.println(Rule_biquzw789.GetImage());
+            Dw_File(Rule_biquzw789.GetImage(), "tmp.jpg");
+            tit = Rule_biquzw789.GetTitle();
+            by = Rule_biquzw789.GetAuthor();
+            ot = Rule_biquzw789.GetInfo();
             CopyFileToThis(new File("tmp-hb.txt"), new File(DW_to + "/" + ID + ".html"));
             autoMake("tmp-dw.txt", "tmd-dw.zip", tit, "tmp.jpg", ".*第.*章.*", by, ot);
             if (!tit.isEmpty() && IsFile("tmd-dw.zip")) {

@@ -1,5 +1,7 @@
 package com.teipreader.Main;
 
+import com.teipreader.Lib.EncodingDetect;
+
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -56,7 +58,13 @@ public class TeipMakerLib {
         }
         return rstr;
     }
+    public static void MobiMake(String FileName) throws IOException {
+        if (!new File(FileName).exists()) return;//检查文件是否存在
+        String md5 = getFileMD5(FileName);
+        System.out.println(md5);
+        CopyFileToThis(new File(FileName), new File(md5 + "/main.mobi"));
 
+    }
     public static void autoMake(String FileName, String saveAs, String Title, String Img_src, String Rule, String Author, String info) throws IOException {
         System.out.println("正在处理小说: " + Title + " | 切章规则: " + Rule + " | 是否有图标: " + IsFile(Img_src));
         if (!new File(FileName).exists()) return;//检查文件是否存在

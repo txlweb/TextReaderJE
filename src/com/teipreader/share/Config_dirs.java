@@ -1,6 +1,6 @@
 package com.teipreader.share;
 
-import com.teipreader.Main.IniLib;
+import com.teipreader.Lib.IniLib;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +48,6 @@ public class Config_dirs {
         } else {
             Gl_LogRank = "1";
         }
-        System.out.println("[C]: 服务端口=" + NormPort + " | 日志等级=" + Gl_LogRank);
+        //System.out.println("[C]: 服务端口=" + NormPort + " | 日志等级=" + Gl_LogRank);
     }
 }

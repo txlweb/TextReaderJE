@@ -1,4 +1,4 @@
-package com.teipreader.Main;
+package com.teipreader.Lib;
 
 import java.io.*;
 import java.net.URL;
@@ -17,7 +17,7 @@ import java.net.URL;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  * <p>
- * com.teipreader.Main.EncodingDetect.java<br>
+ * com.teipreader.Lib.EncodingDetect.java<br>
  * 自动获取文件的编码
  *
  * @author Billows.Van
@@ -125,7 +125,7 @@ class BytesEncodingDetect extends Encoding {
     }
 
     /**
-     * Function : detectEncoding Aruguments: URL Returns : One of the encodings from the com.teipreader.Main.Encoding enumeration (GB2312, HZ, BIG5,
+     * Function : detectEncoding Aruguments: URL Returns : One of the encodings from the com.teipreader.Lib.Encoding enumeration (GB2312, HZ, BIG5,
      * EUC_TW, ASCII, or OTHER) Description: This function looks at the URL contents and assigns it a probability score for each
      * encoding type. The encoding type with the highest probability is returned.
      */
@@ -149,7 +149,7 @@ class BytesEncodingDetect extends Encoding {
     }
 
     /**
-     * Function : detectEncoding Aruguments: File Returns : One of the encodings from the com.teipreader.Main.Encoding enumeration (GB2312, HZ, BIG5,
+     * Function : detectEncoding Aruguments: File Returns : One of the encodings from the com.teipreader.Lib.Encoding enumeration (GB2312, HZ, BIG5,
      * EUC_TW, ASCII, or OTHER) Description: This function looks at the file and assigns it a probability score for each encoding
      * type. The encoding type with the highest probability is returned.
      */
@@ -168,7 +168,7 @@ class BytesEncodingDetect extends Encoding {
     }
 
     /**
-     * Function : detectEncoding Aruguments: byte array Returns : One of the encodings from the com.teipreader.Main.Encoding enumeration (GB2312, HZ,
+     * Function : detectEncoding Aruguments: byte array Returns : One of the encodings from the com.teipreader.Lib.Encoding enumeration (GB2312, HZ,
      * BIG5, EUC_TW, ASCII, or OTHER) Description: This function looks at the byte array and assigns it a probability score for
      * each encoding type. The encoding type with the highest probability is returned.
      */
@@ -203,7 +203,7 @@ class BytesEncodingDetect extends Encoding {
         // Tabulate Scores
         for (index = 0; index < TOTALTYPES; index++) {
             if (debug)
-                System.err.println("com.teipreader.Main.Encoding " + nicename[index] + " score " + scores[index]);
+                System.err.println("com.teipreader.Lib.Encoding " + nicename[index] + " score " + scores[index]);
             if (scores[index] > maxscore) {
                 encoding_guess = index;
                 maxscore = scores[index];
@@ -4487,7 +4487,7 @@ class BytesEncodingDetect extends Encoding {
 class Encoding {
     public final static int SIMP = 0;
     public final static int TRAD = 1;
-    // Supported com.teipreader.Main.Encoding Types
+    // Supported com.teipreader.Lib.Encoding Types
     public static int GB2312 = 0;
     public static int GBK = 1;
     public static int GB18030 = 2;

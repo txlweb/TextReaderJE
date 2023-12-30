@@ -1,7 +1,11 @@
 package com.teipreader.Main;
 
+import com.teipreader.Lib.Download;
+import com.teipreader.Lib.ImportFileLib;
+import com.teipreader.Lib.IniLib;
 import com.teipreader.LibTextParsing.ServerLibVa;
 import com.teipreader.LibTextParsing.TextReaderLibVa;
+import com.textreptile.reptile.Rule_biquzw789;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -14,7 +18,8 @@ import java.util.regex.Pattern;
 
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
-import static com.teipreader.LibTextParsing.epub_pre_to_HTML.GetImage;
+import static com.teipreader.LibTextParsing.TextReaderLibVc.GetImage;
+import static com.teipreader.Main.TeipMakerLib.MobiMake;
 
 public class WebServer extends Thread implements Main {
     public static void StartServer() {
@@ -130,7 +135,13 @@ class RequestHandler implements Runnable {
             }
             if (path.contains("/api/include/?")) {
                 String[] a = path.split("\\?");
-                TeipMakerLib.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Config_dirs.MainPath);
+                String[] b = a[1].split("\\.");
+                System.out.println(b[2]);
+                if(Objects.equals(b[2], "epub")){
+                    TeipMakerLib.MobiMake(a[1]);
+                }else {
+                    TeipMakerLib.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Config_dirs.MainPath);
+                }
                 RET_HTML = new StringBuilder("Complete to import file.");
                 IsSendData = true;
             }
@@ -160,7 +171,7 @@ class RequestHandler implements Runnable {
             }
             if (path.contains("/api/webDL_biquzw789/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
-                com.teipreader.reptile.Rule_biquzw789.addToThis(a[1]);
+                Rule_biquzw789.addToThis(a[1]);
                 RET_HTML = new StringBuilder("Complete to import file.");
                 IsSendData = true;
             }

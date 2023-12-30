@@ -1,4 +1,4 @@
-package com.teipreader.Main;
+package com.teipreader.Lib;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

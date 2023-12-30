@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.util.Objects;
 import java.util.zip.ZipOutputStream;
 
-import static com.teipreader.LibTextParsing.Pdf2Png.pdf2png;
+import static com.teipreader.Lib.Pdf2Png.pdf2png;
 import static com.teipreader.Main.TeipMakerLib.*;
 
 public class CartoonMake {

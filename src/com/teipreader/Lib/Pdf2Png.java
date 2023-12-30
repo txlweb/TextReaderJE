@@ -1,4 +1,4 @@
-package com.teipreader.LibTextParsing;
+package com.teipreader.Lib;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 

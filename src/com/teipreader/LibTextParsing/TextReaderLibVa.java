@@ -1,8 +1,8 @@
 package com.teipreader.LibTextParsing;
 
 import com.teipreader.Main.Config_dirs;
-import com.teipreader.Main.EncodingDetect;
-import com.teipreader.Main.IniLib;
+import com.teipreader.Lib.EncodingDetect;
+import com.teipreader.Lib.IniLib;
 import com.teipreader.Main.langunges;
 
 import java.io.*;
@@ -59,7 +59,7 @@ public class TextReaderLibVa {
         //LibVb
         if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetList_HTML_TYPE(name);
         //断点-如果是LibEPUB处理则直接返回
-        if (IsFile(MainPath + "/" + name + "/main.epub")) return epub_pre_to_HTML.GetList(name);
+        if (IsFile(MainPath + "/" + name + "/main.epub")) return TextReaderLibVc.GetList(name);
         //LibVa
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/list.info");//读列表
         int n = List.size();
@@ -83,7 +83,7 @@ public class TextReaderLibVa {
         //断点-如果是LibVb处理则直接返回
         if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMainText_HTML_TYPE(name, id);
         //断点-如果是LibEPUB处理则直接返回
-        if (IsFile(MainPath + "/" + name + "/main.epub")) return epub_pre_to_HTML.GetMainText_HTML_TYPE(name, id);
+        if (IsFile(MainPath + "/" + name + "/main.epub")) return TextReaderLibVc.GetMainText_HTML_TYPE(name, id);
         //LibVa处理方法
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/" + id + ".txt");//逐行读(不能用/n,这样显示会没有换行)
         StringBuilder LsHTML = new StringBuilder();
@@ -97,7 +97,7 @@ public class TextReaderLibVa {
         //LibVb
         if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMainText_C(name, id);
         //断点-如果是LibEPUB处理则直接返回
-        if (IsFile(MainPath + "/" + name + "/main.epub")) return epub_pre_to_HTML.GetMainText_C(name, id);
+        if (IsFile(MainPath + "/" + name + "/main.epub")) return TextReaderLibVc.GetMainText_C(name, id);
 
         //LibVa
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/" + id + ".txt");
@@ -137,7 +137,7 @@ public class TextReaderLibVa {
                                     if(!IsFile(MainPath + "/" + value.getName() + "/main.epub"))
                                         Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), value.getName());
                                     else
-                                        Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), epub_pre_to_HTML.GetName(MainPath + "/" + value.getName() + "/main.epub"));
+                                        Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), TextReaderLibVc.GetName(MainPath + "/" + value.getName() + "/main.epub"));
 
                                 }
                             }else {

@@ -1,5 +1,6 @@
 package com.teipreader.LibTextParsing;
 
+import com.teipreader.Lib.IniLib;
 import com.teipreader.Main.Config_dirs;
 import com.teipreader.Main.langunges;
 import nl.siegmann.epublib.domain.*;
@@ -15,7 +16,7 @@ import java.util.List;
 
 import static com.teipreader.LibTextParsing.TextReaderLibVa.StrFixMainText;
 
-public class epub_pre_to_HTML {
+public class TextReaderLibVc {
     //public static void main(String[] args) {
 //        GetList("Xian-Wei-Jing-Xia-De-Da-Ming-Ma-Bo-Yong.epub");
 //        GetPage("Xian-Wei-Jing-Xia-De-Da-Ming-Ma-Bo-Yong.epub","1");
@@ -108,7 +109,7 @@ public class epub_pre_to_HTML {
                 String href = resource.getHref();
                 String mediaType = resource.getMediaType().toString();
                 String content = new String(data, book.getContents().get(Integer.parseInt(ID)).getInputEncoding());
-                System.out.println(content);
+                //System.out.println(content);
                 //System.out.println(mediaType);
                 if(i == Integer.parseInt(ID)) return content;
             }
@@ -116,6 +117,28 @@ public class epub_pre_to_HTML {
             throw new RuntimeException(e);
         }
         return "不存在的章节!";
+    }
+    public static String GetInfo(String FileName){
+        //FileName = Config_dirs.MainPath+"/"+FileName+"/main.epub";
+        try {
+            EpubReader reader = new EpubReader();
+            Book book = reader.readEpub(new FileInputStream(Config_dirs.MainPath+"/"+FileName+"/main.epub"));
+            //System.out.println(book.getContents());
+            //System.out.println(book.getTableOfContents());
+            List<Resource> ls = book.getContents();
+            Metadata metadata = book.getMetadata();
+            String LsHTML = "";
+            LsHTML = String.format(",{\"name\":\"[EPUB]%s\",\"by\":\"%s\"",
+                    metadata.getTitles().get(0),
+                    metadata.getAuthors().get(0)
+            );
+            if(!metadata.getDescriptions().isEmpty())LsHTML = LsHTML +"\"ot\":\"" + metadata.getDescriptions().get(0) + "\"";
+            LsHTML = LsHTML +",\"md5\":\""+FileName+"\"}";
+            return LsHTML;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //return "";
     }
     public static byte[] GetImage(String FileName){
         try {

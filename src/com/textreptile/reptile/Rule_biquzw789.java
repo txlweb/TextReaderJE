@@ -1,4 +1,4 @@
-package com.teipreader.reptile;
+package com.textreptile.reptile;
 
 import com.teipreader.Main.Config_dirs;
 
@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import static com.teipreader.Main.Download.Dw_File;
+import static com.teipreader.Lib.Download.Dw_File;
 import static com.teipreader.Main.TeipMakerLib.Unzip;
 import static com.teipreader.Main.TeipMakerLib.autoMake;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;

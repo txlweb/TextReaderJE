@@ -1,5 +1,6 @@
 package com.teipreader.Main;
 
+import com.teipreader.Lib.IniLib;
 import com.teipreader.LibTextParsing.CartoonMake;
 
 import java.awt.*;
@@ -30,19 +31,21 @@ import static com.teipreader.Main.TeipMakerLib.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "ef23f9bcc14d79e1fa3ee45485c28879c91612802bb064597dce11b415ec084bf6e1ce6f1c0c9308e42f8335f5d437dc2647b5eac6bcba44741355efdb234615dfe6d300c779ba2070e8bb2f668d0494f8262d3aaea8a4f9ec70a31ebf064eabe711558c29a14e482eab008283ee9072c729a82b8039a1fedcab61de6913fe0cb7187bf4d337c16e0d64cfdef67d59f0fcc16ce949300076e0ded317862a7dd2d7e65674dd3f5bb67fb3f4146ad768e7a3de6623ddb44a48ab6f8558e5269f30ce963a0e045efc91f0ec43e249691e86539d2eb089149c970141a3e43ab573fac6169644097d1719dc3f3fe43d288fd4";
-        String version = "1.2.8";
-        String build = "20000";
-        //
+        String Cheek_code = "ef23f9bcc14d79e1fa3ee45485c28879c91612802bb064597dce11b415ec084bdfe6d300c779ba2070e8bb2f668d0494f8262d3aaea8a4f9ec70a31ebf064eabe711558c29a14e482eab008283ee9072fdc7a5a19196098cf5c6ebd2b750e53eb7187bf4d337c16e0d64cfdef67d59f0c9c9633e5237efd734d1e8c1207e9bdb3fcf44d428f8045313c9c3fee78054aca3de6623ddb44a48ab6f8558e5269f30367241c347f7a82a2b024c70fccb21f7539d2eb089149c970141a3e43ab573fac6169644097d1719dc3f3fe43d288fd4";
+        String version = "1.2.9";
+        String build = "20500";
+
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock")!=null;
-        is_debug=true;
+        //is_debug=true;
         if(is_debug){
             System.out.println("调试模式已开启");
         }
         //在windows下进行调试,小说目录有乱码是正常的,需要编译了之后再启动!!
         //编码问题很大,linux下则没有这种问题.
         System.setProperty("file.encoding", "UTF-8");
-        System.out.println((char) 27 + "[33mTextReader   " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m "+version+" JavaEdition(Build "+build+")");
+        System.out.println((char) 27 + "[33mTextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m "+version+"-"+build+"");
+        System.out.println("");
+        System.out.println("");
         System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/TextReaderJE/");
         //System.out.println("编译JDK版本: 11.0.16.1 你的JDK版本:" + System.getProperty("java.version"));
         System.out.println("如果需要帮助请查看jar包内的readme.md");
@@ -56,6 +59,7 @@ public interface Main {
             System.out.println("获取帮助 -h -help (共计1个参数)");
             System.out.println("导入txt文件 -m, -make txt文件名 保存的压缩包 小说标题 小说图片 切章规则(建议为.*第.*章.*) 作者 简介 (共计8个参数)");
             System.out.println("导入pdf文件 -p, -pdfmake pdf文件名 索引(-为自动索引) 保存的压缩包 标题 图片 作者 简介 (共计8个参数)");
+            System.out.println("导入mobi文件 -b, -mobimake mobi文件名 (共计2个参数)");
             System.out.println("导出txt文件 -o, -out 小说名 导出的txt名 (共计3个参数)");
             System.out.println("导入teip文件(V1&V2) -a, -add 文件名 (共计2个参数)");
             System.out.println("更改设置 -c, -config 键 值 (共计3个参数)");
@@ -74,6 +78,12 @@ public interface Main {
             }
             if (Objects.equals(args[0], "-pdfmake") || Objects.equals(args[0], "-p") & args.length >= 6) {
                 CartoonMake.MakeCartoon_by_pdf(args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
+                System.out.println((char) 27 + "[39;49m");
+                return;
+            }
+            if (Objects.equals(args[0], "-mobimake") || Objects.equals(args[0], "-b") & args.length >= 2) {
+                MobiMake(args[1]);
+                System.out.println("复制完成.");
                 System.out.println((char) 27 + "[39;49m");
                 return;
             }
@@ -143,26 +153,30 @@ public interface Main {
             }
         }
         //检查style文件夹更新
+
         File filea = new File("./style/");
-        String Blist = "";
+        StringBuilder Blist = new StringBuilder();
         if (file.isDirectory()) {
             File[] files = filea.listFiles();
             if (files != null) {
                 for (File value : files) {
                     if (value.isFile()) {
-                        Blist=Blist+getFileMD5("./style/"+value.getName());
+                        //排除列表
+                        if (!value.getName().equals("API_list.json") && !value.getName().equals("config.json")) {
+                            Blist.append(getFileMD5("./style/" + value.getName()));
+                        }
                     }
                 }
             }
         }
 
         if(!is_debug){
-            if(!Blist.equals(Cheek_code)){
+            if(!Blist.toString().equals(Cheek_code)){
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("目前资源版本: S-"+getMD5(Blist)+"(旧)");
-                System.out.println((char) 27 + "[32m   ↓ 替换" + (char) 27 + "[39;49m");
                 System.out.println("内置资源版本: S-"+getMD5(Cheek_code)+"(新)");
-                System.out.println("回车键继续,建议先备份style文件夹.");
+                System.out.println((char) 27 + "[32m   ↓ 替换" + (char) 27 + "[39;49m");
+                System.out.println("目前资源版本: S-"+getMD5(Blist.toString())+"(旧)");
+                System.out.println("回车键继续,建议先备份style文件夹再继续,因为这一步会清理配置文件.");
                 scanner.nextLine();
                 System.out.println("正在清除原资源..");
                 deleteFileByIO("./style/");
@@ -172,7 +186,7 @@ public interface Main {
 
             }
         }else {
-            if(!Blist.equals(Cheek_code)){
+            if(!Blist.toString().equals(Cheek_code)){
                 System.out.println((char) 27 + "[31m[I]: 资源版本有差异,调试模式下已忽略." + (char) 27 + "[39;49m");
             }
             System.out.println((char) 27 + "[34m[DEBUG]: Cheek code: "+Blist);
