@@ -8,8 +8,8 @@ function linux_bash_code
 {
     echo "<DEBUG ACCEPT KEY>just this,enjoy!" > "debug.lock"
     clear
-    if test -e "./TeipReaderJavaEdition-DEBUG.jar"; then
-        java -jar TeipReaderJavaEdition-DEBUG.jar
+    if test -e "./TeipReaderJavaEdition-lite.jar"; then
+        java -jar TeipReaderJavaEdition-lite.jar
     else
         java -jar TeipReaderJavaEdition.jar
     fi
@@ -18,9 +18,9 @@ function linux_bash_code
 :windows_bat_code
 setlocal
 echo "<DEBUG ACCEPT KEY>just this,enjoy!" > "debug.lock"
-set file_path=./TeipReaderJavaEdition-DEBUG.jar
+set file_path=./TeipReaderJavaEdition-lite.jar
 if exist %file_path% (
-    java -jar TeipReaderJavaEdition-DEBUG.jar
+    java -jar TeipReaderJavaEdition-lite.jar
 ) else (
     java -jar TeipReaderJavaEdition.jar
 )
