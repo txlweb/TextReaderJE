@@ -128,6 +128,7 @@ pointer{
     position: fixed;
     top: calc(100vh - 70vh);
     max-width: 1040px;
+    font-size: 22px;
 }
 .plms{
     z-index: 666666;

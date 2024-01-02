@@ -49,10 +49,7 @@ public class TextReaderLibVc {
             if (!metadata.getPublishers().isEmpty())
                 LsHTML = LsHTML + "\n\n<p>出版社：" + metadata.getPublishers().get(0) + "</p>";
             if (book.getTableOfContents().getTocReferences() == null || book.getTableOfContents().getTocReferences().isEmpty()) {
-                LsHTML = LsHTML + "[目前正在查看资源列表,因为使用树状列表无法正常阅读!]";
-                for (int i = 0; i < ls.size(); i++) {
-                    LsHTML = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>\r\n", LsHTML, FileName, i, i, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], ls.get(i).getTitle());
-                }
+                LsHTML = getString(FileName, ls, LsHTML);
             } else {
                 c = 0;
                 LsHTML = LsHTML + parseMenu(FileName, book.getTableOfContents().getTocReferences(), 0, 0);
@@ -60,10 +57,7 @@ public class TextReaderLibVc {
                     LsHTML = "\r\n<h1>" + metadata.getTitles().get(0) + "</h1>" +
                             "\n\n<p>作者：" + metadata.getAuthors().get(0) + "</p>" +
                             "\n\n语言：" + metadata.getLanguage();
-                    LsHTML = LsHTML + "<p style=\"color:red;\">[目前正在查看资源列表,因为使用树状列表无法正常阅读!]</p>";
-                    for (int i = 0; i < ls.size(); i++) {
-                        LsHTML = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>\r\n", LsHTML, FileName, i, i, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], ls.get(i).getTitle());
-                    }
+                    LsHTML = getString(FileName, ls, LsHTML);
                 }
             }
 
@@ -73,6 +67,14 @@ public class TextReaderLibVc {
             throw new RuntimeException(e);
         }
         //return "";
+    }
+
+    private static String getString(String FileName, List<Resource> ls, String lsHTML) {
+        lsHTML = lsHTML + "<p style=\"color:red;\">[目前正在查看资源列表,因为使用树状列表无法正常阅读!]</p>";
+        for (int i = 0; i < ls.size(); i++) {
+            lsHTML = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}{5}{6}{7}</a>\r\n", lsHTML, FileName, i, i, langunges.langunges[Config_dirs.LanguageID][4], i + 1, langunges.langunges[Config_dirs.LanguageID][5], ls.get(i).getTitle());
+        }
+        return lsHTML;
     }
 
     static int c = 0;
@@ -88,12 +90,20 @@ public class TextReaderLibVc {
         for (i = 0; i < refs.size(); i++) {
             c++;
             for (int j = 0; j < ln; j++) {
-                p = p + "--- ";
+                p = p + "-- ";
             }
-            ret = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\">{4}#{5}: {6}</a>\r\n",
-                    ret, FileName, c, c,
-                    p, i + 1,
-                    refs.get(i).getTitle());
+            if(p.equals("┝")){
+                ret = MessageFormat.format("{0}<a class=\"book_list\" idx=\"{3}\" title=\"{5}\">{4}{6}</a>\r\n",//#{5}:
+                        ret, FileName, c, c,
+                        p, i + 1,
+                        refs.get(i).getTitle());
+            }else {
+                ret = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\" title=\"{5}\">{4}{6}</a>\r\n",//#{5}:
+                        ret, FileName, c, c,
+                        p, i + 1,
+                        refs.get(i).getTitle());
+            }
+
             p = "┝";
             //System.out.println(i + ix);
             ret = ret + parseMenu(FileName, refs.get(i).getChildren(), ix + i, ln + 1);

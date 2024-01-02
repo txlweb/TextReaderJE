@@ -31,11 +31,11 @@ import static com.teipreader.Main.TeipMakerLib.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "ef23f9bcc14d79e1fa3ee45485c28879c91612802bb064597dce11b415ec084bdfe6d300c779ba2070e8bb2f668d0494f8262d3aaea8a4f9ec70a31ebf064eabe711558c29a14e482eab008283ee9072fdc7a5a19196098cf5c6ebd2b750e53eb7187bf4d337c16e0d64cfdef67d59f0c9c9633e5237efd734d1e8c1207e9bdb3fcf44d428f8045313c9c3fee78054aca3de6623ddb44a48ab6f8558e5269f30367241c347f7a82a2b024c70fccb21f7539d2eb089149c970141a3e43ab573fac6169644097d1719dc3f3fe43d288fd4";
+        String Cheek_code = "ef23f9bcc14d79e1fa3ee45485c28879c91612802bb064597dce11b415ec084bdfe6d300c779ba2070e8bb2f668d0494f8262d3aaea8a4f9ec70a31ebf064eabe711558c29a14e482eab008283ee9072fdc7a5a19196098cf5c6ebd2b750e53eb7187bf4d337c16e0d64cfdef67d59f00cfe7f2ca02f38d080c34e5ceb26e6b6eafb9555d27e6cabd980c0d2a8834bdba3de6623ddb44a48ab6f8558e5269f30cffbe986afb7b2daae36735241dbfe72539d2eb089149c970141a3e43ab573fac6169644097d1719dc3f3fe43d288fd4";
         String version = "1.2.9";
         String build = "20500";
 
-        boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock")!=null;
+        boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock")!=null || new File("./debug.lock").isFile();
         //is_debug=true;
         if(is_debug){
             System.out.println("调试模式已开启");
@@ -152,7 +152,7 @@ public interface Main {
                 System.out.println((char) 27 + "[32m[I]: 释放完成!" + (char) 27 + "[39;49m");
             }
         }
-        if(!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()){
+        if((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug){
             System.out.println((char) 27 + "[31m[I]: 初次启动程序,需要初始化库文件,请在完成后重启程序." + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: 所用的库开源地址: " + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: lib-epublib: https://github.com/psiegman/epublib/" + (char) 27 + "[39;49m");
