@@ -13,19 +13,21 @@ import java.util.Scanner;
 
 import static com.teipreader.Main.TeipMake.*;
 
-//+~~~~~~+~~~~~~+~~~~~~~~~~~+
-//|  fg  |  bg  |  color    |
-//+~~~~~~+~~~~~~+~~~~~~~~~~~+
-//|  30  |  40  |  black    |
-//|  31  |  41  |  red      |
-//|  32  |  42  |  green    |
-//|  33  |  43  |  yellow   |
-//|  34  |  44  |  blue     |
-//|  35  |  45  |  magenta  |
-//|  36  |  46  |  cyan     |
-//|  37  |  47  |  white    |
-//|  39  |  49  |  default  |
-//+~~~~~~+~~~~~~+~~~~~~~~~~~+
+/*
++~~~~~~+~~~~~~+~~~~~~~~~~~+
+|  fg  |  bg  |  color    |
++~~~~~~+~~~~~~+~~~~~~~~~~~+
+|  30  |  40  |  black    |
+|  31  |  41  |  red      |
+|  32  |  42  |  green    |
+|  33  |  43  |  yellow   |
+|  34  |  44  |  blue     |
+|  35  |  45  |  magenta  |
+|  36  |  46  |  cyan     |
+|  37  |  47  |  white    |
+|  39  |  49  |  default  |
++~~~~~~+~~~~~~+~~~~~~~~~~~+
+*/
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
