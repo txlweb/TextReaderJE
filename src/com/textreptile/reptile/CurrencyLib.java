@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.teipreader.Lib.Download.Dw_File;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 import static com.teipreader.Main.TeipMake.CopyFileToThis;
 import static com.teipreader.Main.TeipMake.autoMake;
-import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 
 public class CurrencyLib {
     public static void main(String[] args) throws IOException {// PS:受害者是http://www.biquzw789.net/  (已被我爬破防了,他现在加了个下载需要登录)

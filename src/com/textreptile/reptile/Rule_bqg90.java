@@ -12,14 +12,16 @@ import java.util.List;
 
 import static com.teipreader.Lib.Download.Dw_File;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
-import static com.teipreader.Main.TeipMake.*;
+import static com.teipreader.Main.TeipMake.Unzip;
+import static com.teipreader.Main.TeipMake.userMake;
 
 public class Rule_bqg90 {
     static String S_host = "https://www.bqg90.com";
     static String p = "";
+
     public static void addToThis(String ID) throws IOException {
         InitSrcCopy(ID);
-        Dw_File(GetImage(),"tmp.jpg");
+        Dw_File(GetImage(), "tmp.jpg");
         //1.获取目录列表
         List<List<String>> MainList = GetMainList();
         //2.下载
@@ -47,22 +49,24 @@ public class Rule_bqg90 {
             //更新目录
             index.append(MainList.get(i).get(1)).append("&D&").append(line_num).append("\r\n");
             System.out.println(p);
-            p = MainList.get(i).get(1) + " (" + i + "/" + MainList.size()+")";
+            p = MainList.get(i).get(1) + " (" + i + "/" + MainList.size() + ")";
         }
         bufferWriter_txt.close();
         //3.封装-加入
         userMake("tmp_main_txt.txt", "tmp-dw.zip", GetTitle(), "tmp.jpg", index.toString(), GetAuthor(), GetInfo());
         Unzip("tmp-dw.zip", Config_dirs.MainPath);
-        p="已经完成.";
+        p = "已经完成.";
     }
 
     public static String Search(String key_word) throws MalformedURLException {
         //逆天!放着接口每个保护.放着让人爬!!
         return S_host + "/user/search.html?q=" + key_word;
     }
-    public static String pst(){
+
+    public static String pst() {
         return p;
     }
+
     public static void InitSrcCopy(String ID) throws MalformedURLException {
         Dw_File(GetURL(ID), "tmp-hb.txt");
     }
@@ -79,6 +83,7 @@ public class Rule_bqg90 {
         }
         return "-";
     }
+
     public static List<String> GetMainText(String URL) throws MalformedURLException {
         Dw_File(URL, "tmp-tx.txt");
         List<String> lines = ReadCFGFile("tmp-tx.txt");
@@ -126,6 +131,7 @@ public class Rule_bqg90 {
         }
         return "-";
     }
+
     //<<URL,title>,<URL,title>,...>
     public static List<List<String>> GetMainList() throws MalformedURLException {
         List<String> lines = ReadCFGFile("tmp-hb.txt");
@@ -135,7 +141,7 @@ public class Rule_bqg90 {
             if (line.contains("<dd><a") && !line.contains("<p>")) {
                 String[] a = line.split("<dd><a href =\"");
                 String[] b = a[1].split("\"");
-                if (url_title != null) url_title.add(S_host+b[0]);
+                if (url_title != null) url_title.add(S_host + b[0]);
                 a = line.split(">");
                 b = a[2].split("<");
                 if (url_title != null) url_title.add(b[0]);
@@ -146,6 +152,7 @@ public class Rule_bqg90 {
         //return "-";
         return ret;
     }
+
     public static String GetURL(String ID) {
         return S_host + "/book/" + ID + "/";
     }

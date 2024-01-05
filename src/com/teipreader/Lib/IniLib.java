@@ -31,10 +31,12 @@ public class IniLib {
             }
         }
     }
+
     public static String GetThing(String FileName, String Node, String key) {//will return key
         //如果文件尾部没有换行符,就要添加,否则会报错!!!!
         try {
-            if(!lastLineisCRLF(FileName)) Files.write(Paths.get(FileName), "\r\n".getBytes(), StandardOpenOption.APPEND);
+            if (!lastLineisCRLF(FileName))
+                Files.write(Paths.get(FileName), "\r\n".getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

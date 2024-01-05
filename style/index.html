@@ -1,157 +1,169 @@
-<meta http-equiv="content-type" content="text/html;charset=utf-8" xmlns="">
+<meta content="text/html;charset=utf-8" http-equiv="content-type" xmlns="">
 <p></p>
 <!--<input type="color" id="color" hidden>弃用方案,因为没有onchage事件.-->
 <script src="/main.js" type="text/javascript"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="width=device-width, initial-scale=1" name="viewport">
 <style>
-	#scroll-progress {
-		position: fixed;
-		top: 88px;
-		left: 0;
-		width: 1%;
-		height: 7px;
-		background-color: #ff0000; /* 自定义进度条颜色 */
-		opacity: 0.8; /* 自定义进度条透明度 */
-		z-index: 9999; /* 确保进度条显示在最顶层 */
-		border-radius: 4px;
-	}
+    #scroll-progress {
+        position: fixed;
+        top: 88px;
+        left: 0;
+        width: 1%;
+        height: 7px;
+        background-color: #ff0000; /* 自定义进度条颜色 */
+        opacity: 0.8; /* 自定义进度条透明度 */
+        z-index: 9999; /* 确保进度条显示在最顶层 */
+        border-radius: 4px;
+    }
 </style>
 <script>
 
-	function updateScrollProgress() {
-		scrollProgresss = document.getElementById('scroll-progress');
-		scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-		scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-		var progresss = (scrollTop / (scrollHeight - window.innerHeight)) * 100;
-		scrollProgresss.style.width = progresss + '%';
-		scrollProgresss.style.backgroundColor = "rgb("+progresss*2.5+",0,"+(255-progresss*2.5)+")";
+    function updateScrollProgress() {
+        scrollProgresss = document.getElementById('scroll-progress');
+        scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        var progresss = (scrollTop / (scrollHeight - window.innerHeight)) * 100;
+        scrollProgresss.style.width = progresss + '%';
+        scrollProgresss.style.backgroundColor = "rgb(" + progresss * 2.5 + ",0," + (255 - progresss * 2.5) + ")";
 
-	}
+    }
 
-	function scrollHandler() {
-		updateScrollProgress()
-	}
+    function scrollHandler() {
+        updateScrollProgress()
+    }
 
-	window.addEventListener('scroll', scrollHandler);
+    window.addEventListener('scroll', scrollHandler);
 </script>
-<link rel="stylesheet" type="text/css" href="/style.css">
+<link href="/style.css" rel="stylesheet" type="text/css">
 <title>TextReader 局域网共享(BETA)</title>
 
 <body class="style_body" id="body">
 <div id="scroll-progress"></div>
-	<block class="bar">
-		<p class="title" >
-			<a href="/" width="0px" height="0px" class="hw book_block"><img width="20px" height="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAABMklEQVR42u2YyQ6FIAxF/f+t8xCjC+MQY9Qf7EtNeCmoKAHUBYurRAQOLZSqBwDeV6TVOAxDiKLorzzP4RWYIAg4ECbf9+ExmGEYgFoEB0/TdLuzZwhqHUa0QlEUcOY2LHddB1ZgqFtwoGVZDgeq65oDLssSjMKoumBdVw7ortukldM07daHitnpJO60Pa3AbUpB4jgG3V2H/c3zDEow4rZt21YrfmRZxgE1TQO3YMSZmIquGBLoBBFQCqPqY1X1fS9dg9ulqioQQ7vNM0jcnSxM7OKCDYtcnWtYHsdxH1VtW+XIOkwboYlzRQcGyzjuzmxPw9Bl4WAcjINxMA7GwXwexmSqqQ3zVHLFcu1DGJrB44syYQdULCeiOmsr5k9JksBlQv6EDhPyt4DE7yfvS3+ufvEBBDEEbYiPAAAAAElFTkSuQmCC"/></a>
-			TextReader 局域网共享(BETA)
-			<a onclick="DisplaySetting()" id="set_btn" class="hw book_block">设置</a></p>
-	</block>
-	<block id="load" class="load">
-		<view class="loader_window">
-			<view class="loader"></view>
-			<br>
-			<t class="loader_txt">PleaseWait...</t>
-		</view>
-	</block>
-	<!--<block id="consoleshell" class="consoleshell"><h1>ConsoleLogs</h1></block>-->
+<block class="bar">
+    <p class="title">
+        <a class="hw book_block" height="0px" href="/" width="0px"><img height="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAABMklEQVR42u2YyQ6FIAxF/f+t8xCjC+MQY9Qf7EtNeCmoKAHUBYurRAQOLZSqBwDeV6TVOAxDiKLorzzP4RWYIAg4ECbf9+ExmGEYgFoEB0/TdLuzZwhqHUa0QlEUcOY2LHddB1ZgqFtwoGVZDgeq65oDLssSjMKoumBdVw7ortukldM07daHitnpJO60Pa3AbUpB4jgG3V2H/c3zDEow4rZt21YrfmRZxgE1TQO3YMSZmIquGBLoBBFQCqPqY1X1fS9dg9ulqioQQ7vNM0jcnSxM7OKCDYtcnWtYHsdxH1VtW+XIOkwboYlzRQcGyzjuzmxPw9Bl4WAcjINxMA7GwXwexmSqqQ3zVHLFcu1DGJrB44syYQdULCeiOmsr5k9JksBlQv6EDhPyt4DE7yfvS3+ufvEBBDEEbYiPAAAAAElFTkSuQmCC"
+                                                                        width="20px"/></a>
+        TextReader 局域网共享(BETA)
+        <a class="hw book_block" id="set_btn" onclick="DisplaySetting()">设置</a></p>
+</block>
+<block class="load" id="load">
+    <view class="loader_window">
+        <view class="loader"></view>
+        <br>
+        <t class="loader_txt">PleaseWait...</t>
+    </view>
+</block>
+<!--<block id="consoleshell" class="consoleshell"><h1>ConsoleLogs</h1></block>-->
 
-	<block id="setting" class="setting" style="display: none;" hidden>
-		<block class="settingbg" onclick="DisplaySetting()"></block>
-		<block class="window" id="settingwindow">
-	    	<h1 >设置<Dimg onclick="DisplaySetting()" class="close" unfold="1"></Dimg></h1>
-	    	<hr>
-	    	<br>
-			<t>字号</t>
-			<btn onclick="FontSizeRemove()">A-</btn><t id="size">0px</t><btn onclick="FontSizeAdd()">A+</btn>
-			<br><br><br>
-			<t>行间距</t>
-			<btn onclick="MarginSizeRemove()">P-</btn><t id="psize">0px</t><btn onclick="MarginSizeAdd()">P+</btn>
-			<br><br><br>
-			<block style="display:flex;">
-				<t style="align-self:center;">背景颜色</t>
-				<color class="colorselector style_green_view" onclick="chagestyle('style_green_view')"></color>
-				<color class="colorselector style_gray_view" onclick="chagestyle('style_gray_view')"></color>
-				<color class="colorselector style_yellow_view" onclick="chagestyle('style_yellow_view')"></color>
-				<color class="colorselector style_pink" onclick="chagestyle('style_pink')"></color>
-				<color class="colorselector" onclick="spcolor()" id="colorset">SET</color>
-			</block>
-			<br>
-			<br>
-			<t>更改文本颜色</t><button onclick="ChageTextColor(prompt('自定义颜色码(示例:#f5aec0,空则恢复默认.)'))">更改</button>
-			<br>
-			<br>
-			<t>选择图片为背景:</t>
-			<input type="text" id="image" placeholder="图片链接..">
-			<button onclick="ChageBGImage();">确定</button>
-			<br><br>
-			<br>
-			<block>
-				点击左右翻页模式:<t onclick="LRMODE(this);" id="LRMODECHAGE">OFF</t>
-				<br>
-				启用Ajax以提升速度:<t onclick="AJMODE(this);" id="AJMODECHAGE">OFF</t>
-			</block>
-			<br>
-			<a href="findfile.html">上传/搜索teip</a>
-			<br><br>
-			<!-- <t onclick="displaybeta()">SHELL (CHILK OPEN)</t>
-			<br><br>
-			<block id="betasettings" style="display: none;">
-				<t>Shell:</t><input type="text" id="shell" placeholder="JavaScript Code..."><button onclick="shell()">do</button>
-				<br><br>
-				<t id="shellreturn">Nothing rturn</t>
-				<br><br>
-				<p>您可以在上方执行全部JavaScript代码以及内置的自定义函数.</p>
-			</block> -->
-		</block>
-	</block>
-	<script type="text/javascript">
+<block class="setting" hidden id="setting" style="display: none;">
+    <block class="settingbg" onclick="DisplaySetting()"></block>
+    <block class="window" id="settingwindow">
+        <h1>设置
+            <Dimg class="close" onclick="DisplaySetting()" unfold="1"></Dimg>
+        </h1>
+        <hr>
+        <br>
+        <t>字号</t>
+        <btn onclick="FontSizeRemove()">A-</btn>
+        <t id="size">0px</t>
+        <btn onclick="FontSizeAdd()">A+</btn>
+        <br><br><br>
+        <t>行间距</t>
+        <btn onclick="MarginSizeRemove()">P-</btn>
+        <t id="psize">0px</t>
+        <btn onclick="MarginSizeAdd()">P+</btn>
+        <br><br><br>
+        <block style="display:flex;">
+            <t style="align-self:center;">背景颜色</t>
+            <color class="colorselector style_green_view" onclick="chagestyle('style_green_view')"></color>
+            <color class="colorselector style_gray_view" onclick="chagestyle('style_gray_view')"></color>
+            <color class="colorselector style_yellow_view" onclick="chagestyle('style_yellow_view')"></color>
+            <color class="colorselector style_pink" onclick="chagestyle('style_pink')"></color>
+            <color class="colorselector" id="colorset" onclick="spcolor()">SET</color>
+        </block>
+        <br>
+        <br>
+        <t>更改文本颜色</t>
+        <button onclick="ChageTextColor(prompt('自定义颜色码(示例:#f5aec0,空则恢复默认.)'))">更改</button>
+        <br>
+        <br>
+        <t>选择图片为背景:</t>
+        <input id="image" placeholder="图片链接.." type="text">
+        <button onclick="ChageBGImage();">确定</button>
+        <br><br>
+        <br>
+        <block>
+            点击左右翻页模式:
+            <t id="LRMODECHAGE" onclick="LRMODE(this);">OFF</t>
+            <br>
+            启用Ajax以提升速度:
+            <t id="AJMODECHAGE" onclick="AJMODE(this);">OFF</t>
+        </block>
+        <br>
+        <a href="findfile.html">上传/搜索teip</a>
+        <br><br>
+        <!-- <t onclick="displaybeta()">SHELL (CHILK OPEN)</t>
+        <br><br>
+        <block id="betasettings" style="display: none;">
+            <t>Shell:</t><input type="text" id="shell" placeholder="JavaScript Code..."><button onclick="shell()">do</button>
+            <br><br>
+            <t id="shellreturn">Nothing rturn</t>
+            <br><br>
+            <p>您可以在上方执行全部JavaScript代码以及内置的自定义函数.</p>
+        </block> -->
+    </block>
+</block>
+<script type="text/javascript">
 
-	</script>
-	<block id="bg" class="bg"></block>
-	<block id="NP" onclick="NextPage();"></block>
-	<block id="LP" onclick="LastPage();"></block>
+</script>
+<block class="bg" id="bg"></block>
+<block id="NP" onclick="NextPage();"></block>
+<block id="LP" onclick="LastPage();"></block>
 
-	</block>
-	<block id="pl" hidden>
-		<block class="sreach" id="shb">
-			<input class="st" type="text" id="sreach" placeholder="章节名...">
-			<button class="sb" onclick="sreach(document.getElementById('sreach').value)">
-				<block class="sbi"></block>
-			</button>
-		</block>
+</block>
+<block hidden id="pl">
+    <block class="sreach" id="shb">
+        <input class="st" id="sreach" placeholder="章节名..." type="text">
+        <button class="sb" onclick="sreach(document.getElementById('sreach').value)">
+            <block class="sbi"></block>
+        </button>
+    </block>
 
-		<block class="displaynone" id="shrd">
-			<block class="shrd" onclick="document.getElementById('shrd').className = 'displaynone';"></block>
-			<block class="shr" id="shr"></block>
-		</block>
-		<block class="plms" onclick="vwlist('NULL')"></block>
-		<block id="pagelist" class="pagelist"></block>
-	</block>
-	<div id="textbar" class="texter displaynone style_green_view">
-		<s id="mark" title="加入书签" onclick="CenterMark()" class="mark_on"></s>
-		<s id="mark_off" title="取消书签" onclick="CenterMark()" class="mark" hidden></s>
-		<!-- id="textbar"-->
-		#textbara
-			<br>
-	<br>
-	</div>
-	</div>
-	<div class="info">
-		<img src="/favicon.ico" width="12px">
-		<t>TextReader JE BETA</t>
-		<br>
-		<t>@IDlike [W] 2.4.2 AL <t id="time"></t></t>
-	</div>
-	<br>
-	<br>
-	<block id="chagepagebar">
-		<t id="dbug"></t>
-		<block id="NextPage" class="NextPage">
-			<h1>继续上拉跳转到下一章</h1>
-		</block>
-		<br>
-		<block id="href">
-			<h1>-jump-</h1>
-		</block>
-	</block>
+    <block class="displaynone" id="shrd">
+        <block class="shrd" onclick="document.getElementById('shrd').className = 'displaynone';"></block>
+        <block class="shr" id="shr"></block>
+    </block>
+    <block class="plms" onclick="vwlist('NULL')"></block>
+    <block class="pagelist" id="pagelist"></block>
+</block>
+<div class="texter displaynone style_green_view" id="textbar">
+    <s class="mark_on" id="mark" onclick="CenterMark()" title="加入书签"></s>
+    <s class="mark" hidden id="mark_off" onclick="CenterMark()" title="取消书签"></s>
+    <!-- id="textbar"-->
+    #textbara
+    <br>
+    <br>
+</div>
+</div>
+<div class="info">
+    <img src="/favicon.ico" width="12px">
+    <t>TextReader JE BETA</t>
+    <br>
+    <t>@IDlike [W] 2.4.2 AL
+        <t id="time"></t>
+    </t>
+</div>
+<br>
+<br>
+<block id="chagepagebar">
+    <t id="dbug"></t>
+    <block class="NextPage" id="NextPage">
+        <h1>继续上拉跳转到下一章</h1>
+    </block>
+    <br>
+    <block id="href">
+        <h1>-jump-</h1>
+    </block>
+</block>
 </body>
-<script type="text/javascript" src="/ajax.js"></script>
+<script src="/ajax.js" type="text/javascript"></script>

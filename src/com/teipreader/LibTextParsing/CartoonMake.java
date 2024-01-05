@@ -13,7 +13,7 @@ import static com.teipreader.Lib.Pdf2Png.pdf2png;
 import static com.teipreader.Main.TeipMake.*;
 
 public class CartoonMake {
-    public static void MakeCartoon(String ImagePath,String Index,String SaveAs, String Title, String Img_src, String Author, String info) throws IOException {
+    public static void MakeCartoon(String ImagePath, String Index, String SaveAs, String Title, String Img_src, String Author, String info) throws IOException {
         //校验文件夹并获取md5
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream("tmp.zip"))) {
             compressFolder(ImagePath, ImagePath, zipOutputStream);
@@ -27,7 +27,7 @@ public class CartoonMake {
         deleteFileByIO("tmp.zip");
         //写入index文件
         new File("tmp.index").delete();
-        WriteFileToThis("tmp.index",Index);
+        WriteFileToThis("tmp.index", Index);
         CopyFileToThis(new File("tmp.index"), new File(md5 + "main.index"));
         //Index:  [章节名]&D&[开始id]&D&[结束ID]\r\n[章节名]&D&[开始id]&D&[结束ID]
         //图片资源
@@ -49,9 +49,9 @@ public class CartoonMake {
         }
         //写出资源
         new File("main.txt").delete();
-        WriteFileToThis("main.txt",Blist.toString());
+        WriteFileToThis("main.txt", Blist.toString());
         CopyFileToThis(new File("main.txt"), new File(md5 + "/main.txt"));
-        WriteFileToThis("type_pdf.lock","THIS IS A PDF!!");
+        WriteFileToThis("type_pdf.lock", "THIS IS A PDF!!");
         CopyFileToThis(new File("type_pdf.lock"), new File(md5 + "/type_pdf.lock"));
         //输出压缩包
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(SaveAs))) {
@@ -63,7 +63,8 @@ public class CartoonMake {
         deleteFileByIO(md5);
         if (new File(md5).exists()) new File(md5).delete();
     }
-    public static void MakeCartoon_by_pdf(String PDF_File,String Index,String SaveAs, String Title, String Img_src, String Author, String info) throws IOException {
+
+    public static void MakeCartoon_by_pdf(String PDF_File, String Index, String SaveAs, String Title, String Img_src, String Author, String info) throws IOException {
         //校验文件并获取md5
 
         String md5 = getFileMD5(PDF_File);
@@ -73,10 +74,10 @@ public class CartoonMake {
         //写入index文件
         new File("tmp.index").delete();
         //Index:  [章节名]&D&[开始id] 没有index就默认的整个文件做一张
-        if(Objects.equals(Index, "-")){
-            WriteFileToThis("tmp.index","整个文件&D&0");
-        }else {
-            WriteFileToThis("tmp.index",Index);
+        if (Objects.equals(Index, "-")) {
+            WriteFileToThis("tmp.index", "整个文件&D&0");
+        } else {
+            WriteFileToThis("tmp.index", Index);
         }
         CopyFileToThis(new File("tmp.index"), new File(md5 + "/main.index"));
 
@@ -91,7 +92,7 @@ public class CartoonMake {
         new File("main.txt").delete();
         WriteFileToThis("main.txt", Objects.requireNonNull(pdf2png(PDF_File, "jpg", "./" + md5)).toString());
         CopyFileToThis(new File("main.txt"), new File(md5 + "/main.txt"));
-        WriteFileToThis("type_pdf.lock","THIS IS A PDF!!");
+        WriteFileToThis("type_pdf.lock", "THIS IS A PDF!!");
         CopyFileToThis(new File("type_pdf.lock"), new File(md5 + "/type_pdf.lock"));
 
         //输出压缩包
@@ -104,6 +105,7 @@ public class CartoonMake {
         deleteFileByIO(md5);
         if (new File(md5).exists()) new File(md5).delete();
     }
+
     public static String encryptToBase64(String filePath) {
         if (filePath == null) {
             return null;
@@ -116,7 +118,6 @@ public class CartoonMake {
         }
         return null;
     }
-
 
 
 }

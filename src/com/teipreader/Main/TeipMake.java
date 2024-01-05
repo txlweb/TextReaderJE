@@ -16,8 +16,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import static com.teipreader.Main.Config_dirs.MainPath;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
+import static com.teipreader.Main.Config_dirs.MainPath;
 
 public class TeipMake {
     private static final char[] hexCode = "0123456789abcdef".toCharArray();
@@ -58,14 +58,16 @@ public class TeipMake {
         }
         return rstr;
     }
+
     public static void EpubMake(String FileName) throws IOException {
         if (!new File(FileName).exists()) return;//检查文件是否存在
         String md5 = getFileMD5(FileName);
         System.out.println(md5);
-        if (new File(MainPath+"/"+md5).exists()) new File(MainPath+"/"+md5).delete();
-        new File(MainPath+"/"+md5).mkdir();
-        CopyFileToThis(new File(FileName), new File(MainPath+"/"+md5 + "/main.epub"));
+        if (new File(MainPath + "/" + md5).exists()) new File(MainPath + "/" + md5).delete();
+        new File(MainPath + "/" + md5).mkdir();
+        CopyFileToThis(new File(FileName), new File(MainPath + "/" + md5 + "/main.epub"));
     }
+
     public static void autoMake(String FileName, String saveAs, String Title, String Img_src, String Rule, String Author, String info) throws IOException {
         System.out.println("正在处理小说: " + Title + " | 切章规则: " + Rule + " | 是否有图标: " + IsFile(Img_src));
         if (!new File(FileName).exists()) return;//检查文件是否存在
@@ -100,6 +102,7 @@ public class TeipMake {
         deleteFileByIO(md5);
         if (new File(md5).exists()) new File(md5).delete();
     }
+
     public static void userMake(String FileName, String saveAs, String Title, String Img_src, String index, String Author, String info) throws IOException {
         System.out.println("正在处理小说: " + Title + " | 是否有图标: " + IsFile(Img_src));
         if (!new File(FileName).exists()) return;//检查文件是否存在
@@ -134,6 +137,7 @@ public class TeipMake {
         deleteFileByIO(md5);
         if (new File(md5).exists()) new File(md5).delete();
     }
+
     public static void deleteFileByIO(String filePath) {
         File file = new File(filePath);
         File[] list = file.listFiles();

@@ -98,8 +98,8 @@ class RequestHandler implements Runnable {
                 if (!new File(fullPath).isFile()) {
                     fullPath = root + "/noimg.png";
                 }
-                if(new File(a[1]+"/main.epub").isFile()){
-                    sendResponse(out, 200, "OK", "image/png", Objects.requireNonNull(GetTitImg(a[1]+"/main.epub")));
+                if (new File(a[1] + "/main.epub").isFile()) {
+                    sendResponse(out, 200, "OK", "image/png", Objects.requireNonNull(GetTitImg(a[1] + "/main.epub")));
                     in.close();
                     out.close();
                     client.close();
@@ -142,9 +142,9 @@ class RequestHandler implements Runnable {
                 String[] a = path.split("\\?");
                 String[] b = a[1].split("\\.");
                 System.out.println(b[2]);
-                if(Objects.equals(b[2], "epub")){
+                if (Objects.equals(b[2], "epub")) {
                     TeipMake.EpubMake(a[1]);
-                }else {
+                } else {
                     TeipMake.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Config_dirs.MainPath);
                 }
                 RET_HTML = new StringBuilder("Complete to import file.");
@@ -159,7 +159,7 @@ class RequestHandler implements Runnable {
             }
             if (path.contains("/api/mkpdf/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
-                com.teipreader.LibTextParsing.CartoonMake.MakeCartoon_by_pdf(a[1],a[6] , "tmp.zip", a[2], a[3], a[4], a[5]);
+                com.teipreader.LibTextParsing.CartoonMake.MakeCartoon_by_pdf(a[1], a[6], "tmp.zip", a[2], a[3], a[4], a[5]);
                 TeipMake.Unzip("tmp.zip", Config_dirs.MainPath);
                 RET_HTML = new StringBuilder(String.format("Complete to import file. parameters:%s,%s,%s,%s,%s,%s", a[1], a[2], a[3], a[4], a[5], a[6]));
                 IsSendData = true;
@@ -205,7 +205,7 @@ class RequestHandler implements Runnable {
                 if (path.contains("?")) {
                     RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_C(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
                 } else {
-                    RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(new String(b[0].replace(",", "")))));
+                    RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
                     RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));
                 }
                 if (Config_dirs.Use_Server_LOG)
@@ -224,9 +224,9 @@ class RequestHandler implements Runnable {
                 if (Config_dirs.Use_Server_LOG)
                     System.out.println((char) 27 + "[33m[Server]:为小说建立文档@" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "@txt" + (char) 27 + "[39;49m");
                 if (new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()) {
-                    if (IsFile(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/main.mobi")){
-                        sendFile(out, new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/main.mobi"));//goto end
-                    }else {
+                    if (IsFile(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "/main.mobi")) {
+                        sendFile(out, new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "/main.mobi"));//goto end
+                    } else {
                         TeipMake.GetTextWithThis(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
                         sendFile(out, new File("main.txt"));//goto end
                     }
@@ -245,14 +245,14 @@ class RequestHandler implements Runnable {
                 RET_HTML = new StringBuilder("<h1 id=\"title\">小说列表</h1>");
 
                 String[] A = path.split("\\?");
-                if(path.contains("?")&A.length>1){
+                if (path.contains("?") & A.length > 1) {
                     if (Objects.equals(A[1], "VH")) {
-                        RET_HTML.append(TextReaderLibVa.PathScan(true,""));
+                        RET_HTML.append(TextReaderLibVa.PathScan(true, ""));
                     } else {
-                        RET_HTML.append(TextReaderLibVa.PathScan(false,URLDecoder.decode(A[1], StandardCharsets.UTF_8)));
+                        RET_HTML.append(TextReaderLibVa.PathScan(false, URLDecoder.decode(A[1], StandardCharsets.UTF_8)));
                     }
-                }else {
-                    RET_HTML.append(TextReaderLibVa.PathScan(false,""));
+                } else {
+                    RET_HTML.append(TextReaderLibVa.PathScan(false, ""));
                 }
 
                 RET_HTML = new StringBuilder(ServerLibVa.AddTitle_index(RET_HTML.toString()));

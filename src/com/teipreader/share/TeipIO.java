@@ -1,7 +1,7 @@
 package com.teipreader.share;
 
-import com.teipreader.LibTextParsing.TextReaderLibVb;
 import com.teipreader.Lib.IniLib;
+import com.teipreader.LibTextParsing.TextReaderLibVb;
 import com.teipreader.LibTextParsing.TextReaderLibVc;
 
 import java.io.File;
@@ -26,9 +26,9 @@ public class TeipIO {
                     if (value.isDirectory()) {
                         if (!IsHidden(value.getName())) {
                             if (!IsFile(MainPath + "/" + value.getName() + "/resource.ini")) {
-                                if(IsFile(MainPath + "/" + value.getName() + "/main.epub")){
+                                if (IsFile(MainPath + "/" + value.getName() + "/main.epub")) {
                                     Blist = Blist + TextReaderLibVc.GetInfo(value.getName());
-                                }else {
+                                } else {
                                     Blist = String.format("%s,{\"name\":\"[V1]%s\",\"pack\":\"THIS_SERVER\",\"md5\":\"%s\",\"by\":\"未知的作者\",\"ot\":\"未知\"}", Blist, value.getName(), value.getName());
                                 }
                             } else {

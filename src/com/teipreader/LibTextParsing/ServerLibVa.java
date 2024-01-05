@@ -26,6 +26,7 @@ public class ServerLibVa {
         }
         return Final.toString();
     }
+
     public static String AddTitle_index(String Old) throws UnsupportedEncodingException {
         List<String> List = ReadCFGFile(StylePath + "/index.html");// 读列表
         List<String> List1 = ReadCFGFile(StylePath + "/add-search-index.html");// 读列表
@@ -35,13 +36,14 @@ public class ServerLibVa {
         StringBuilder Final = new StringBuilder();
         for (String s : List) {
             if (s.contains("#textbara")) {
-                Final.append(addx+Old); //替换 #textbara 为正文内容!!
+                Final.append(addx + Old); //替换 #textbara 为正文内容!!
             } else {
                 Final.append(s).append("\n");
             }
         }
         return Final.toString();
     }
+
     public static String PageIniter(String Url) {
 
         return "";
@@ -51,7 +53,7 @@ public class ServerLibVa {
         @SuppressWarnings("Annotator") String[] A = url.split("\\?");
         String Path = A[0];
         if (Objects.equals(Path, "/")) {
-            return TextReaderLibVa.PathScan(false,A[1]);
+            return TextReaderLibVa.PathScan(false, A[1]);
         }
         return "";
     }

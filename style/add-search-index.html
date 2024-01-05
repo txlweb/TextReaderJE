@@ -1,6 +1,5 @@
-
 <style>
-    #search_in{
+    #search_in {
         font-size: 22px;
         border: 3px solid rgb(254, 98, 13);
         border-radius: 5px;
@@ -8,7 +7,8 @@
         color: rgb(254, 98, 13);
         width: 400px;
     }
-    #search_ot{
+
+    #search_ot {
         height: 34px;
         width: 42px;
         background: rgb(254, 98, 13);
@@ -17,7 +17,12 @@
 </style>
 <br>
 
-<div style="display: flex;justify-content: center;align-items: flex-end;" onload="inline_init()">
-    <input id="search_in" value="" placeholder="搜索小说(可以搜索tag/标题/作者/简介)"><button id="search_ot" onclick="inline_s()"><block class="sbi"></block></button>
+<div onload="inline_init()" style="display: flex;justify-content: center;align-items: flex-end;">
+    <input id="search_in" placeholder="搜索小说(可以搜索tag/标题/作者/简介)" value="">
+    <button id="search_ot" onclick="inline_s()">
+        <block class="sbi"></block>
+    </button>
 </div>
-<div>快捷tags:<div id="fast-tag"></div></div>
+<div>快捷tags:
+    <div id="fast-tag"></div>
+</div>

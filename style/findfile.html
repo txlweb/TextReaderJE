@@ -4,49 +4,52 @@
     <meta charset="UTF-8">
     <title>安装/搜索小说</title>
     <style>
-        img{
+        img {
             width: 30px;
             height: 30px;
         }
-        div{
+
+        div {
             padding-bottom: 10px;
             border: inset 1px black;
         }
-        #fl div:hover{
+
+        #fl div:hover {
             background-color: burlywood;
         }
-        #sh div:hover{
+
+        #sh div:hover {
             background-color: burlywood;
         }
     </style>
 </head>
 <body onload="loadDir('.');c(0)">
 <a href="/"><h1>[0] 返回主页</h1></a>
-<h1 onclick="c(0)" id="c1"> [1]功能-导入teip/epub文件(本地)</h1>
-<h1 onclick="c(1)" id="c2"> [2]功能-导入txt/pdf文件(本地)</h1>
-<h1 onclick="c(2)" id="c3"> [3]功能-在线搜索(远程)</h1>
+<h1 id="c1" onclick="c(0)"> [1]功能-导入teip/epub文件(本地)</h1>
+<h1 id="c2" onclick="c(1)"> [2]功能-导入txt/pdf文件(本地)</h1>
+<h1 id="c3" onclick="c(2)"> [3]功能-在线搜索(远程)</h1>
 <hr>
 <div id="t1">
-<h1>打开文件 点击文件即可导入</h1>
-<div id="fl"></div>
+    <h1>打开文件 点击文件即可导入</h1>
+    <div id="fl"></div>
 </div>
 
 <div id="t2">
     <label>
-        小说txt文件(相对jar包路径)=<input value="./test.txt" id="tf"><br>
-        小说标题=<input value="test" id="nm"><br>
-        小说图片(可以没有)=<input value="none" id="im"><br>
-        切章规则(正则匹配)=<input value=".*第.*章.*" id="rl"><br>
-        作者=<input value="未知作者" id="an"><br>
-        简介=<input value="无简介" id="sp"><br>
+        小说txt文件(相对jar包路径)=<input id="tf" value="./test.txt"><br>
+        小说标题=<input id="nm" value="test"><br>
+        小说图片(可以没有)=<input id="im" value="none"><br>
+        切章规则(正则匹配)=<input id="rl" value=".*第.*章.*"><br>
+        作者=<input id="an" value="未知作者"><br>
+        简介=<input id="sp" value="无简介"><br>
         <button onclick="a()">开始切章并加入</button>
     </label><br><br>
     <label>
-        PDF文件(相对jar包路径)=<input value="./test.pdf" id="pf"><br>
-        标题=<input value="test" id="tt"><br>
-        图片(可以没有)=<input value="none" id="pim"><br>
-        作者=<input value="未知作者" id="ana"><br>
-        简介=<input value="无简介" id="spa"><br>
+        PDF文件(相对jar包路径)=<input id="pf" value="./test.pdf"><br>
+        标题=<input id="tt" value="test"><br>
+        图片(可以没有)=<input id="pim" value="none"><br>
+        作者=<input id="ana" value="未知作者"><br>
+        简介=<input id="spa" value="无简介"><br>
         切章索引=<textarea id="inx">整个文件&D&0</textarea>
         <button onclick="b()">加入</button>
     </label>
@@ -55,12 +58,13 @@
 <div id="t3"><h3>在线搜索(请在/style/API_list.json中增加站点)</h3>
     <a href="/dw_biquzw789.html">在线爬取 - biquzw789</a><br>
     <a href="/dw_bqg90.html">在线爬取 - bqg90</a><br>
-<input value="" id="ht"><button onclick="loadHosts(document.getElementById('ht').value)">搜索</button>
-<div id="sh"></div>
+    <input id="ht" value="">
+    <button onclick="loadHosts(document.getElementById('ht').value)">搜索</button>
+    <div id="sh"></div>
 </div>
 <script>
-    function c(id){
-        if(id == 0){
+    function c(id) {
+        if (id == 0) {
             document.getElementById("t1").style.display = "block";
             document.getElementById("t2").style.display = "none";
             document.getElementById("t3").style.display = "none";
@@ -68,7 +72,7 @@
             document.getElementById("c2").style.color = "black";
             document.getElementById("c3").style.color = "black";
         }
-        if(id == 1){
+        if (id == 1) {
             document.getElementById("t1").style.display = "none";
             document.getElementById("t2").style.display = "block";
             document.getElementById("t3").style.display = "none";
@@ -76,7 +80,7 @@
             document.getElementById("c2").style.color = "red";
             document.getElementById("c3").style.color = "black";
         }
-        if(id == 2){
+        if (id == 2) {
             document.getElementById("t1").style.display = "none";
             document.getElementById("t2").style.display = "none";
             document.getElementById("t3").style.display = "block";
@@ -85,99 +89,107 @@
             document.getElementById("c3").style.color = "red";
         }
     }
-    function loadDir(dir){
+
+    function loadDir(dir) {
         const xhr = new XMLHttpRequest();
         const fl = document.getElementById("fl");
         fl.innerHTML = "";
-            xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 const obj = JSON.parse(xhr.responseText);
-                if(obj.code!=="0"){
+                if (obj.code !== "0") {
                     alert("E:无法查看目录内容");
                     return;
                 }
                 for (let i = 0; i < obj.path.length; i++) {
-                    if(obj.path[i] === ".."){
-                        fl.innerHTML = fl.innerHTML + "<div onclick=\"loadDir('"+obj.rl_path+"/"+obj.path[i]+"')\"><img src='updir.ico'><a>"+obj.path[i]+"</a></div>";
-                    }else {
-                        fl.innerHTML = fl.innerHTML + "<div onclick=\"loadDir('"+obj.rl_path+"/"+obj.path[i]+"')\"><img src='dir.ico'><a>"+obj.path[i]+"</a></div>";
+                    if (obj.path[i] === "..") {
+                        fl.innerHTML = fl.innerHTML + "<div onclick=\"loadDir('" + obj.rl_path + "/" + obj.path[i] + "')\"><img src='updir.ico'><a>" + obj.path[i] + "</a></div>";
+                    } else {
+                        fl.innerHTML = fl.innerHTML + "<div onclick=\"loadDir('" + obj.rl_path + "/" + obj.path[i] + "')\"><img src='dir.ico'><a>" + obj.path[i] + "</a></div>";
                     }
 
                 }
                 for (let i = 0; i < obj.file.length; i++) {
-                    if(obj.file[i]!="")
-                    fl.innerHTML = fl.innerHTML + "<div><img src='unkfile.ico'><a onclick=\"send_data('/api/include/?"+obj.rl_path+"/"+obj.file[i]+"')\">"+obj.rl_path+"/"+obj.file[i]+"</a></div>";
+                    if (obj.file[i] != "")
+                        fl.innerHTML = fl.innerHTML + "<div><img src='unkfile.ico'><a onclick=\"send_data('/api/include/?" + obj.rl_path + "/" + obj.file[i] + "')\">" + obj.rl_path + "/" + obj.file[i] + "</a></div>";
                 }
             }
         }
-        xhr.open('get',"/api/openFile/?"+dir);
+        xhr.open('get', "/api/openFile/?" + dir);
         xhr.send(null);
 
     }
-    function a(){
-        send_data("/api/mktxt/?"+document.getElementById("tf").value+"?"+document.getElementById("nm").value+"?"+document.getElementById("im").value+"?"+document.getElementById("rl").value+"?"+document.getElementById("an").value+"?"+document.getElementById("sp").value+"?");
+
+    function a() {
+        send_data("/api/mktxt/?" + document.getElementById("tf").value + "?" + document.getElementById("nm").value + "?" + document.getElementById("im").value + "?" + document.getElementById("rl").value + "?" + document.getElementById("an").value + "?" + document.getElementById("sp").value + "?");
     }
-    function b(){
-        send_data("/api/mkpdf/?"+document.getElementById("pf").value+"?"+document.getElementById("tt").value+"?"+document.getElementById("pim").value+"?"+document.getElementById("ana").value+"?"+document.getElementById("spa").value+"?"+document.getElementById("inx").value+"?");
+
+    function b() {
+        send_data("/api/mkpdf/?" + document.getElementById("pf").value + "?" + document.getElementById("tt").value + "?" + document.getElementById("pim").value + "?" + document.getElementById("ana").value + "?" + document.getElementById("spa").value + "?" + document.getElementById("inx").value + "?");
     }
-    function send_data(URI){
+
+    function send_data(URI) {
         document.getElementById("iframe_a").src = URI;
         //alert("导入完成.");
     }
-    function loadList(host,s,ic){
+
+    function loadList(host, s, ic) {
         const xhr = new XMLHttpRequest();
         const fl = document.getElementById("sh");
         //fl.innerHTML = "";
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 const obj = JSON.parse(xhr.responseText);
-                if(obj.code!=="0"){
+                if (obj.code !== "0") {
                     alert("E:不能索引这个服务器上的内容!");
                     return;
                 }
-                fl.innerHTML = fl.innerHTML + "<div><img src='"+ic+"'><a>host = "+host+"</a></div>";
+                fl.innerHTML = fl.innerHTML + "<div><img src='" + ic + "'><a>host = " + host + "</a></div>";
                 for (let i = 0; i < obj.data.length; i++) {
-                    if(obj.data[i].name != ""){
-                        if(s=="" || obj.data[i].name.includes(s))
-                        fl.innerHTML = fl.innerHTML + "<div onclick=\"send_data('/api/web_dl/?="+host+"/dl/?"+obj.data[i].md5+"')\"><img src='"+ic+"'><a title='"+obj.data[i].md5+"'>标题: "+obj.data[i].name+"("+host+")<br>作者:"+obj.data[i].by+"<br>"+obj.data[i].ot+"</a></div>";
+                    if (obj.data[i].name != "") {
+                        if (s == "" || obj.data[i].name.includes(s))
+                            fl.innerHTML = fl.innerHTML + "<div onclick=\"send_data('/api/web_dl/?=" + host + "/dl/?" + obj.data[i].md5 + "')\"><img src='" + ic + "'><a title='" + obj.data[i].md5 + "'>标题: " + obj.data[i].name + "(" + host + ")<br>作者:" + obj.data[i].by + "<br>" + obj.data[i].ot + "</a></div>";
                     }
                 }
             }
 
         }
-        xhr.open('get',"/api/webReq/?url="+host+"/list.json");
+        xhr.open('get', "/api/webReq/?url=" + host + "/list.json");
         xhr.send(null);
     }
-    function loadHosts(s){
+
+    function loadHosts(s) {
         const fl = document.getElementById("sh");
         fl.innerHTML = "";
         const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 const obj = JSON.parse(xhr.responseText);
-                if(obj.code!=="0"){
+                if (obj.code !== "0") {
                     alert("E:不能索引这个服务器上的内容!");
                     return;
                 }
                 for (let i = 0; i < obj.data.length; i++) {
-                    if(obj.data[i].host != ""){
-                        loadList(obj.data[i].host,s,obj.data[i].icon);
+                    if (obj.data[i].host != "") {
+                        loadList(obj.data[i].host, s, obj.data[i].icon);
                     }
                 }
 
             }
         }
-        xhr.open('get',"/API_list.json");
+        xhr.open('get', "/API_list.json");
         xhr.send(null);
     }
+
     var is_loaded = false;
-    function on_loaded_iframe(){
-        if(is_loaded){
+
+    function on_loaded_iframe() {
+        if (is_loaded) {
             alert('导入完成.')
         }
-        is_loaded=true;
+        is_loaded = true;
     }
 </script>
-<iframe style="display: none" src="" id="iframe_a" onload="on_loaded_iframe()"></iframe>
+<iframe id="iframe_a" onload="on_loaded_iframe()" src="" style="display: none"></iframe>
 </body>
 </html>

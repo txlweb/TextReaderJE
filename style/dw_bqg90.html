@@ -6,10 +6,16 @@
 </head>
 <body>
 <label>
-    <input id="s" >
+    <input id="s">
 </label>
-<button onclick="window.location.href='https://www.bqg90.com/s?q='+document.getElementById('s').value">在bqg90.com上搜索</button><br>
-<label><input id="s1" ></label><button onclick="document.getElementById('sss').src='/api/webDL_bqg90/?'+document.getElementById('s1').value;rld(document.getElementById('ss'))">下载这个ID的小说</button>
+<button onclick="window.location.href='https://www.bqg90.com/s?q='+document.getElementById('s').value">
+    在bqg90.com上搜索
+</button>
+<br>
+<label><input id="s1"></label>
+<button onclick="document.getElementById('sss').src='/api/webDL_bqg90/?'+document.getElementById('s1').value;rld(document.getElementById('ss'))">
+    下载这个ID的小说
+</button>
 
 <h2>搜索后进入小说详情页后复制url最后的一串数字粘到上面就可以下载了.</h2>
 <iframe id="ss" style="width: 100%;height: 100%;"></iframe>
@@ -17,8 +23,9 @@
 <script>
     var i = 0;
     setInterval("rld(document.getElementById('ss'));", 500);
-    function rld(ifr){
-        ifr.src='/api/getDw_bqg90/?'+i;
+
+    function rld(ifr) {
+        ifr.src = '/api/getDw_bqg90/?' + i;
         i++;
     }
 </script>

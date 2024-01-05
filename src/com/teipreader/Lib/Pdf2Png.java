@@ -1,4 +1,5 @@
 package com.teipreader.Lib;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -12,13 +13,13 @@ public class Pdf2Png {
     /**
      * 使用pdfbox将整个pdf转换成图片
      *
-     * @param filename    PDF文件名不带后缀名
-     * @param type        图片类型 png 和jpg
+     * @param filename PDF文件名不带后缀名
+     * @param type     图片类型 png 和jpg
      */
-    public static StringBuilder pdf2png(String filename, String type,String SaveAs) {
+    public static StringBuilder pdf2png(String filename, String type, String SaveAs) {
         long startTime = System.currentTimeMillis();
         // 将文件地址和文件名拼接成路径 注意：线上环境不能使用\\拼接
-        File file = new File( filename);
+        File file = new File(filename);
         PDDocument doc;
         try {
             // 写入文件
@@ -33,7 +34,7 @@ public class Pdf2Png {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ImageIO.write(image, "png", baos);
                 //Blist.append("<img src=\"data:image/png;base64,").append(Base64.getEncoder().encodeToString(baos.toByteArray())).append("\">\r\n");
-                Blist.append("<img src=\""+(i + 1) + ".res"+"\">");
+                Blist.append("<img src=\"" + (i + 1) + ".res" + "\">");
                 ImageIO.write(image, type, new File(SaveAs + "/" + (i + 1) + ".res"));
             }
             long endTime = System.currentTimeMillis();

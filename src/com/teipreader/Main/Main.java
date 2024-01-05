@@ -35,17 +35,17 @@ public interface Main {
         String version = "1.2.9";
         String build = "20700";
 
-        boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock")!=null || new File("./debug.lock").isFile();
+        boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
         //is_debug=true;
-        if(is_debug){
+        if (is_debug) {
             System.out.println("调试模式已开启");
         }
         //在windows下进行调试,小说目录有乱码是正常的,需要编译了之后再启动!!
         //编码问题很大,linux下则没有这种问题.
         System.setProperty("file.encoding", "UTF-8");
-        System.out.println((char) 27 + "[33mTextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m "+version+"-"+build+"");
-        System.out.println("");
-        System.out.println("");
+        System.out.println((char) 27 + "[33mTextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m " + version + "-" + build);
+        System.out.println();
+        System.out.println();
         System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/TextReaderJE/");
         //System.out.println("编译JDK版本: 11.0.16.1 你的JDK版本:" + System.getProperty("java.version"));
         System.out.println("如果需要帮助请查看jar包内的readme.md");
@@ -152,12 +152,12 @@ public interface Main {
                 System.out.println((char) 27 + "[32m[I]: 释放完成!" + (char) 27 + "[39;49m");
             }
         }
-        if((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug){
+        if ((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug) {
             System.out.println((char) 27 + "[31m[I]: 始化库文件,请在完成后重启程序." + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: 所用的库开源地址: " + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: lib-epublib: https://github.com/psiegman/epublib/" + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: lib-pdfbox: https://github.com/apache/pdfbox" + (char) 27 + "[39;49m");
-            if(RunShare.class.getClassLoader().getResource("epublib-core-4.0-complete.jar")!=null) {
+            if (RunShare.class.getClassLoader().getResource("epublib-core-4.0-complete.jar") != null) {
                 InputStream in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("epublib-core-4.0-complete.jar")).openStream();
                 try (OutputStream ot = new FileOutputStream("./epublib-core-4.0-complete.jar")) {
                     byte[] bytes = new byte[1024];
@@ -165,10 +165,10 @@ public interface Main {
                     while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
                 }
                 in.close();
-            }else{
+            } else {
                 System.out.println((char) 27 + "[32m[E]: 没有内置库 lib-epublib" + (char) 27 + "[39;49m");
             }
-            if(RunShare.class.getClassLoader().getResource("pdfbox-app-2.0.30.jar")!=null) {
+            if (RunShare.class.getClassLoader().getResource("pdfbox-app-2.0.30.jar") != null) {
                 InputStream in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("pdfbox-app-2.0.30.jar")).openStream();
                 try (OutputStream ot = new FileOutputStream("./pdfbox-app-2.0.30.jar")) {
                     byte[] bytes = new byte[1024];
@@ -176,7 +176,7 @@ public interface Main {
                     while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
                 }
                 in.close();
-            }else{
+            } else {
                 System.out.println((char) 27 + "[32m[E]: 没有内置库 lib-pdfbox" + (char) 27 + "[39;49m");
             }
             System.out.println((char) 27 + "[32m[I]: 释放完成!请重启程序!" + (char) 27 + "[39;49m");
@@ -200,14 +200,14 @@ public interface Main {
             }
         }
 
-        if(!is_debug){
-            if(!Blist.toString().equals(Cheek_code)){
+        if (!is_debug) {
+            if (!Blist.toString().equals(Cheek_code)) {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("[I]: 资源版本不一致!");
                 System.out.println("若要取消这个步骤,请在程序运行目录下创建文件 debug.lock");
-                System.out.println("内置资源版本: S-"+getMD5(Cheek_code)+"(新)");
+                System.out.println("内置资源版本: S-" + getMD5(Cheek_code) + "(新)");
                 System.out.println((char) 27 + "[32m   ↓ 替换" + (char) 27 + "[39;49m");
-                System.out.println("目前资源版本: S-"+getMD5(Blist.toString())+"(旧)");
+                System.out.println("目前资源版本: S-" + getMD5(Blist.toString()) + "(旧)");
                 System.out.println("回车键继续,建议先备份style文件夹再继续,因为这一步会清理配置文件.");
                 scanner.nextLine();
                 System.out.println("正在清除原资源..");
@@ -216,11 +216,11 @@ public interface Main {
                 return;
 
             }
-        }else {
-            if(!Blist.toString().equals(Cheek_code)){
+        } else {
+            if (!Blist.toString().equals(Cheek_code)) {
                 System.out.println((char) 27 + "[31m[I]: 资源版本有差异,调试模式下已忽略." + (char) 27 + "[39;49m");
             }
-            System.out.println((char) 27 + "[34m[DEBUG]: Cheek code: "+Blist);
+            System.out.println((char) 27 + "[34m[DEBUG]: Cheek code: " + Blist);
         }
 
 
@@ -245,9 +245,6 @@ public interface Main {
 
     }
 
-    void runShare() throws IOException;
-
-    void runServer() throws IOException;
     static String getMD5(String str) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -258,4 +255,8 @@ public interface Main {
         }
 
     }
+
+    void runShare() throws IOException;
+
+    void runServer() throws IOException;
 }

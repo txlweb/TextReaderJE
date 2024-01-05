@@ -1,8 +1,8 @@
 package com.teipreader.LibTextParsing;
 
-import com.teipreader.Main.Config_dirs;
 import com.teipreader.Lib.EncodingDetect;
 import com.teipreader.Lib.IniLib;
+import com.teipreader.Main.Config_dirs;
 import com.teipreader.Main.langunges;
 
 import java.io.*;
@@ -133,21 +133,21 @@ public class TextReaderLibVa {
                     if (value.isDirectory()) {
                         if (!IsHidden(value.getName()) | is_vh) {
                             if (!IsFile(MainPath + "/" + value.getName() + "/resource.ini")) {
-                                if(value.getName().contains(key)) {
-                                    if(!IsFile(MainPath + "/" + value.getName() + "/main.epub"))
+                                if (value.getName().contains(key)) {
+                                    if (!IsFile(MainPath + "/" + value.getName() + "/main.epub"))
                                         Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), value.getName());
                                     else
                                         Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), TextReaderLibVc.GetName(MainPath + "/" + value.getName() + "/main.epub"));
 
                                 }
-                            }else {
-                                if(Objects.equals(key, "")){
+                            } else {
+                                if (Objects.equals(key, "")) {
                                     Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
-                                }else {
-                                    String things =IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title")+IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "by")+IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "ot");
+                                } else {
+                                    String things = IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title") + IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "by") + IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "ot");
                                     //标题+作者+简介 或 md5真值完全一致
                                     if (things.contains(key) || value.getPath().equals(key)) {
-                                        if(IsFile(MainPath + "/" + value.getName() + "/type_pdf.lock"))
+                                        if (IsFile(MainPath + "/" + value.getName() + "/type_pdf.lock"))
                                             Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>[IMG]{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));
                                         else
                                             Blist = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/list.html\"><img class=\"ticon\" res=\"/imgsrcs/?id={2}\"><br>{3}</a>", Blist, value.getName(), value.getPath(), IniLib.GetThing(MainPath + "/" + value.getName() + "/resource.ini", "conf", "title"));

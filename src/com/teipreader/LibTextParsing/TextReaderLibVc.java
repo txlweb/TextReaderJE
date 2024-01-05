@@ -5,18 +5,16 @@ import com.teipreader.Main.langunges;
 import nl.siegmann.epublib.domain.*;
 import nl.siegmann.epublib.epub.EpubReader;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
-import java.util.Collection;
 import java.util.List;
 
 import static com.teipreader.LibTextParsing.TextReaderLibVa.StrFixMainText;
 
 public class TextReaderLibVc {
+    static int c = 0;
+
     public static String GetList_HTML_TYPE(String name) {
         return GetList(Config_dirs.MainPath + "/" + name + "/main.epub");
     }
@@ -77,8 +75,6 @@ public class TextReaderLibVc {
         return lsHTML;
     }
 
-    static int c = 0;
-
     private static String parseMenu(String FileName, List<TOCReference> refs, int ix, int ln) {
 
         if (refs == null || refs.isEmpty()) {
@@ -92,12 +88,12 @@ public class TextReaderLibVc {
             for (int j = 0; j < ln; j++) {
                 p = p + "-- ";
             }
-            if(p.equals("┝")){
+            if (p.equals("┝")) {
                 ret = MessageFormat.format("{0}<a class=\"book_list\" idx=\"{3}\" title=\"{5}\">{4}{6}</a>\r\n",//#{5}:
                         ret, FileName, c, c,
                         p, i + 1,
                         refs.get(i).getTitle());
-            }else {
+            } else {
                 ret = MessageFormat.format("{0}<a class=\"book_list\" href=\"/{1}/{2}.html\" idx=\"{3}\" title=\"{5}\">{4}{6}</a>\r\n",//#{5}:
                         ret, FileName, c, c,
                         p, i + 1,
