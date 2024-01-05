@@ -33,7 +33,7 @@ public interface Main {
         //配置位置
         String Cheek_code = "ef23f9bcc14d79e1fa3ee45485c28879c91612802bb064597dce11b415ec084bdfe6d300c779ba2070e8bb2f668d0494f6353b27cb1c2b7e36937e969ff1e694a7a0a0e043a8dfae39ed189df24f3fb7e711558c29a14e482eab008283ee907224f111be9bcc034f49fa469433326f28b7187bf4d337c16e0d64cfdef67d59f00cfe7f2ca02f38d080c34e5ceb26e6b6eafb9555d27e6cabd980c0d2a8834bdba3de6623ddb44a48ab6f8558e5269f30cffbe986afb7b2daae36735241dbfe72539d2eb089149c970141a3e43ab573fac6169644097d1719dc3f3fe43d288fd4";
         String version = "1.2.9";
-        String build = "20510";
+        String build = "20700";
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock")!=null || new File("./debug.lock").isFile();
         //is_debug=true;
