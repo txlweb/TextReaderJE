@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.zip.ZipOutputStream;
 
 import static com.teipreader.Lib.Pdf2Png.pdf2png;
-import static com.teipreader.Main.TeipMakerLib.*;
+import static com.teipreader.Main.TeipMake.*;
 
 public class CartoonMake {
     public static void MakeCartoon(String ImagePath,String Index,String SaveAs, String Title, String Img_src, String Author, String info) throws IOException {

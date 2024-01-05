@@ -54,6 +54,7 @@
 
 <div id="t3"><h3>在线搜索(请在/style/API_list.json中增加站点)</h3>
     <a href="/dw_biquzw789.html">在线爬取 - biquzw789</a><br>
+    <a href="/dw_bqg90.html">在线爬取 - bqg90</a><br>
 <input value="" id="ht"><button onclick="loadHosts(document.getElementById('ht').value)">搜索</button>
 <div id="sh"></div>
 </div>
@@ -144,7 +145,7 @@
             }
 
         }
-        xhr.open('get',"/api/webReq/?"+host+"/list.json");
+        xhr.open('get',"/api/webReq/?url="+host+"/list.json");
         xhr.send(null);
     }
     function loadHosts(s){

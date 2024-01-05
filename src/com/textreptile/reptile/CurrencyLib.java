@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.teipreader.Lib.Download.Dw_File;
-import static com.teipreader.Main.TeipMakerLib.CopyFileToThis;
-import static com.teipreader.Main.TeipMakerLib.autoMake;
+import static com.teipreader.Main.TeipMake.CopyFileToThis;
+import static com.teipreader.Main.TeipMake.autoMake;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 
 public class CurrencyLib {
@@ -16,7 +16,7 @@ public class CurrencyLib {
         String tit = "";
         String by = "";
         String ot = "";
-        for (int i = 1; i < 1000000; i++) {
+        for (int i = 4101; i < 1000000; i++) {
             System.out.println("DOWNLOAD-TASK: " + String.format("%06d", i) + "/" + 1000000);
             ID = String.format("%06d", i);
             if (new File("tmp-dw.txt").isFile()) new File("tmp-dw.txt").delete();

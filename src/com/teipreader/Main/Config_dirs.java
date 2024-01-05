@@ -29,22 +29,22 @@ public class Config_dirs {
             IniLib.SetThing("./config.ini", "settings", "UseShare", "enable");
         }
         String Gl_UseShare = IniLib.GetThing("./config.ini", "settings", "UseShare");
-        if (!Objects.equals(Gl_UseShare, "UnknowThing")) {
+        if (!Objects.equals(Gl_UseShare, "UnknownThing")) {
             Use_Share = Gl_UseShare.equals("enable");
         }
         String Gl_MainPath = IniLib.GetThing("./config.ini", "settings", "MainPath");
-        if (!Objects.equals(Gl_MainPath, "UnknowThing")) {
+        if (!Objects.equals(Gl_MainPath, "UnknownThing")) {
             if (!new File(Gl_MainPath).isDirectory()) new File(Gl_MainPath).mkdir();
             MainPath = Gl_MainPath;
         }
         String Gl_Port = IniLib.GetThing("./config.ini", "settings", "Port");
-        if (!Objects.equals(Gl_Port, "UnknowThing")) {
+        if (!Objects.equals(Gl_Port, "UnknownThing")) {
             if (Integer.parseInt(Gl_Port) > 0 & Integer.parseInt(Gl_Port) < 25565) {
                 NormPort = Integer.parseInt(Gl_Port);
             }
         }
         String Gl_LogRank = IniLib.GetThing("./config.ini", "settings", "LogRank");
-        if (!Objects.equals(Gl_LogRank, "UnknowThing")) {
+        if (!Objects.equals(Gl_LogRank, "UnknownThing")) {
             Use_Server_LOG = false;
             Use_Server_LOG_DEBUG = false;
             if (Gl_LogRank.equals("1")) {

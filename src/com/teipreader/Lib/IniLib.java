@@ -1,6 +1,6 @@
 package com.teipreader.Lib;
 
-import com.teipreader.Main.TeipMakerLib;
+import com.teipreader.Main.TeipMake;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,11 +53,11 @@ public class IniLib {
                 getLN = false;
             }
         }
-        return "UnknowThing";
+        return "UnknownThing";
     }
 
     public static void SetThing(String FileName, String Node, String key, String Value) {//will return key
-        if (!new File(FileName).isFile()) TeipMakerLib.WriteFileToThis(FileName, "[" + Node + "]");
+        if (!new File(FileName).isFile()) TeipMake.WriteFileToThis(FileName, "[" + Node + "]");
         List<String> lines = ReadCFGFile(FileName);
         boolean getLN = false;
         boolean changed = false;
@@ -95,6 +95,6 @@ public class IniLib {
             if (line.contains("=") || line.contains("[") || line.contains("#")) ln.append(line).append("\r\n");
         }
         if (new File(FileName).isFile()) new File(FileName).delete();
-        TeipMakerLib.WriteFileToThis(FileName, String.valueOf(ln));
+        TeipMake.WriteFileToThis(FileName, String.valueOf(ln));
     }
 }

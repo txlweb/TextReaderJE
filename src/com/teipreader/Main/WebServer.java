@@ -6,6 +6,7 @@ import com.teipreader.Lib.IniLib;
 import com.teipreader.LibTextParsing.ServerLibVa;
 import com.teipreader.LibTextParsing.TextReaderLibVa;
 import com.textreptile.reptile.Rule_biquzw789;
+import com.textreptile.reptile.Rule_bqg90;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -142,29 +143,29 @@ class RequestHandler implements Runnable {
                 String[] b = a[1].split("\\.");
                 System.out.println(b[2]);
                 if(Objects.equals(b[2], "epub")){
-                    TeipMakerLib.EpubMake(a[1]);
+                    TeipMake.EpubMake(a[1]);
                 }else {
-                    TeipMakerLib.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Config_dirs.MainPath);
+                    TeipMake.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Config_dirs.MainPath);
                 }
                 RET_HTML = new StringBuilder("Complete to import file.");
                 IsSendData = true;
             }
             if (path.contains("/api/mktxt/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
-                TeipMakerLib.autoMake(a[1], "tmp.zip", a[2], a[3], a[4], a[5], a[6]);
-                TeipMakerLib.Unzip("tmp.zip", Config_dirs.MainPath);
+                TeipMake.autoMake(a[1], "tmp.zip", a[2], a[3], a[4], a[5], a[6]);
+                TeipMake.Unzip("tmp.zip", Config_dirs.MainPath);
                 RET_HTML = new StringBuilder(String.format("Complete to import file. parameters:%s,%s,%s,%s,%s,%s", a[1], a[2], a[3], a[4], a[5], a[6]));
                 IsSendData = true;
             }
             if (path.contains("/api/mkpdf/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
                 com.teipreader.LibTextParsing.CartoonMake.MakeCartoon_by_pdf(a[1],a[6] , "tmp.zip", a[2], a[3], a[4], a[5]);
-                TeipMakerLib.Unzip("tmp.zip", Config_dirs.MainPath);
+                TeipMake.Unzip("tmp.zip", Config_dirs.MainPath);
                 RET_HTML = new StringBuilder(String.format("Complete to import file. parameters:%s,%s,%s,%s,%s,%s", a[1], a[2], a[3], a[4], a[5], a[6]));
                 IsSendData = true;
             }
-            if (path.contains("/api/webReq/?")) {
-                String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
+            if (path.contains("/api/webReq/?url=")) {
+                String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?url=");
                 Download.Dw_File(a[1], "tmp.json");
                 List<String> lines = ReadCFGFile("tmp.json");
                 for (String line : lines) {
@@ -179,10 +180,20 @@ class RequestHandler implements Runnable {
                 RET_HTML = new StringBuilder("Complete to import file.");
                 IsSendData = true;
             }
+            if (path.contains("/api/webDL_bqg90/?")) {
+                String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
+                Rule_bqg90.addToThis(a[1]);
+                RET_HTML = new StringBuilder("Complete to import file.");
+                IsSendData = true;
+            }
+            if (path.contains("/api/getDw_bqg90")) {
+                RET_HTML = new StringBuilder(Rule_bqg90.pst());
+                IsSendData = true;
+            }
             if (path.contains("/api/web_dl/?")) {
                 String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?=");
                 Download.Dw_File(a[1], "tmp.teip");
-                TeipMakerLib.Unzip("tmp.teip", Config_dirs.MainPath);
+                TeipMake.Unzip("tmp.teip", Config_dirs.MainPath);
                 RET_HTML = new StringBuilder("Complete to import file from URL" + a[1] + ".");
                 IsSendData = true;
             }
@@ -216,7 +227,7 @@ class RequestHandler implements Runnable {
                     if (IsFile(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/main.mobi")){
                         sendFile(out, new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)+"/main.mobi"));//goto end
                     }else {
-                        TeipMakerLib.GetTextWithThis(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
+                        TeipMake.GetTextWithThis(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
                         sendFile(out, new File("main.txt"));//goto end
                     }
                     in.close();

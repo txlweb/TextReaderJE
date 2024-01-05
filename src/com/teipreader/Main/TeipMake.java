@@ -19,7 +19,7 @@ import java.util.zip.ZipOutputStream;
 import static com.teipreader.Main.Config_dirs.MainPath;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 
-public class TeipMakerLib {
+public class TeipMake {
     private static final char[] hexCode = "0123456789abcdef".toCharArray();
 
     public static void allClose(Closeable... closeables) {
@@ -90,10 +90,6 @@ public class TeipMakerLib {
         new File("resource.ini").delete();
         WriteFileToThis("resource.ini", "[conf]\r\nicon = icon.jpg\r\ntitle = " + Title + "\r\nby = " + Author + "\r\not = " + info);
         CopyFileToThis(new File("resource.ini"), new File(md5 + "/resource.ini"));
-        //        SetThing("./"+Title+"/resource.ini","conf","icon","icon.jpg");
-//        SetThing("./"+Title+"/resource.ini","conf","title",Title);
-//        SetThing("./"+Title+"/resource.ini","conf","by",Author);
-//        SetThing("./"+Title+"/resource.ini","conf","ot",info);
         //打包
         try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(saveAs))) {
             compressFolder(md5, md5, zipOutputStream);
@@ -104,7 +100,40 @@ public class TeipMakerLib {
         deleteFileByIO(md5);
         if (new File(md5).exists()) new File(md5).delete();
     }
-
+    public static void userMake(String FileName, String saveAs, String Title, String Img_src, String index, String Author, String info) throws IOException {
+        System.out.println("正在处理小说: " + Title + " | 是否有图标: " + IsFile(Img_src));
+        if (!new File(FileName).exists()) return;//检查文件是否存在
+        //System.out.println(getFileHash256(FileName));
+        String md5 = getFileMD5(FileName);
+        System.out.println(md5);
+        //清理文件
+        if (new File(md5).exists()) new File(md5).delete();
+        new File(md5).mkdir();
+        //复制文件
+        CopyFileToThis(new File(FileName), new File(md5 + "/main.txt"));
+        if (new File(Img_src).exists()) CopyFileToThis(new File(Img_src), new File(md5 + "/icon.jpg"));
+        //处理章节信息
+        WriteFileToThis("main.index", index);
+        if (new File("main.index").exists()) CopyFileToThis(new File("main.index"), new File(md5 + "/main.index"));
+        //添加ini配置项
+//        [conf]
+//        icon=
+//        title=
+//        by=
+//        ot=
+        new File("resource.ini").delete();
+        WriteFileToThis("resource.ini", "[conf]\r\nicon = icon.jpg\r\ntitle = " + Title + "\r\nby = " + Author + "\r\not = " + info);
+        CopyFileToThis(new File("resource.ini"), new File(md5 + "/resource.ini"));
+        //打包
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(saveAs))) {
+            compressFolder(md5, md5, zipOutputStream);
+            System.out.println("Folder compressed successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        deleteFileByIO(md5);
+        if (new File(md5).exists()) new File(md5).delete();
+    }
     public static void deleteFileByIO(String filePath) {
         File file = new File(filePath);
         File[] list = file.listFiles();
@@ -134,13 +163,14 @@ public class TeipMakerLib {
             java.util.regex.Matcher matcher = compile.matcher(List.get(i));
             if (matcher.matches()) {
                 //if(List.get(i).contains("第") & List.get(i).contains("章")){//关键字方法
-                T_LIST.append(List.get(i)).append("&D&").append(i).append("\r\n");
+                T_LIST.append(List.get(i)).append("&D&").append(String.valueOf(i).replace(",", "")).append("\r\n");
+                //防逗号
                 //System.out.println(List.get(i) + "&D&" + i);
             }
         }
         T_LIST.append("\r\n");
         System.out.println("共计: " + T_LIST.length() + "章");
-        return T_LIST.toString().replace(",", "");//防逗号
+        return T_LIST.toString();
     }
 
     public static void V1ToV2(String V1Name, String V2Save) throws IOException {

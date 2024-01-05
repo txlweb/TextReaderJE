@@ -7,8 +7,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import static com.teipreader.Lib.Download.Dw_File;
-import static com.teipreader.Main.TeipMakerLib.Unzip;
-import static com.teipreader.Main.TeipMakerLib.autoMake;
+import static com.teipreader.Main.TeipMake.Unzip;
+import static com.teipreader.Main.TeipMake.autoMake;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
 
 public class Rule_biquzw789 {

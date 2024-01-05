@@ -3,17 +3,15 @@ package com.teipreader.Main;
 import com.teipreader.Lib.IniLib;
 import com.teipreader.LibTextParsing.CartoonMake;
 
-import java.awt.*;
 import java.io.*;
 import java.math.BigInteger;
-import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static com.teipreader.Main.TeipMakerLib.*;
+import static com.teipreader.Main.TeipMake.*;
 
 //+~~~~~~+~~~~~~+~~~~~~~~~~~+
 //|  fg  |  bg  |  color    |
@@ -50,8 +48,8 @@ public interface Main {
         //System.out.println("编译JDK版本: 11.0.16.1 你的JDK版本:" + System.getProperty("java.version"));
         System.out.println("如果需要帮助请查看jar包内的readme.md");
         if (false) {
-            TeipMakerLib.autoMake("测试转换.txt", "test.zip", "测试1", "-", ".*第.*章.*", "unk", "unk");
-            TeipMakerLib.Unzip("test.zip", Config_dirs.MainPath);
+            TeipMake.autoMake("测试转换.txt", "test.zip", "测试1", "-", ".*第.*章.*", "unk", "unk");
+            TeipMake.Unzip("test.zip", Config_dirs.MainPath);
             return;
         }
         if (args.length > 0) {
@@ -72,7 +70,7 @@ public interface Main {
             System.out.println("- Page 1 of 1 -");
             System.out.println(Arrays.toString(args));
             if (Objects.equals(args[0], "-make") || Objects.equals(args[0], "-m") & args.length >= 6) {
-                TeipMakerLib.autoMake(args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
+                TeipMake.autoMake(args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
                 System.out.println((char) 27 + "[39;49m");
                 return;
             }
@@ -88,22 +86,22 @@ public interface Main {
                 return;
             }
             if (Objects.equals(args[0], "-out") || Objects.equals(args[0], "-o") & args.length >= 3) {
-                TeipMakerLib.GetTextWithThis(args[1]);
-                TeipMakerLib.CopyFileToThis(new File("main.txt"), new File(args[2]));
+                TeipMake.GetTextWithThis(args[1]);
+                TeipMake.CopyFileToThis(new File("main.txt"), new File(args[2]));
                 System.out.println((char) 27 + "[39;49m");
                 return;
             }
             if (Objects.equals(args[0], "-add") || Objects.equals(args[0], "-a") & args.length >= 3) {
                 if (new File("tmp").exists()) new File("tmp").delete();
                 new File("tmp").mkdir();
-                TeipMakerLib.Unzip(args[1], "tmp");
+                TeipMake.Unzip(args[1], "tmp");
                 if (new File("tmp/resource.ini").isFile()) {//v1文件特征
                     String title = IniLib.GetThing("tmp/resource.ini", "conf", "title");
                     System.out.println((char) 27 + "[31m[I]: 版本=v1 标题=" + title + (char) 27 + "[39;49m");
-                    TeipMakerLib.Unzip(args[1], Config_dirs.MainPath + "/" + title);
+                    TeipMake.Unzip(args[1], Config_dirs.MainPath + "/" + title);
                 } else {
                     System.out.println((char) 27 + "[31m[I]: 版本=v2 " + (char) 27 + "[39;49m");
-                    TeipMakerLib.Unzip(args[1], Config_dirs.MainPath);
+                    TeipMake.Unzip(args[1], Config_dirs.MainPath);
                 }
                 System.out.println((char) 27 + "[39;49m");
                 return;
@@ -142,7 +140,7 @@ public interface Main {
                 int byteread;
                 while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
             }
-            TeipMakerLib.Unzip("./style.zip", "./style/");
+            TeipMake.Unzip("./style.zip", "./style/");
             if (!new File(Config_dirs.StylePath + "/index.html").isFile()) {
                 System.out.println((char) 27 + "[31m[E]: 资源释放失败." + (char) 27 + "[39;49m");
                 System.out.println((char) 27 + "[31m 进程已结束." + (char) 27 + "[39;49m");
@@ -153,25 +151,32 @@ public interface Main {
             }
         }
         if((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug){
-            System.out.println((char) 27 + "[31m[I]: 初次启动程序,需要初始化库文件,请在完成后重启程序." + (char) 27 + "[39;49m");
+            System.out.println((char) 27 + "[31m[I]: 始化库文件,请在完成后重启程序." + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: 所用的库开源地址: " + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: lib-epublib: https://github.com/psiegman/epublib/" + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: lib-pdfbox: https://github.com/apache/pdfbox" + (char) 27 + "[39;49m");
-
-            InputStream in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("epublib-core-4.0-complete.jar")).openStream();
-            try (OutputStream ot = new FileOutputStream("./epublib-core-4.0-complete.jar")) {
-                byte[] bytes = new byte[1024];
-                int byteread;
-                while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
+            if(RunShare.class.getClassLoader().getResource("epublib-core-4.0-complete.jar")!=null) {
+                InputStream in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("epublib-core-4.0-complete.jar")).openStream();
+                try (OutputStream ot = new FileOutputStream("./epublib-core-4.0-complete.jar")) {
+                    byte[] bytes = new byte[1024];
+                    int byteread;
+                    while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
+                }
+                in.close();
+            }else{
+                System.out.println((char) 27 + "[32m[E]: 没有内置库 lib-epublib" + (char) 27 + "[39;49m");
             }
-            in.close();
-            in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("pdfbox-app-2.0.30.jar")).openStream();
-            try (OutputStream ot = new FileOutputStream("./pdfbox-app-2.0.30.jar")) {
-                byte[] bytes = new byte[1024];
-                int byteread;
-                while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
+            if(RunShare.class.getClassLoader().getResource("pdfbox-app-2.0.30.jar")!=null) {
+                InputStream in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("pdfbox-app-2.0.30.jar")).openStream();
+                try (OutputStream ot = new FileOutputStream("./pdfbox-app-2.0.30.jar")) {
+                    byte[] bytes = new byte[1024];
+                    int byteread;
+                    while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
+                }
+                in.close();
+            }else{
+                System.out.println((char) 27 + "[32m[E]: 没有内置库 lib-pdfbox" + (char) 27 + "[39;49m");
             }
-            in.close();
             System.out.println((char) 27 + "[32m[I]: 释放完成!请重启程序!" + (char) 27 + "[39;49m");
             return;
         }
@@ -219,16 +224,16 @@ public interface Main {
 
         System.out.println((char) 27 + "[33m[I]: 完成." + (char) 27 + "[39;49m");
         System.out.println((char) 27 + "[36m[T]: Ctrl+c结束进程" + (char) 27 + "[39;49m");
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.startsWith("windows")) {
-            URI uri = URI.create("http://127.0.0.1:" + Config_dirs.NormPort + "/");
-            try {
-                Desktop desktop = Desktop.getDesktop();
-                desktop.browse(uri);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        String os = System.getProperty("os.name").toLowerCase();//启动浏览器,但是很烦人
+//        if (os.startsWith("windows")) {
+//            URI uri = URI.create("http://127.0.0.1:" + Config_dirs.NormPort + "/");
+//            try {
+//                Desktop desktop = Desktop.getDesktop();
+//                desktop.browse(uri);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         if (Config_dirs.Use_Share) {
             RunShare a = new RunShare();
             a.start();

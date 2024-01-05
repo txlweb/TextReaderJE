@@ -29,13 +29,13 @@ public class Config_dirs {
             MainPath = Gl_MainPath;
         }
         String Gl_Port = IniLib.GetThing("./config_share.ini", "settings", "Port");
-        if (!Objects.equals(Gl_Port, "UnknowThing")) {
+        if (!Objects.equals(Gl_Port, "UnknownThing")) {
             if (Integer.parseInt(Gl_Port) > 0 & Integer.parseInt(Gl_Port) < 25565) {
                 NormPort = Integer.parseInt(Gl_Port);
             }
         }
         String Gl_LogRank = IniLib.GetThing("./config_share.ini", "settings", "LogRank");
-        if (!Objects.equals(Gl_LogRank, "UnknowThing")) {
+        if (!Objects.equals(Gl_LogRank, "UnknownThing")) {
             Use_Server_LOG = false;
             Use_Server_LOG_DEBUG = false;
             if (Gl_LogRank.equals("1")) {
