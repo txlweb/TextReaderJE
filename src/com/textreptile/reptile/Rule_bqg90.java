@@ -17,13 +17,17 @@ import static com.teipreader.Main.TeipMake.userMake;
 
 public class Rule_bqg90 {
     static String S_host = "https://www.bqg90.com";
-    static String p = "";
+    static String p = "{\"title\":\"没有任务\",\"now\":\"1\",\"max\":\"1\",\"m_tit\":\"未获取\",\"an\":\"未获取\",\"in\":\"未获取\",\"im\":\"/imgsrcs/?id=null\"}";
 
     public static void addToThis(String ID) throws IOException {
         InitSrcCopy(ID);
         Dw_File(GetImage(), "tmp.jpg");
         //1.获取目录列表
         List<List<String>> MainList = GetMainList();
+        String Title = GetTitle();
+        String Aunthor = GetAuthor();
+        String Info = GetInfo();
+        String Img = GetImage();
         //2.下载
         File file_txt = new File("./tmp_main_txt.txt");
         if (file_txt.exists()) {
@@ -33,6 +37,7 @@ public class Rule_bqg90 {
         FileWriter fileWriter_txt = new FileWriter(file_txt.getName(), true);
         BufferedWriter bufferWriter_txt = new BufferedWriter(fileWriter_txt);
         long line_num = 0;
+        long line_num_last = 0;
         StringBuilder index = new StringBuilder();
         for (int i = 0; i < MainList.size(); i++) {
             System.out.println("dw: " + i + "/" + MainList.size());
@@ -47,22 +52,26 @@ public class Rule_bqg90 {
                 }
             }
             //更新目录
-            index.append(MainList.get(i).get(1)).append("&D&").append(line_num).append("\r\n");
+            index.append(MainList.get(i).get(1)).append("&D&").append(line_num_last).append("\r\n");
+            line_num_last = line_num;
             System.out.println(p);
-            p = MainList.get(i).get(1) + " (" + i + "/" + MainList.size() + ")";
+            p = "{\"title\":\""+MainList.get(i).get(1) + "\",\"now\":\"" + i + "\",\"max\":\"" + MainList.size() + "\",\"m_tit\":\""+Title+"\",\"an\":\""+Aunthor+"\",\"in\":\""+Info+"\",\"im\":\""+Img+"\"}";
         }
         bufferWriter_txt.close();
         //3.封装-加入
-        userMake("tmp_main_txt.txt", "tmp-dw.zip", GetTitle(), "tmp.jpg", index.toString(), GetAuthor(), GetInfo());
+        userMake("tmp_main_txt.txt", "tmp-dw.zip", Title, "tmp.jpg", index.toString(), Aunthor, Info);
         Unzip("tmp-dw.zip", Config_dirs.MainPath);
-        p = "已经完成.";
+        p = "{\"title\":\"任务完成\",\"now\":\"1\",\"max\":\"1\",\"m_tit\":\"未获取\",\"an\":\"未获取\",\"in\":\"未获取\",\"im\":\"/imgsrcs/?id=null\"}";
     }
 
     public static String Search(String key_word) throws MalformedURLException {
         //逆天!放着接口每个保护.放着让人爬!!
-        return S_host + "/user/search.html?q=" + key_word;
+        Dw_File("https://www.bqg90.com/user/hm.html?q=","tmp-dw-req.txt");
+        Dw_File("https://www.bqg90.com//user/search.html?q=","tmp-dw-req.txt");
+        return "./tmp-dw-req.txt";
     }
 
+//https://www.bqg90.com/user/hm.html?q=%E5%B9%B4
     public static String pst() {
         return p;
     }

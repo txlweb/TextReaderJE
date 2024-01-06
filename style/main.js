@@ -304,7 +304,7 @@ function InitPoin(main) {
     const now = parseInt(main.getAttribute('now')); //获取自定义参数-now(当前值)
     main.innerHTML = '<div class="poinmain" id="poinmain"></div>'; //向自定义标签内插入进度条(图1)
     const poinbody = document.getElementById('poinmain'); //获取进度条对象
-    poinbody.style.width = main.clientWidth * (now / max); //设置进度条宽度
+    poinbody.style.width = main.clientWidth * (now / max) + "px"; //设置进度条宽度
     const poins = now / max * 100; //计算百分比
     poinbody.innerHTML = poins.toFixed(2) + '%'; //显示进度
     main.innerHTML = main.innerHTML + '<t class="pointext">' + now + '/' + max + '</t>';

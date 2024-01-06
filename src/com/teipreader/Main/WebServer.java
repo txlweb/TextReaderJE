@@ -197,6 +197,15 @@ class RequestHandler implements Runnable {
                 RET_HTML = new StringBuilder("Complete to import file from URL" + a[1] + ".");
                 IsSendData = true;
             }
+            if(path.contains("/api/S_bqg90/?")){
+                String[] a = URLDecoder.decode(path, StandardCharsets.UTF_8).split("\\?");
+                List<String> lines = ReadCFGFile(Rule_bqg90.Search(a[1]));
+                for (String line : lines) {
+                    RET_HTML.append(line);
+                }
+                System.out.println(RET_HTML);
+                IsSendData = true;
+            }
             Pattern compile = Pattern.compile(".*/[0-9].*.html.*");
             java.util.regex.Matcher matcher = compile.matcher(path);
             if (matcher.matches() && !IsSendData) {
