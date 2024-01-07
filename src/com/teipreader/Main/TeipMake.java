@@ -344,7 +344,16 @@ public class TeipMake {
             return "";
         }
     }
-
+    public static String getTextMD5(String Text) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte[] buf = Text.getBytes();
+            digest.update(buf, 0, buf.length);
+            return toHexString(digest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static String toHexString(byte[] data) {
         StringBuilder r = new StringBuilder(data.length * 2);
         for (byte b : data) {

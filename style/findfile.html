@@ -3,90 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <title>安装/搜索小说</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
     <style>
         img {
             width: 30px;
             height: 30px;
         }
 
-        div {
-            padding-bottom: 10px;
-            border: inset 1px black;
-        }
+        /*!*div {*!*/
+        /*!*    padding-bottom: 10px;*!*/
+        /*!*    border: inset 1px black;*!*/
+        /*!*}*!*/
 
-        #fl div:hover {
-            background-color: burlywood;
-        }
+        /*#fl div:hover {*/
+        /*    background-color: burlywood;*/
+        /*}*/
 
-        #sh div:hover {
-            background-color: burlywood;
-        }
+        /*#sh div:hover {*/
+        /*    background-color: burlywood;*/
+        /*}*/
+        /*button{*/
+        /*    width: 100px;*/
+        /*    height: 40px;*/
+        /*}*/
+        /*input{*/
+        /*    width: 400px;*/
+        /*    height: 40px;*/
+        /*}*/
     </style>
+
 </head>
 <body onload="loadDir('.');c(0)">
-<a href="/"><h1>[0] 返回主页</h1></a>
-<h1 id="c1" onclick="c(0)"> [1]功能-导入teip/epub文件(本地)</h1>
-<h1 id="c2" onclick="c(1)"> [2]功能-导入txt/pdf文件(本地)</h1>
-<h1 id="c3" onclick="c(2)"> [3]功能-在线搜索(远程)</h1>
+<ul class="layui-nav" lay-filter="">
+    <li class="layui-nav-item"><a href="/">返回主页</a></li>
+    <li class="layui-nav-item layui-this"><a id="c1" onclick="c(0)">导入teip/epub文件</a></li>
+    <li class="layui-nav-item"><a id="c2" onclick="c(1)">导入txt/pdf文件</a></li>
+    <li class="layui-nav-item"><a id="c3" onclick="c(2)">在线搜索</a></li>
+</ul>
+
+
 <hr>
 <div id="t1">
-    <h1>打开文件 点击文件即可导入</h1>
+    <h1>点击文件即可导入</h1>
     <div id="fl"></div>
 </div>
 
 <div id="t2">
-    <label>
-        小说txt文件(相对jar包路径)=<input id="tf" value="./test.txt"><br>
-        小说标题=<input id="nm" value="test"><br>
-        小说图片(可以没有)=<input id="im" value="none"><br>
-        切章规则(正则匹配)=<input id="rl" value=".*第.*章.*"><br>
-        作者=<input id="an" value="未知作者"><br>
-        简介=<input id="sp" value="无简介"><br>
-        <button onclick="a()">开始切章并加入</button>
-    </label><br><br>
-    <label>
-        PDF文件(相对jar包路径)=<input id="pf" value="./test.pdf"><br>
-        标题=<input id="tt" value="test"><br>
-        图片(可以没有)=<input id="pim" value="none"><br>
-        作者=<input id="ana" value="未知作者"><br>
-        简介=<input id="spa" value="无简介"><br>
-        切章索引=<textarea id="inx">整个文件&D&0</textarea>
-        <button onclick="b()">加入</button>
-    </label>
+    <h1>导入TXT</h1>
+        小说txt文件(相对jar包路径)=<br><br><input id="tf" value="./test.txt" class="layui-form-label" style="width: 300px"><br><br><br><br><br>
+        小说标题=<br><br><input id="nm" value="test" class="layui-form-label" style="width: 300px"><br><br><br><br><br>
+        小说图片(可以没有)=<br><br><input id="im" value="none" class="layui-form-label" style="width: 300px"><br><br><br><br><br>
+        切章规则(正则匹配)=<br><br><input id="rl" value=".*第.*章.*" class="layui-form-label" style="width: 300px"><br><br><br><br><br>
+        作者=<br><br><input id="an" value="未知作者" class="layui-form-label" style="width: 300px"><br><br><br><br><br>
+        简介=<br><br><input id="sp" value="无简介" class="layui-form-label" style="width: 300px"><br><br><br><br><br>
+        <button onclick="a()" class="layui-btn layui-btn-normal">开始切章并导入</button>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
+    <br><br>
+    <h1>导入PDF</h1>
+        PDF文件(相对jar包路径)=<br><br><input id="pf" value="./test.pdf" class="layui-form-label" style="width: 300px"><br><br><br><br>
+        标题=<br><br><input id="tt" value="test" class="layui-form-label" style="width: 300px"><br><br><br><br>
+        图片(可以没有)=<br><br><input id="pim" value="none" class="layui-form-label" style="width: 300px"><br><br><br><br>
+        作者=<br><br><input id="ana" value="未知作者" class="layui-form-label" style="width: 300px"><br><br><br><br>
+        简介=<br><br><input id="spa" value="无简介" class="layui-form-label" style="width: 300px"><br><br><br><br>
+        切章索引=<br><br><textarea id="inx" class="layui-form-label" style="width: 300px">整个文件&D&0</textarea><br><br><br><br>
+        <button onclick="b()" class="layui-btn layui-btn-normal">导入</button>
+
 </div>
 
-<div id="t3"><h3>在线搜索(请在/style/API_list.json中增加站点)</h3>
-    <a href="/dw_biquzw789.html">在线爬取 - biquzw789</a><br>
-    <a href="/dw_bqg90.html">在线爬取 - bqg90</a><br>
-    <input id="ht" value="">
-    <button onclick="loadHosts(document.getElementById('ht').value)">搜索</button>
+<div id="t3">
+    <h3>在线爬取(各种笔趣阁)</h3>
+    <a href="/dw_biquzw789.html" class="layui-btn layui-btn-normal">biquzw789</a>
+    <a href="/dw_bqg90.html" class="layui-btn layui-btn-normal">bqg90</a><br>
+    <br>
+    <br>
+    <h3>友情搜索(请在/style/API_list.json中增加站点)</h3>
+    <input id="ht" value="" class="layui-form-label" style="width: 300px">
+    <button onclick="loadHosts(document.getElementById('ht').value)" class="layui-btn">搜索</button>
+    <br>
+    <br>
     <div id="sh"></div>
 </div>
+<script src="/layui/layui.js"></script>
 <script>
+    layui.use('element', function(){
+        var element = layui.element;
+    });
     function c(id) {
         if (id == 0) {
             document.getElementById("t1").style.display = "block";
             document.getElementById("t2").style.display = "none";
             document.getElementById("t3").style.display = "none";
-            document.getElementById("c1").style.color = "red";
-            document.getElementById("c2").style.color = "black";
-            document.getElementById("c3").style.color = "black";
         }
         if (id == 1) {
             document.getElementById("t1").style.display = "none";
             document.getElementById("t2").style.display = "block";
             document.getElementById("t3").style.display = "none";
-            document.getElementById("c1").style.color = "black";
-            document.getElementById("c2").style.color = "red";
-            document.getElementById("c3").style.color = "black";
         }
         if (id == 2) {
             document.getElementById("t1").style.display = "none";
             document.getElementById("t2").style.display = "none";
             document.getElementById("t3").style.display = "block";
-            document.getElementById("c1").style.color = "black";
-            document.getElementById("c2").style.color = "black";
-            document.getElementById("c3").style.color = "red";
         }
     }
 
@@ -98,7 +117,7 @@
             if (xhr.readyState === 4) {
                 const obj = JSON.parse(xhr.responseText);
                 if (obj.code !== "0") {
-                    alert("E:无法查看目录内容");
+                    layer.alert("E:无法查看目录内容!(JSON解析失败)", {icon: 2});
                     return;
                 }
                 for (let i = 0; i < obj.path.length; i++) {
@@ -141,7 +160,7 @@
             if (xhr.readyState === 4) {
                 const obj = JSON.parse(xhr.responseText);
                 if (obj.code !== "0") {
-                    alert("E:不能索引这个服务器上的内容!");
+                    layer.alert("E:无法从服务器<a href='>"+host+"'>"+host+"</a>获取数据!", {icon: 2});
                     return;
                 }
                 fl.innerHTML = fl.innerHTML + "<div><img src='" + ic + "'><a>host = " + host + "</a></div>";
@@ -166,7 +185,7 @@
             if (xhr.readyState === 4) {
                 const obj = JSON.parse(xhr.responseText);
                 if (obj.code !== "0") {
-                    alert("E:不能索引这个服务器上的内容!");
+                    layer.alert("E:无法获取服务器列表数据!请尝试重装程序!", {icon: 2});
                     return;
                 }
                 for (let i = 0; i < obj.data.length; i++) {
@@ -185,7 +204,8 @@
 
     function on_loaded_iframe() {
         if (is_loaded) {
-            alert('导入完成.')
+            layer.alert("导入完成!", {icon: 1});
+
         }
         is_loaded = true;
     }

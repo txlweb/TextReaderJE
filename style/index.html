@@ -84,12 +84,12 @@
         <br>
         <br>
         <t>更改文本颜色</t>
-        <button onclick="ChageTextColor(prompt('自定义颜色码(示例:#f5aec0,空则恢复默认.)'))">更改</button>
+        <button onclick="ChageTextColor(prompt('自定义颜色码(示例:#f5aec0,空则恢复默认.)'))" class="book_block">更改</button>
         <br>
         <br>
         <t>选择图片为背景:</t>
         <input id="image" placeholder="图片链接.." type="text">
-        <button onclick="ChageBGImage();">确定</button>
+        <button onclick="ChageBGImage();" class="book_block">确定</button>
         <br><br>
         <br>
         <block>
@@ -100,17 +100,8 @@
             <t id="AJMODECHAGE" onclick="AJMODE(this);">OFF</t>
         </block>
         <br>
-        <a href="findfile.html">上传/搜索teip</a>
+        <a href="/findfile.html" class="book_block">上传/搜索teip</a>
         <br><br>
-        <!-- <t onclick="displaybeta()">SHELL (CHILK OPEN)</t>
-        <br><br>
-        <block id="betasettings" style="display: none;">
-            <t>Shell:</t><input type="text" id="shell" placeholder="JavaScript Code..."><button onclick="shell()">do</button>
-            <br><br>
-            <t id="shellreturn">Nothing rturn</t>
-            <br><br>
-            <p>您可以在上方执行全部JavaScript代码以及内置的自定义函数.</p>
-        </block> -->
     </block>
 </block>
 <script type="text/javascript">
@@ -139,7 +130,6 @@
 <div class="texter displaynone style_green_view" id="textbar">
     <s class="mark_on" id="mark" onclick="CenterMark()" title="加入书签"></s>
     <s class="mark" hidden id="mark_off" onclick="CenterMark()" title="取消书签"></s>
-    <!-- id="textbar"-->
     #textbara
     <br>
     <br>

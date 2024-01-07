@@ -4,65 +4,64 @@
     <meta charset="UTF-8">
     <title>安装/搜索小说 - bqg90.com</title>
     <style>
-        pointer {
-            width: 95%;
-            height: 20px;
-            background-color: #bbbbbb;;
-            display: block;
-            margin: 0 auto;
-            font-size: 12px;
-            text-align: right;
-            border-radius: 10px;
-            padding-right: 5px;
-        }
-        .poinmain {
-            height: 20px;
-            left: 0px;
-            background-color: #686868;
-            color: white;
-            font-size: 12px;
-            text-align: right;
-            word-break: keep-all;
-            white-space: nowrap;
-            overflow: hidden;
-            padding-right: 5px;
-            border-radius: 10px;
-
-        }
-
-        .pointext {
-            position: relative;
-            display: block;
-            top: -20px;
-            text-align: right;
+        body{
+            margin: 20px;
         }
     </style>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+
 </head>
 <body>
-<label>
-    <input id="s">
-</label>
-<button onclick="window.open('https://www.bqg90.com/s?q='+document.getElementById('s').value)">
+<ul class="layui-nav" lay-filter="">
+    <li class="layui-nav-item"><a href="/">返回主页</a></li>
+</ul>
+<h2>搜索</h2>
+<input id="s" class="layui-form-label" style="width: 300px">
+<button onclick="window.open('https://www.bqg90.com/s?q='+document.getElementById('s').value)" class="layui-btn layui-btn-normal">
     在bqg90.com上搜索
 </button>
 <br>
-<label><input id="s1"></label>
-<button onclick="document.getElementById('sss').src='/api/webDL_bqg90/?'+document.getElementById('s1').value;rld(document.getElementById('ss'))">
+<br>
+<h2>下载</h2>
+
+<input id="s1" class="layui-form-label" style="width: 300px">
+<button onclick="document.getElementById('sss').src='/api/webDL_bqg90/?'+document.getElementById('s1').value;rld(document.getElementById('ss'))" class="layui-btn">
     下载这个ID的小说
 </button>
-
+<br>
+<br>
+<br>
+<br>
 <h2>搜索后进入小说详情页后复制url最后的一串数字粘到上面就可以下载了.</h2>
-<img src="" id="im">
-<h1 id="t">标题:</h1>
-<h3 id="a">作者:</h3>
-<p id="i">简介</p>
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md6" style="width: 500px; padding-left: 20px;padding-top: 20px;">
+        <div class="layui-panel" style=" background-color: #676767">
+            <div style="display: flex;padding: 10px;color: white">
+            <img src="" id="im">
+                <div style="display: flex;flex-direction: column;padding-left: 10px">
+                    <h1 id="t">标题:</h1>
+                    <h3 id="a">作者:</h3>
+                    <p id="i">简介</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="pointit"></div>
-<pointer id="poin" now="0" max="0"></pointer>
+<!--<pointer id="poin" now="0" max="0"></pointer>-->
+<div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="ps">
+    <div class="layui-progress-bar layui-bg-green" lay-percent="50%"></div>
+</div>
 <iframe id="sss" style="width: 100%;height: 100%; display:none;"></iframe>
+<script src="/layui/layui.js"></script>
+
 <script>
     var i = 0;
     setInterval("rld();", 500);
-
+    layui.use('element', function(){
+        var element = layui.element;
+    });
     function rld(ifr) {
 
         const xhr = new XMLHttpRequest();
@@ -72,30 +71,21 @@
             if (xhr.readyState === 4) {
                 const obj = JSON.parse(xhr.responseText);
                 document.getElementById("pointit").innerHTML=obj.title;
-                document.getElementById("poin").setAttribute("max",obj.max);
-                document.getElementById("poin").setAttribute("now",obj.now);
-                InitPoin(document.getElementById("poin"));
+                // document.getElementById("poin").setAttribute("max",obj.max);
+                // document.getElementById("poin").setAttribute("now",obj.now);
+                layui.use('element', function() {
+                    layui.element.progress("ps", (obj.now / obj.max * 100).toFixed(2) + "%");
+                })
+                //InitPoin(document.getElementById("poin"));
                 document.getElementById("t").innerHTML="标题:"+obj.m_tit;
                 document.getElementById("a").innerHTML="作者:"+obj.an;
                 document.getElementById("i").innerHTML="简介:"+obj.in;
                 document.getElementById("im").src=obj.im;
-
             }
 
         }
         xhr.open('get', "/api/getDw_bqg90/?1");
         xhr.send(null);
-    }
-    function InitPoin(main) {
-        if (!main) return;
-        max = parseInt(main.getAttribute('max')); //获取自定义参数-max(最大值)
-        now = parseInt(main.getAttribute('now')); //获取自定义参数-now(当前值)
-        main.innerHTML = '<div class="poinmain" id="poinmain"></div>'; //向自定义标签内插入进度条(图1)
-        poinbody = document.getElementById('poinmain'); //获取进度条对象
-        poinbody.style.width = now / max * 100+"%"; //设置进度条宽度main.clientWidth * (now / max)
-        poins = now / max * 100; //计算百分比
-        poinbody.innerHTML = poins.toFixed(2) + '%'; //显示进度
-        main.innerHTML = main.innerHTML + '<t class="pointext">' + now + '/' + max + '</t>';
     }
 </script>
 

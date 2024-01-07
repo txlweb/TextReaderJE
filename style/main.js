@@ -335,12 +335,12 @@ function DisplaySetting() { //è?????
         document.body.parentNode.style.overflow = "hidden";
         s_view(element);
         element.hidden = false;
-        button.className = 'hw hover';
+        button.className = 'hw hover book_block';
     } else {
         document.body.parentNode.style.overflow = "auto";
         s_display(element);
         element.hidden = true;
-        button.className = 'hw';
+        button.className = 'hw book_block';
     }
 }
 

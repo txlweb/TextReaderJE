@@ -275,7 +275,7 @@ class RequestHandler implements Runnable {
                 IsSendData = true;
             }
 
-            File file = new File(fullPath);
+            File file = new File(fullPath.split("\\?")[0]);
             if (file.exists() && !IsSendData) {
                 if (file.isFile()) {
                     sendFile(out, file);

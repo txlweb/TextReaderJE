@@ -13,7 +13,7 @@ public class WebServer {
         ServerSocket server = null;
         try {
             server = new ServerSocket(port);
-            System.out.println((char) 27 + "[33mTextReader Share Lib  1.0.0 JavaEdition(Build 10000)" + (char) 27 + "[39;49m");
+            System.out.println((char) 27 + "[33mTextReader_Share Beta 1.1.0-10b-240107+Res-NULL" + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[34m[I]: 分享服务正运行在" + port + "上 (http://127.0.0.1:" + port + ")" + (char) 27 + "[39;49m");
             while (true) {
                 Socket client = server.accept();

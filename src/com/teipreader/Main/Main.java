@@ -31,24 +31,21 @@ import static com.teipreader.Main.TeipMake.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "7136811e9d923c363dbe71371984bca79e7fcda8b0ef204037f0c82cf65e1003dfe6d300c779ba2070e8bb2f668d0494293652158985ab2597648d94da80c65e867e54a9a1c3c3dffb1c8ff3f3d38b5de711558c29a14e482eab008283ee9072063832d3a7a2fb06c77c179e7722ed2eb7187bf4d337c16e0d64cfdef67d59f09c1518dbec0437366f3f5c54cb7a13bf1213a37e6e112dde3a17f08dc81660e1a3de6623ddb44a48ab6f8558e5269f302fb5e55677b6de04be9463331568255c539d2eb089149c970141a3e43ab573fac6169644097d1719dc3f3fe43d288fd4";
-        String version = "1.2.9";
-        String build = "20710";
+        String Cheek_code = "c68390320da7afa41722320480a55e98";
+        String version = "1.3.0";
+        String build = "2091b-240107";
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
         //is_debug=true;
         if (is_debug) {
-            System.out.println("调试模式已开启");
+            System.out.println("** DEBUG MODE **");
         }
-        //在windows下进行调试,小说目录有乱码是正常的,需要编译了之后再启动!!
-        //编码问题很大,linux下则没有这种问题.
         System.setProperty("file.encoding", "UTF-8");
-        System.out.println((char) 27 + "[33mTextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m " + version + "-" + build);
-        System.out.println();
-        System.out.println();
+        System.out.println((char) 27 + "[33m  TextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m " + version + "-" + build + "+Res-" + Cheek_code);
         System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/TextReaderJE/");
-        //System.out.println("编译JDK版本: 11.0.16.1 你的JDK版本:" + System.getProperty("java.version"));
         System.out.println("如果需要帮助请查看jar包内的readme.md");
+        System.out.println();
+        System.out.println();
         if (false) {
             TeipMake.autoMake("测试转换.txt", "test.zip", "测试1", "-", ".*第.*章.*", "unk", "unk");
             TeipMake.Unzip("test.zip", Config_dirs.MainPath);
@@ -179,6 +176,17 @@ public interface Main {
             } else {
                 System.out.println((char) 27 + "[32m[E]: 没有内置库 lib-pdfbox" + (char) 27 + "[39;49m");
             }
+
+            //恢复备份的配置文件
+            if(new File("./back1.json").isFile() && new File("./back2.json").isFile()){
+                new File("./style/API_list.json").delete();
+                new File("./style/config.json").delete();
+                CopyFileToThis(new File("./back1.json"),new File("./style/API_list.json"));
+                CopyFileToThis(new File("./back2.json"),new File("./style/config.json"));
+                new File("./back1.json").delete();
+                new File("./back2.json").delete();
+                System.out.println((char) 27 + "[32m[I]: 恢复配置文件完成!" + (char) 27 + "[39;49m");
+            }
             System.out.println((char) 27 + "[32m[I]: 释放完成!请重启程序!" + (char) 27 + "[39;49m");
             return;
         }
@@ -199,7 +207,7 @@ public interface Main {
                 }
             }
         }
-
+        Blist = new StringBuilder(getTextMD5(String.valueOf(Blist)));
         if (!is_debug) {
             if (!Blist.toString().equals(Cheek_code)) {
                 Scanner scanner = new Scanner(System.in);
@@ -211,7 +219,10 @@ public interface Main {
                 System.out.println("回车键继续,建议先备份style文件夹再继续,因为这一步会清理配置文件.");
                 scanner.nextLine();
                 System.out.println("正在清除原资源..");
+                CopyFileToThis(new File("./style/API_list.json"),new File("./back1.json"));
+                CopyFileToThis(new File("./style/config.json"),new File("./back2.json"));
                 deleteFileByIO("./style/");
+
                 System.out.println((char) 27 + "[31m[I]: 资源修复完成,请重启应用." + (char) 27 + "[39;49m");
                 return;
 

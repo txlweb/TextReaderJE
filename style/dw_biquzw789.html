@@ -1,18 +1,28 @@
-dw_biquzw789.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/layui/css/layui.css">
     <title>安装/搜索小说 - biquzw789.net</title>
 </head>
 <body>
-<label><input id="s"></label>
-<button onclick="window.location.href='http://www.biquzw789.net/s.php?searchkey='+document.getElementById('s').value">
+<ul class="layui-nav" lay-filter="">
+    <li class="layui-nav-item"><a href="/">返回主页</a></li>
+</ul>
+<label><input id="s" class="layui-form-label" style="width: 300px"></label>
+<button onclick="window.location.href='http://www.biquzw789.net/s.php?searchkey='+document.getElementById('s').value" class="layui-btn layui-btn-normal">
     在biquzw789.net上搜索
 </button>
-<label><input id="s1"></label>
-<button onclick="document.getElementById('ss').src='/api/webDL_biquzw789/?'+document.getElementById('s1').value">
+<br>
+<br>
+<br>
+<label><input id="s1" class="layui-form-label" style="width: 300px"></label>
+<button onclick="document.getElementById('ss').src='/api/webDL_biquzw789/?'+document.getElementById('s1').value" class="layui-btn">
     下载这个ID的小说
 </button>
+<br>
+<br>
+<br>
 
 <h2>搜索后进入小说详情页后复制url最后的一串数字粘到上面就可以下载了.</h2>
 <iframe id="ss" onclick="OnFrameLoad(this)" style="width: 100%;height: 100%;"></iframe>
