@@ -3,6 +3,7 @@ package com.teipreader.share;
 import com.teipreader.Lib.IniLib;
 import com.teipreader.LibTextParsing.TextReaderLibVb;
 import com.teipreader.LibTextParsing.TextReaderLibVc;
+import com.teipreader.Main.Config_dirs;
 
 import java.io.File;
 import java.io.FileInputStream;

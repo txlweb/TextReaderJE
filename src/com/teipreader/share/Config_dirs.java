@@ -8,7 +8,7 @@ import java.util.Objects;
 
 
 public class Config_dirs {
-    public static String MainPath = "./rom";//Text root
+    //public static String MainPath = "./rom";//Text root
     public static int NormPort = 8090;//Web port
     public static boolean Use_Server_LOG = true;
     public static boolean Use_Server_LOG_DEBUG = false;
@@ -22,11 +22,6 @@ public class Config_dirs {
         if (!new File("./config_share.ini").isFile()) {
             IniLib.SetThing("./config_share.ini", "settings", "Port", "8090");
             IniLib.SetThing("./config_share.ini", "settings", "LogRank", "1");
-        }
-        String Gl_MainPath = IniLib.GetThing("./config.ini", "settings", "MainPath");
-        if (Gl_MainPath != null) {
-            if (!new File(Gl_MainPath).isDirectory()) new File(Gl_MainPath).mkdir();
-            MainPath = Gl_MainPath;
         }
         String Gl_Port = IniLib.GetThing("./config_share.ini", "settings", "Port");
         if (!Objects.equals(Gl_Port, "UnknownThing")) {

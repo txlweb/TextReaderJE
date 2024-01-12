@@ -18,7 +18,14 @@ public class TextReaderLibVc {
     public static String GetList_HTML_TYPE(String name) {
         return GetList(Config_dirs.MainPath + "/" + name + "/main.epub");
     }
-
+    public static boolean IsEpubFile(String FileName){
+        try {
+            new EpubReader().readEpub(new FileInputStream(FileName));
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
     public static String GetMainText_HTML_TYPE(String name, int id) {
         return StrFixMainText(GetMainText_C(name, id), name, id, GetMaxSize(Config_dirs.MainPath + "/" + name + "/main.epub"));
     }

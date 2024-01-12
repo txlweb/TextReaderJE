@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
+import static com.teipreader.Main.Config_dirs.MainPath;
+
 public class WebServer {
     public static void StartServer() {
         int port = Config_dirs.NormPort;
@@ -62,7 +64,7 @@ class RequestHandler implements Runnable {
                 String[] a = path.split("\\?");
                 if (Config_dirs.Use_Server_LOG)
                     System.out.println((char) 27 + "[33m[Server]:为小说建立文档@" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "@zip" + (char) 27 + "[39;49m");
-                if (new File(Config_dirs.MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()) {
+                if (new File(MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()) {
                     TeipIO.GetZip(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
                     sendFile(out, new File("tmp.zip"));//goto end
                     in.close();

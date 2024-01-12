@@ -32,8 +32,8 @@ public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
         String Cheek_code = "c68390320da7afa41722320480a55e98";
-        String version = "1.3.0";
-        String build = "2091b-240107";
+        String version = "1.3.1";
+        String build = "2100b-240112";
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
         //is_debug=true;
@@ -46,11 +46,6 @@ public interface Main {
         System.out.println("如果需要帮助请查看jar包内的readme.md");
         System.out.println();
         System.out.println();
-        if (false) {
-            TeipMake.autoMake("测试转换.txt", "test.zip", "测试1", "-", ".*第.*章.*", "unk", "unk");
-            TeipMake.Unzip("test.zip", Config_dirs.MainPath);
-            return;
-        }
         if (args.length > 0) {
             System.out.println((char) 27 + "[36m- Command Help -");
             System.out.println("获取帮助 -h -help (共计1个参数)");
@@ -113,7 +108,7 @@ public interface Main {
             System.out.println((char) 27 + "[39;49m");
             return;
         }//含参处理
-        System.out.println((char) 27 + "[33m[I]: 检查文件..." + (char) 27 + "[39;49m");
+        System.out.println((char) 27 + "[33m[I]: 正在读取配置文件..." + (char) 27 + "[39;49m");
         Config_dirs.init_configs();
         File file = new File(Config_dirs.MainPath);
         if (!file.exists()) {
@@ -127,7 +122,7 @@ public interface Main {
                 System.out.println((char) 27 + "[31m[E]: 无法创建目录." + (char) 27 + "[39;49m");
             }
         }
-
+        System.out.println((char) 27 + "[33m[I]: 正在检查文件完整性..." + (char) 27 + "[39;49m");
         File file2 = new File(Config_dirs.StylePath + "/index.html");
         if (!file2.exists()) {
             System.out.println((char) 27 + "[32m[I]: 正在尝试释放资源..." + (char) 27 + "[39;49m");
@@ -148,7 +143,18 @@ public interface Main {
                 new File("style.zip").delete();
                 System.out.println((char) 27 + "[32m[I]: 释放完成!" + (char) 27 + "[39;49m");
             }
+            //恢复备份的配置文件
+            if(new File("./back1.json").isFile() && new File("./back2.json").isFile()){
+                new File("./style/API_list.json").delete();
+                new File("./style/config.json").delete();
+                CopyFileToThis(new File("./back1.json"),new File("./style/API_list.json"));
+                CopyFileToThis(new File("./back2.json"),new File("./style/config.json"));
+                new File("./back1.json").delete();
+                new File("./back2.json").delete();
+                System.out.println((char) 27 + "[32m[I]: 恢复配置文件完成!" + (char) 27 + "[39;49m");
+            }
         }
+        System.out.println((char) 27 + "[33m[I]: 正在准备库文件..." + (char) 27 + "[39;49m");
         if ((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug) {
             System.out.println((char) 27 + "[31m[I]: 始化库文件,请在完成后重启程序." + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: 所用的库开源地址: " + (char) 27 + "[39;49m");
@@ -176,18 +182,8 @@ public interface Main {
             } else {
                 System.out.println((char) 27 + "[32m[E]: 没有内置库 lib-pdfbox" + (char) 27 + "[39;49m");
             }
-
-            //恢复备份的配置文件
-            if(new File("./back1.json").isFile() && new File("./back2.json").isFile()){
-                new File("./style/API_list.json").delete();
-                new File("./style/config.json").delete();
-                CopyFileToThis(new File("./back1.json"),new File("./style/API_list.json"));
-                CopyFileToThis(new File("./back2.json"),new File("./style/config.json"));
-                new File("./back1.json").delete();
-                new File("./back2.json").delete();
-                System.out.println((char) 27 + "[32m[I]: 恢复配置文件完成!" + (char) 27 + "[39;49m");
-            }
-            System.out.println((char) 27 + "[32m[I]: 释放完成!请重启程序!" + (char) 27 + "[39;49m");
+            System.out.println((char) 27 + "[32m[I]: 释放完成!应用将会重启." + (char) 27 + "[39;49m");
+            main(args);
             return;
         }
         //检查style文件夹更新
@@ -213,19 +209,18 @@ public interface Main {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("[I]: 资源版本不一致!");
                 System.out.println("若要取消这个步骤,请在程序运行目录下创建文件 debug.lock");
-                System.out.println("内置资源版本: S-" + getMD5(Cheek_code) + "(新)");
-                System.out.println((char) 27 + "[32m   ↓ 替换" + (char) 27 + "[39;49m");
                 System.out.println("目前资源版本: S-" + getMD5(Blist.toString()) + "(旧)");
+                System.out.println((char) 27 + "[32m   ↓ 更新" + (char) 27 + "[39;49m");
+                System.out.println("内置资源版本: S-" + Cheek_code + "(新)");
                 System.out.println("回车键继续,建议先备份style文件夹再继续,因为这一步会清理配置文件.");
                 scanner.nextLine();
                 System.out.println("正在清除原资源..");
                 CopyFileToThis(new File("./style/API_list.json"),new File("./back1.json"));
                 CopyFileToThis(new File("./style/config.json"),new File("./back2.json"));
                 deleteFileByIO("./style/");
-
-                System.out.println((char) 27 + "[31m[I]: 资源修复完成,请重启应用." + (char) 27 + "[39;49m");
+                System.out.println((char) 27 + "[31m[I]: 资源修复完成,应用将会重启." + (char) 27 + "[39;49m");
+                main(args);
                 return;
-
             }
         } else {
             if (!Blist.toString().equals(Cheek_code)) {
