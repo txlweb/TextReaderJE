@@ -8,6 +8,7 @@ import com.teipreader.LibTextParsing.TextReaderLibVa;
 import com.textreptile.reptile.Rule_biquzw789;
 import com.textreptile.reptile.Rule_bqg90;
 
+import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,12 +16,14 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
 import static com.teipreader.LibTextParsing.TextReaderLibVc.GetImg;
 import static com.teipreader.LibTextParsing.TextReaderLibVc.GetTitImg;
+import static com.teipreader.Main.Config_dirs.Fire_Wall;
 
 public class WebServer extends Thread implements Main {
     public static void StartServer() {
@@ -70,16 +73,36 @@ class RequestHandler implements Runnable {
     private final Socket client;
     private final String root;
 
+    String tmp_key = "";
     public RequestHandler(Socket client, String root) {
         this.client = client;
         this.root = root;
     }
-
+    public void set_key(){
+        long currentTime = System.currentTimeMillis();
+        Random random = new Random(currentTime);
+        int randomNum = random.nextInt()*random.nextInt()*random.nextInt()*random.nextInt()*random.nextInt();
+        tmp_key=Main.getMD5(tmp_key+randomNum);
+        System.out.println("New key = "+tmp_key);
+    }
     @Override
     public void run() {
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             OutputStream out = client.getOutputStream();
+            //System.out.println(client.getRemoteSocketAddress());
+
+            if(!client.getRemoteSocketAddress().toString().contains("127.0.0.1") && Fire_Wall){
+                System.out.println((char) 27 + "[33m[FireWall] 发现了一次异常访问,源于 "+client.getRemoteSocketAddress().toString()+" 已自动拦截." + (char) 27 + "[39;49m");
+                sendText(out,"<meta charset=\"UTF-8\"><h1>迎欢迎使用TextReader,但是你被墙了 :-)</h1><h2>这不是你的TextReader,所以你无权访问. #FireWall机制正在工作#  </h2><br>如果你需要的话您可以在github上获取这个软件的更新,不要忘记给作者点个star啊!秋梨膏!<a href=\"https://github.com/txlweb/TextReaderJE/\">访问这个GitHub仓库</a><br><input id=\"a\" type=\"text\"><button onclick=\"window.location.href='/REGKEY'+document.getElementById('a').value\">使用KEY进入白名单</button>");
+                if(!in.readLine().split(" ")[1].contains(tmp_key)){
+                    in.close();
+                    out.close();
+                    client.close();
+                    set_key();
+                    return;
+                }
+            }
             String requestLine = in.readLine();
             String[] parts = requestLine.split(" ");
             //String method = parts[0];

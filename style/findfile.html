@@ -10,30 +10,16 @@
             height: 30px;
         }
 
-        /*!*div {*!*/
-        /*!*    padding-bottom: 10px;*!*/
-        /*!*    border: inset 1px black;*!*/
-        /*!*}*!*/
-
-        /*#fl div:hover {*/
-        /*    background-color: burlywood;*/
-        /*}*/
-
-        /*#sh div:hover {*/
-        /*    background-color: burlywood;*/
-        /*}*/
-        /*button{*/
-        /*    width: 100px;*/
-        /*    height: 40px;*/
-        /*}*/
-        /*input{*/
-        /*    width: 400px;*/
-        /*    height: 40px;*/
-        /*}*/
+        #sh{
+            padding: 20px;
+        }
+        a{
+            color:white;
+        }
     </style>
 
 </head>
-<body onload="loadDir('.');c(0)">
+<body onload="">
 <ul class="layui-nav" lay-filter="">
     <li class="layui-nav-item"><a href="/">返回主页</a></li>
     <li class="layui-nav-item layui-this"><a id="c1" onclick="c(0)">导入teip/epub文件</a></li>
@@ -167,7 +153,7 @@
                 for (let i = 0; i < obj.data.length; i++) {
                     if (obj.data[i].name != "") {
                         if (s == "" || obj.data[i].name.includes(s))
-                            fl.innerHTML = fl.innerHTML + "<div onclick=\"send_data('/api/web_dl/?=" + host + "/dl/?" + obj.data[i].md5 + "')\"><img src='" + ic + "'><a title='" + obj.data[i].md5 + "'>标题: " + obj.data[i].name + "(" + host + ")<br>作者:" + obj.data[i].by + "<br>" + obj.data[i].ot + "</a></div>";
+                            fl.innerHTML = fl.innerHTML + "<div onclick=\"send_data('/api/web_dl/?=" + host + "/dl/?" + obj.data[i].md5 + "')\" style='border: solid 3px;'><img src='" + ic + "'><a title='" + obj.data[i].md5 + "'>标题: " + obj.data[i].name + "(" + host + ")<br>作者:" + obj.data[i].by + "<br>" + obj.data[i].ot + "</a></div>";
                     }
                 }
             }
@@ -208,6 +194,28 @@
 
         }
         is_loaded = true;
+    }
+
+    document.body.onload = function () {
+        if (getCookie('black_mode') === 'YES') {
+            document.body.style.color = "white";
+            document.body.style.backgroundColor = "#212121";
+        }
+        loadDir('.');c(0)
+    }
+    function getCookie(name) {
+        const nameEQ = name + '=';
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1, c.length)
+            }
+            if (c.indexOf(nameEQ) === 0) {
+                return unescape(c.substring(nameEQ.length, c.length))
+            }
+        }
+        return false
     }
 </script>
 <iframe id="iframe_a" onload="on_loaded_iframe()" src="" style="display: none"></iframe>

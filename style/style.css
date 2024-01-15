@@ -548,3 +548,6 @@ s:hover {
 .book_list:hover {
     background: rgb(254, 98, 13);;
 }
+.black_mode{
+    color: #c2c2c2;
+}

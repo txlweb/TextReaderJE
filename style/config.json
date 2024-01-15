@@ -9,5 +9,12 @@
       "name": "显示隐藏书",
       "key": "VH"
     }
-  ]
+  ],
+  "conf_AI": {
+    "API_URL_L": "http://127.0.0.1:7880/api/tts?speaker=黑塔&text=",
+    "API_URL_R": "&format=wav&language=auto&length=1&sdp=0.2&noise=0.6&noisew=0.8&emotion=7&seed=107000",
+    "Max_text": 400
+  }
 }
+
+　

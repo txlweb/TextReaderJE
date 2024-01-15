@@ -73,6 +73,8 @@
         <t id="psize">0px</t>
         <btn onclick="MarginSizeAdd()">P+</btn>
         <br><br><br>
+        <btn id="black_mode" onclick="BM()">黑夜模式</btn>
+        <br><br>
         <block style="display:flex;">
             <t style="align-self:center;">背景颜色</t>
             <color class="colorselector style_green_view" onclick="chagestyle('style_green_view')"></color>
@@ -82,16 +84,14 @@
             <color class="colorselector" id="colorset" onclick="spcolor()">SET</color>
         </block>
         <br>
-        <br>
         <t>更改文本颜色</t>
         <button onclick="ChageTextColor(prompt('自定义颜色码(示例:#f5aec0,空则恢复默认.)'))" class="book_block">更改</button>
-        <br>
         <br>
         <t>选择图片为背景:</t>
         <input id="image" placeholder="图片链接.." type="text">
         <button onclick="ChageBGImage();" class="book_block">确定</button>
         <br><br>
-        <br>
+
         <block>
             点击左右翻页模式:
             <t id="LRMODECHAGE" onclick="LRMODE(this);">OFF</t>
@@ -130,6 +130,7 @@
 <div class="texter displaynone style_green_view" id="textbar">
     <s class="mark_on" id="mark" onclick="CenterMark()" title="加入书签"></s>
     <s class="mark" hidden id="mark_off" onclick="CenterMark()" title="取消书签"></s>
+
     #textbara
     <br>
     <br>
@@ -139,7 +140,7 @@
     <img src="/favicon.ico" width="12px">
     <t>TextReader JE BETA</t>
     <br>
-    <t>@IDlike [W] 2.4.2 AL
+    <t>@IDlike [W] 2.4.3 AL
         <t id="time"></t>
     </t>
 </div>
@@ -155,5 +156,7 @@
         <h1>-jump-</h1>
     </block>
 </block>
+<!--AI朗读-->
+<a >AI</a>
 </body>
 <script src="/ajax.js" type="text/javascript"></script>

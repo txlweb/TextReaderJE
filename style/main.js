@@ -98,6 +98,22 @@ function Init() {
     }
     if (!getCookie("MarginTopPxs"))
         setCookie("MarginTopPxs", 20, 60 * 60 * 24 * 365);
+    //处理黑夜模式
+    if (getCookie('black_mode') === 'YES') {
+        document.getElementById('black_mode').innerHTML = "白日模式";
+        document.getElementById('settingwindow').style.backgroundColor = "#212121";
+        document.getElementById('settingwindow').style.color = "#c2c2c2";
+        document.getElementById('textbar').style.backgroundColor = "#212121";
+        document.getElementById('textbar').style.color = "#c2c2c2";
+        document.body.style.backgroundColor = "#030303";
+
+        const childrens = document.getElementById('textbar').children;
+        for (let i = 0; i < childrens.length; i++) {
+            if (childrens[i].className==="book_list") {
+                childrens[i].className="book_list black_mode"
+            }
+        }
+    }
     SetBrs();
     setInterval("clock_up();", 500);
     inline_init();
@@ -322,7 +338,14 @@ function load() {
         element.className = 'load';
     }
 }
-
+function BM(){
+    if (getCookie('black_mode') === 'YES') {
+        setCookie('black_mode', 'NO', 60 * 60 * 24 * 365);
+    }else{
+        setCookie('black_mode', 'YES', 60 * 60 * 24 * 365);
+    }
+    window.location.href=window.location.href;
+}
 function chagestyle(goew) {
     setCookie('style', goew, 60 * 60 * 24 * 365);
     document.getElementById('textbar').className = 'texter ' + getCookie('style');
