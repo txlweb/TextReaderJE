@@ -31,7 +31,7 @@ import static com.teipreader.Main.TeipMake.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "866beb596bfcd92f5e92b21b1af08347";
+        String Cheek_code = "f5b371099e8856ba175d8b0ccd58facc";
         String version = "1.3.2";
         String build = "2195b-240120";
 
