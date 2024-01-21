@@ -582,16 +582,30 @@ function AI_speak(){
             AIurls = JSON.parse(xhr.responseText);
             var ad = document.getElementById("ai_audio");
             paly_id = 0;
+            var xurl = configs.conf_AI.API_URL_L+AIurls.data[paly_id+1]+configs.conf_AI.API_URL_R;
+            aud = new Audio(xurl);
+            var xurl = configs.conf_AI.API_URL_L+AIurls.data[paly_id+2]+configs.conf_AI.API_URL_R;
+            auda = new Audio(xurl);
+            aud.play();
+            paly_id+=3;
             paly_clock=setInterval(function (){
                 if(aud.ended){
-                    aplay()
+                    var xurl = configs.conf_AI.API_URL_L+AIurls.data[paly_id]+configs.conf_AI.API_URL_R;
+                    aud = new Audio(xurl);
+                    auda.play();
+                    paly_id+=1;
                     document.getElementById("AI_isOpen").style.display="none";
                 }else {
                     document.getElementById("AI_isOpen").style.display="block";
                 }
+                if(auda.ended) {
+                    var xurl = configs.conf_AI.API_URL_L+AIurls.data[paly_id]+configs.conf_AI.API_URL_R;
+                    auda = new Audio(xurl);
+                    paly_id+=1;
+                    aud.play()
+                }
             }, 200);
-            aplay();
-            aplay();
+
             document.getElementById("AI_isOpen").style.display="block"
             // ad.innerHTML = "";
             // for (let i = 0; i <json.data.length; i++) {
@@ -607,9 +621,5 @@ function AI_speak(){
     xhr.send(null);
 }
 var aud;
-function aplay() {
-    var xurl = configs.conf_AI.API_URL_L+AIurls.data[paly_id]+configs.conf_AI.API_URL_R;
-    aud = new Audio(xurl);
-    console.log(aud.play())
-    paly_id+=1;
-}
+var auda;
+var load_clock;
