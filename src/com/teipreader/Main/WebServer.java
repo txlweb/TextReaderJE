@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import static com.teipreader.Lib.AI_Speech.text_split_by_speech;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
 import static com.teipreader.LibTextParsing.TextReaderLibVc.GetImg;
@@ -234,8 +235,16 @@ class RequestHandler implements Runnable {
             if (matcher.matches() && !IsSendData) {
                 String[] a = path.split("/");
                 String[] b = a[2].split(".html");
-                if (path.contains("?")) {
+                if (path.contains("?NOUI")) {
                     RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_C(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
+                } else if (path.contains("?SPLIT")) {
+                    RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_C(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))-1));
+                    List<String> tt = text_split_by_speech(RET_HTML.toString().replace("<br/>", ""));
+                    RET_HTML = new StringBuilder("{\"data\":[\"\"");
+                    for (String s : tt) {
+                        RET_HTML.append(",\"").append(s).append("\"");
+                    }
+                    RET_HTML.append("]}");
                 } else {
                     RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
                     RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));
@@ -299,9 +308,12 @@ class RequestHandler implements Runnable {
             }
 
             File file = new File(fullPath.split("\\?")[0]);
-            if (file.exists() && !IsSendData) {
+            File file1 = new File("./tmp/"+fullPath.split("\\?")[0]);
+            if (file.exists() || file1.isFile() && !IsSendData) {
                 if (file.isFile()) {
                     sendFile(out, file);
+                } else if (file1.exists()) {
+                    sendFile(out, file1);
                 } else if (file.isDirectory()) {
                     //sendDirectory(out, file);
                     sendText(out, "<meta http-equiv=\"refresh\" content=\"0;url=/app\">");

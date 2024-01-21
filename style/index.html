@@ -1,6 +1,5 @@
 <meta content="text/html;charset=utf-8" http-equiv="content-type" xmlns="">
 <p></p>
-<!--<input type="color" id="color" hidden>弃用方案,因为没有onchage事件.-->
 <script src="/main.js" type="text/javascript"></script>
 <meta content="width=device-width, initial-scale=1" name="viewport">
 <style>
@@ -127,6 +126,10 @@
     <block class="plms" onclick="vwlist('NULL')"></block>
     <block class="pagelist" id="pagelist"></block>
 </block>
+<block class="AI_Say" onclick="AI_speak()" title="点击朗读(需要配置API)">
+    <view class="loader" id="AI_isOpen" style="display: none"></view>
+    <view style="position: fixed;top: 113px;left: 27px;">AI</view>
+</block>
 <div class="texter displaynone style_green_view" id="textbar">
     <s class="mark_on" id="mark" onclick="CenterMark()" title="加入书签"></s>
     <s class="mark" hidden id="mark_off" onclick="CenterMark()" title="取消书签"></s>
@@ -156,7 +159,6 @@
         <h1>-jump-</h1>
     </block>
 </block>
-<!--AI朗读-->
-<a >AI</a>
+
 </body>
 <script src="/ajax.js" type="text/javascript"></script>

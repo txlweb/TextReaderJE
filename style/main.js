@@ -2,7 +2,7 @@ let HasFastNextPage = true;
 let body, sw, sr_b, sr_r, timex;
 let clock1;
 let info;
-
+let configs;
 //启动项
 window.onload = function () {
     Init();
@@ -12,6 +12,16 @@ window.onload = function () {
 
 
 function Init() {
+    //加载配置文件
+    var xhrx = new XMLHttpRequest();
+    xhrx.onreadystatechange = function () {
+        if (xhrx.readyState == 4) {
+            configs = JSON.parse(xhrx.responseText);
+        }
+    }
+    xhrx.open("get", "/config.json", true);
+    xhrx.send(null);
+    //开始初始化
     let childrens;
     body = document.getElementById('body');
     sw = document.getElementById('settingwindow');
@@ -553,4 +563,53 @@ function inline_init() {
     }
     xhr.open('get', "/config.json");
     xhr.send(null);
+}
+var AIurls;
+var paly_id = 0;
+var paly_clock;
+function AI_speak(){
+    if(paly_id!==0){
+        paly_id = 0;
+        window.clearInterval(paly_clock);
+        document.getElementById("AI_isOpen").style.display="none";
+        aud.pause();
+        return;
+    }
+    //获取ajax数据
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            AIurls = JSON.parse(xhr.responseText);
+            var ad = document.getElementById("ai_audio");
+            paly_id = 0;
+            paly_clock=setInterval(function (){
+                if(aud.ended){
+                    aplay()
+                    document.getElementById("AI_isOpen").style.display="none";
+                }else {
+                    document.getElementById("AI_isOpen").style.display="block";
+                }
+            }, 200);
+            aplay();
+            aplay();
+            document.getElementById("AI_isOpen").style.display="block"
+            // ad.innerHTML = "";
+            // for (let i = 0; i <json.data.length; i++) {
+            //     var xurl = "http://127.0.0.1:7880/api/tts?speaker=黑塔&text="+json.data[i]+"&format=wav&language=auto&length=1&sdp=0.2&noise=0.6&noisew=0.8&emotion=7&seed=107000";
+            //     console.log(xurl)
+            //     ad.innerHTML = ad.innerHTML+"<audio id='au_"+i+"'><source src=\""+xurl+"\"></audio>"
+            //     //document.getElementById("au_"--/**--+i)
+            // }
+        }
+    }
+
+    xhr.open("get", document.getElementById('next').href + "?SPLIT", true);
+    xhr.send(null);
+}
+var aud;
+function aplay() {
+    var xurl = configs.conf_AI.API_URL_L+AIurls.data[paly_id]+configs.conf_AI.API_URL_R;
+    aud = new Audio(xurl);
+    console.log(aud.play())
+    paly_id+=1;
 }

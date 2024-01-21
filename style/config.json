@@ -11,10 +11,8 @@
     }
   ],
   "conf_AI": {
+    "AI_help":"目前不支持post类的请求方法,这个地址可以填远程的地址,不填不能用AI朗读",
     "API_URL_L": "http://127.0.0.1:7880/api/tts?speaker=黑塔&text=",
-    "API_URL_R": "&format=wav&language=auto&length=1&sdp=0.2&noise=0.6&noisew=0.8&emotion=7&seed=107000",
-    "Max_text": 400
+    "API_URL_R": "&format=wav&language=auto&length=1&sdp=0.2&noise=0.6&noisew=0.8&emotion=7&seed=107000"
   }
 }
-
-　

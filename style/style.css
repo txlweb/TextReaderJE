@@ -332,7 +332,23 @@ li {
 .bar:HOVER {
     margin-left: 0px;
 }
-
+.AI_Say{
+    position: fixed;
+    top: 100px;
+    left: 10px;
+    z-index: 9;
+    font-size: 30px;
+    color: #00FFFF;
+    background: #2F4056;
+    padding: 5px;
+    border-radius: 50%;
+    width: 58px;
+    height: 58px;
+}
+.AI_Say:hover{
+    color: #0000FF;
+    background: #5FB878;
+}
 #size, #psize {
     margin-left: 4px;
     margin-right: 4px;

@@ -31,9 +31,9 @@ import static com.teipreader.Main.TeipMake.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "01a3aeaf00834b4009572f2412d5ae22";
+        String Cheek_code = "866beb596bfcd92f5e92b21b1af08347";
         String version = "1.3.2";
-        String build = "2190b-240115";
+        String build = "2195b-240120";
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
         //is_debug=true;
@@ -212,7 +212,7 @@ public interface Main {
                 System.out.println("目前资源版本: S-" + getMD5(Blist.toString()) + "(旧)");
                 System.out.println((char) 27 + "[32m   ↓ 更新" + (char) 27 + "[39;49m");
                 System.out.println("内置资源版本: S-" + Cheek_code + "(新)");
-                System.out.println("回车键继续,建议先备份style文件夹再继续,因为这一步会清理配置文件.");
+                System.out.println("回车键继续,这次的配置文件结构已经改变,建议运行配置文件清理工具,否则配置器可能闪退.");
                 scanner.nextLine();
                 System.out.println("正在清除原资源..");
                 CopyFileToThis(new File("./style/API_list.json"),new File("./back1.json"));
