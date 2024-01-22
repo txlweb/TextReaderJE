@@ -3,8 +3,10 @@ package com.teipreader.Main;
 import com.teipreader.Lib.IniLib;
 import com.teipreader.LibTextParsing.CartoonMake;
 
+import java.awt.*;
 import java.io.*;
 import java.math.BigInteger;
+import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -232,16 +234,16 @@ public interface Main {
 
         System.out.println((char) 27 + "[33m[I]: 完成." + (char) 27 + "[39;49m");
         System.out.println((char) 27 + "[36m[T]: Ctrl+c结束进程" + (char) 27 + "[39;49m");
-//        String os = System.getProperty("os.name").toLowerCase();//启动浏览器,但是很烦人
-//        if (os.startsWith("windows")) {
-//            URI uri = URI.create("http://127.0.0.1:" + Config_dirs.NormPort + "/");
-//            try {
-//                Desktop desktop = Desktop.getDesktop();
-//                desktop.browse(uri);
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
+        String os = System.getProperty("os.name").toLowerCase();//启动浏览器,但是很烦人
+        if (os.startsWith("windows")) {
+            URI uri = URI.create("http://127.0.0.1:" + Config_dirs.NormPort + "/");
+            try {
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(uri);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         if (Config_dirs.Use_Share) {
             RunShare a = new RunShare();
             a.start();
