@@ -9,9 +9,9 @@
         left: 0;
         width: 1%;
         height: 7px;
-        background-color: #ff0000; /* 自定义进度条颜色 */
-        opacity: 0.8; /* 自定义进度条透明度 */
-        z-index: 9999; /* 确保进度条显示在最顶层 */
+        background-color: #ff0000;
+        opacity: 0.8;
+        z-index: 99;
         border-radius: 4px;
     }
 </style>
@@ -40,8 +40,7 @@
 <div id="scroll-progress"></div>
 <block class="bar">
     <p class="title">
-        <a class="hw book_block" height="0px" href="/" width="0px"><img height="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAABMklEQVR42u2YyQ6FIAxF/f+t8xCjC+MQY9Qf7EtNeCmoKAHUBYurRAQOLZSqBwDeV6TVOAxDiKLorzzP4RWYIAg4ECbf9+ExmGEYgFoEB0/TdLuzZwhqHUa0QlEUcOY2LHddB1ZgqFtwoGVZDgeq65oDLssSjMKoumBdVw7ortukldM07daHitnpJO60Pa3AbUpB4jgG3V2H/c3zDEow4rZt21YrfmRZxgE1TQO3YMSZmIquGBLoBBFQCqPqY1X1fS9dg9ulqioQQ7vNM0jcnSxM7OKCDYtcnWtYHsdxH1VtW+XIOkwboYlzRQcGyzjuzmxPw9Bl4WAcjINxMA7GwXwexmSqqQ3zVHLFcu1DGJrB44syYQdULCeiOmsr5k9JksBlQv6EDhPyt4DE7yfvS3+ufvEBBDEEbYiPAAAAAElFTkSuQmCC"
-                                                                        width="20px"/></a>
+        <a class="hw book_block" height="0px" href="/" width="0px"><img height="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAABMklEQVR42u2YyQ6FIAxF/f+t8xCjC+MQY9Qf7EtNeCmoKAHUBYurRAQOLZSqBwDeV6TVOAxDiKLorzzP4RWYIAg4ECbf9+ExmGEYgFoEB0/TdLuzZwhqHUa0QlEUcOY2LHddB1ZgqFtwoGVZDgeq65oDLssSjMKoumBdVw7ortukldM07daHitnpJO60Pa3AbUpB4jgG3V2H/c3zDEow4rZt21YrfmRZxgE1TQO3YMSZmIquGBLoBBFQCqPqY1X1fS9dg9ulqioQQ7vNM0jcnSxM7OKCDYtcnWtYHsdxH1VtW+XIOkwboYlzRQcGyzjuzmxPw9Bl4WAcjINxMA7GwXwexmSqqQ3zVHLFcu1DGJrB44syYQdULCeiOmsr5k9JksBlQv6EDhPyt4DE7yfvS3+ufvEBBDEEbYiPAAAAAElFTkSuQmCC" width="20px"/></a>
         TextReader 局域网共享(BETA)
         <a class="hw book_block" id="set_btn" onclick="DisplaySetting()">设置</a></p>
 </block>
@@ -133,7 +132,7 @@
 <div class="texter displaynone style_green_view" id="textbar">
     <s class="mark_on" id="mark" onclick="CenterMark()" title="加入书签"></s>
     <s class="mark" hidden id="mark_off" onclick="CenterMark()" title="取消书签"></s>
-
+    <br><br>
     #textbara
     <br>
     <br>
