@@ -25,6 +25,7 @@ import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
 import static com.teipreader.LibTextParsing.TextReaderLibVc.GetImg;
 import static com.teipreader.LibTextParsing.TextReaderLibVc.GetTitImg;
 import static com.teipreader.Main.Config_dirs.Fire_Wall;
+import static com.teipreader.Main.TeipMake.import_teip;
 
 public class WebServer extends Thread implements Main {
     public static void StartServer() {
@@ -169,7 +170,8 @@ class RequestHandler implements Runnable {
                 if (Objects.equals(b[2], "epub")) {
                     TeipMake.EpubMake(a[1]);
                 } else {
-                    TeipMake.Unzip(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Config_dirs.MainPath);
+                    import_teip(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
+                    //TeipMake.Unzip(, Config_dirs.MainPath);
                 }
                 RET_HTML = new StringBuilder("Complete to import file.");
                 IsSendData = true;

@@ -8,6 +8,7 @@ import java.util.Objects;
 
 
 public class Config_dirs {
+    public static String TempPath = "./tmp/";//Temp root
     public static String MainPath = "./rom";//Text root
     public static String StylePath = "./style";//Web root
     public static int NormPort = 8080;//Web port

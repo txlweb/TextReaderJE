@@ -4,8 +4,7 @@ import com.teipreader.Lib.EncodingDetect;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import java.util.zip.ZipOutputStream;
 
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
 import static com.teipreader.Main.Config_dirs.MainPath;
+import static com.teipreader.Main.Config_dirs.TempPath;
 
 public class TeipMake {
     private static final char[] hexCode = "0123456789abcdef".toCharArray();
@@ -137,7 +137,42 @@ public class TeipMake {
         deleteFileByIO(md5);
         if (new File(md5).exists()) new File(md5).delete();
     }
+    public static void import_teip(String filePath){
+        deleteFileByIO(TempPath+"/im/");
+        Unzip(filePath,TempPath+"/im/");
+        if(new File(TempPath+"/im/resource.ini").isFile()){
+            Unzip(filePath,MainPath+"/"+getFileMD5(filePath));
+        }else{
+            //循环读取目录内荣,如果有一个里面有resource.ini或main.epub就导入9
+            boolean is_find_data = false;
+            Path p = Paths.get(TempPath+"/im/");
+            if (Files.isDirectory(p)) {
+                try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(p)) {
+                    for (Path file : directoryStream) {
+                        System.out.println(file);
+                        if (Files.isDirectory(file)) {
+                            System.out.println(TempPath+"/im/"+file.getFileName()+"/resource.ini");
+                            if(new File(TempPath+"/im/"+file.getFileName()+"/resource.ini").isFile()){
+                                is_find_data=true;
+                                break;
+                            }
+                            if(new File(TempPath+"/im/"+file.getFileName()+"/main.epub").isFile()){
+                                is_find_data=true;
+                                break;
+                            }
 
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(is_find_data){
+                Unzip(filePath,MainPath);
+            }
+        }
+
+    }
     public static void deleteFileByIO(String filePath) {
         File file = new File(filePath);
         File[] list = file.listFiles();
