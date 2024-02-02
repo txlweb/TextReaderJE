@@ -34,8 +34,8 @@ public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
         String Cheek_code = "74e946f39f691fe62a5f7195b9392270";
-        String version = "1.3.2";
-        String build = "2195b-240120";
+        String version = "1.3.3";
+        String build = "2200b-240202";
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
         //is_debug=true;
