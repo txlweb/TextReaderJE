@@ -219,8 +219,10 @@ public class TeipMake {
         String LsHTML = "";
         int longer = 0;
         for (int i = 0; i < List.size(); i++) {
+            if(i+1>=List.size()) break;
             mainTXT.append(List.get(i)).append("\r\n");
             ListTXT.append(List.get(i)).append("&D&").append(longer).append("\r\n");
+            System.out.println(i+"/"+List.size());
             List<String> tl = ReadCFGFile((MainPath + "/" + V1Name + "/" + (i + 1) + ".txt").replace(",", ""));//读列表
             for (String s : tl) {
                 mainTXT.append(s).append("\r\n");
@@ -254,6 +256,9 @@ public class TeipMake {
         if (new File(V2Save).exists()) new File(V2Save).delete();
     }
 
+    public static void main(String[] args) throws IOException {
+        V1ToV2("a7002491998e236509d2d859d5dfbb12","摆烂魔王才不会遇到退休剑圣");
+    }
     public static void GetTextWithThis(String Name) throws IOException {
         if (IsFile(MainPath + "/" + Name + "/main.txt")) {
             if (new File("main.txt").exists()) new File("main.txt").delete();

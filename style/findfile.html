@@ -15,6 +15,7 @@
         }
         a{
             color:white;
+            font-size: 30px;
         }
         body{
             background-color: #9F9F9F;
@@ -120,8 +121,20 @@
 
                 }
                 for (let i = 0; i < obj.file.length; i++) {
-                    if (obj.file[i] != "")
-                        fl.innerHTML = fl.innerHTML + "<div><img src='unkfile.ico'><a onclick=\"send_data('/api/include/?" + obj.rl_path + "/" + obj.file[i] + "')\">" + obj.rl_path + "/" + obj.file[i] + "</a></div>";
+                    if (obj.file[i] != ""){
+                        if(
+                               obj.file[i].slice(-3)=="zip"
+                            || obj.file[i].slice(-4)=="teip"
+                            || obj.file[i].slice(-4)=="epub"
+                            || obj.file[i].slice(-5)=="teip2"
+                        ){
+                            fl.innerHTML = fl.innerHTML + "<div><img src='favicon.ico'><a onclick=\"send_data('/api/include/?" + obj.rl_path + "/" + obj.file[i] + "')\">" + obj.rl_path + "/" + obj.file[i] + "</a></div>";
+                        }else{
+                            fl.innerHTML = fl.innerHTML + "<div><img src='unkfile.ico'><a onclick=\"send_data('/api/include/?" + obj.rl_path + "/" + obj.file[i] + "')\">" + obj.rl_path + "/" + obj.file[i] + "</a></div>";
+                        }
+                    }
+
+
                 }
             }
         }

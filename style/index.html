@@ -96,6 +96,9 @@
             <br>
             启用Ajax以提升速度:
             <t id="AJMODECHAGE" onclick="AJMODE(this);">OFF</t>
+            <br>
+            启用"AI Speech"悬钮:
+            <t id="AISPEECH" onclick="AISPEECH(this);">TRUE</t>
         </block>
         <br>
         <a href="/findfile.html" class="book_block">上传/搜索teip</a>
@@ -125,7 +128,7 @@
     <block class="plms" onclick="vwlist('NULL')"></block>
     <block class="pagelist" id="pagelist"></block>
 </block>
-<block class="AI_Say" onclick="AI_speak()" title="点击朗读(需要配置API)">
+<block class="AI_Say" onclick="AI_speak()" title="点击朗读(需要配置API)" id="AISPEECH_VIEW">
     <view class="loader" id="AI_isOpen" style="display: none"></view>
     <view style="position: fixed;top: 113px;left: 27px;">AI</view>
 </block>

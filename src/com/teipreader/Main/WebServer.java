@@ -20,8 +20,7 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 import static com.teipreader.Lib.AI_Speech.text_split_by_speech;
-import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
-import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.*;
 import static com.teipreader.LibTextParsing.TextReaderLibVc.GetImg;
 import static com.teipreader.LibTextParsing.TextReaderLibVc.GetTitImg;
 import static com.teipreader.Main.Config_dirs.Fire_Wall;
@@ -96,7 +95,7 @@ class RequestHandler implements Runnable {
 
             if(!client.getRemoteSocketAddress().toString().contains("127.0.0.1") && Fire_Wall){
                 System.out.println((char) 27 + "[33m[FireWall] 发现了一次异常访问,源于 "+client.getRemoteSocketAddress().toString()+" 已自动拦截." + (char) 27 + "[39;49m");
-                sendText(out,"<meta charset=\"UTF-8\"><h1>迎欢迎使用TextReader,但是你被墙了 :-)</h1><h2>这不是你的TextReader,所以你无权访问. #FireWall机制正在工作#  </h2><br>如果你需要的话您可以在github上获取这个软件的更新,不要忘记给作者点个star啊!秋梨膏!<a href=\"https://github.com/txlweb/TextReaderJE/\">访问这个GitHub仓库</a><br><input id=\"a\" type=\"text\"><button onclick=\"window.location.href='/REGKEY'+document.getElementById('a').value\">使用KEY进入白名单</button>");
+                sendText(out,"<meta charset=\"UTF-8\"><h1>迎欢迎使用TextReader,但是你被墙了 :-)</h1><h2>这不是你的TextReader,所以你无权访问. #FireWall机制正在工作#  </h2><br>如果你需要的话您可以在github上获取这个软件的更新,不要忘记给作者点个star啊!秋梨膏!<a href=\"https://github.com/txlweb/TextReaderJE/\">访问这个GitHub仓库</a><br>");
                 if(!in.readLine().split(" ")[1].contains(tmp_key)){
                     in.close();
                     out.close();
@@ -248,7 +247,8 @@ class RequestHandler implements Runnable {
                     }
                     RET_HTML.append("]}");
                 } else {
-                    RET_HTML = new StringBuilder(TextReaderLibVa.GetMainText_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
+                    RET_HTML = new StringBuilder("<h1>"+GetBookTitle(URLDecoder.decode(a[1], StandardCharsets.UTF_8))+"</h1>");
+                    RET_HTML.append(TextReaderLibVa.GetMainText_HTML_TYPE(URLDecoder.decode(a[1], StandardCharsets.UTF_8), Integer.parseInt(b[0].replace(",", ""))));
                     RET_HTML = new StringBuilder(ServerLibVa.AddTitle(RET_HTML.toString()));
                 }
                 if (Config_dirs.Use_Server_LOG)

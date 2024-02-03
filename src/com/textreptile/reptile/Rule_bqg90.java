@@ -130,10 +130,9 @@ public class Rule_bqg90 {
 
     public static String GetInfo() throws MalformedURLException {
         List<String> lines = ReadCFGFile("tmp-hb.txt");
-        for (int i = 0, linesSize = lines.size(); i < linesSize; i++) {
-            String line = lines.get(i);
+        for (String line : lines) {
             if (line.contains("<dd>")) {
-                String[] a = lines.get(i).split("<dd>");
+                String[] a = line.split("<dd>");
                 String[] b = a[1].split("<");
                 return b[0];//1
             }

@@ -88,7 +88,7 @@ public class TextReaderLibVa {
         List<String> List = ReadCFGFile(MainPath + "/" + name + "/" + id + ".txt");//逐行读(不能用/n,这样显示会没有换行)
         StringBuilder LsHTML = new StringBuilder();
         //添加换行
-        for (String s : List) LsHTML.append(s).append("<br/>");
+        for (String s : List) LsHTML.append("<p>").append(s).append("</p>");
         return StrFixMainText(LsHTML.toString(), name, id, GetMaxTexts(name));
     }
 
@@ -110,15 +110,15 @@ public class TextReaderLibVa {
     //修补主要文本方式!
     public static String StrFixMainText(String MainText, String name, int id, int maxid) {
         String Fixd;
-        Fixd = MessageFormat.format("<br><br><bar><a class=\"book_block\" href=\"/{0}/{1}.html\" id=\"last\">{2}</a>", name, id - 1, langunges.langunges[Config_dirs.LanguageID][1]);
+        Fixd = MessageFormat.format("<bar><a class=\"book_block\" href=\"/{0}/{1}.html\" id=\"last\">{2}</a>", name, id - 1, langunges.langunges[Config_dirs.LanguageID][1]);
         Fixd = MessageFormat.format("{0}<a class=\"book_block\" onclick=\"vwlist(''{1}/list.html'')\">{2}</a>", Fixd, name, langunges.langunges[Config_dirs.LanguageID][0]);
         //Fixd = MessageFormat.format("{0}<a href=\"/{1}/list.html\">目录</a>", Fixd, name);
         Fixd = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/{2}.html\" id=\"next\">{3}</a></bar>", Fixd, name, id + 1, langunges.langunges[Config_dirs.LanguageID][2]);
         Fixd = MessageFormat.format("{0}<div id=\"maintext\">{1}</div>", Fixd, MainText);
-        Fixd = MessageFormat.format("{0}<bar><a class=\"book_block\" href=\"/{1}/{2}.html\">{3}</a>", Fixd, name, id - 1, langunges.langunges[Config_dirs.LanguageID][1]);
+        Fixd = MessageFormat.format("{0}<bar><a class=\"book_block\" href=\"/{1}/{2}.html\" id=\"l1\">{3}</a>", Fixd, name, id - 1, langunges.langunges[Config_dirs.LanguageID][1]);
         Fixd = MessageFormat.format("{0}<a class=\"book_block\" onclick=\"vwlist(''{1}/list.html'')\">{2}</a>", Fixd, name, langunges.langunges[Config_dirs.LanguageID][0]);
         //Fixd = MessageFormat.format("{0}<a href=\"/{1}/list.html\">目录</a>", Fixd, name);
-        Fixd = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/{2}.html\">{3}</a></bar>", Fixd, name, id + 1, langunges.langunges[Config_dirs.LanguageID][2]);
+        Fixd = MessageFormat.format("{0}<a class=\"book_block\" href=\"/{1}/{2}.html\" id=\"n1\">{3}</a></bar>", Fixd, name, id + 1, langunges.langunges[Config_dirs.LanguageID][2]);
         Fixd = MessageFormat.format("{0}<br><pointer id=\"poin\" now=\"{1}\" max=\"{2}\"></pointer>", Fixd, id, maxid);
         return Fixd.replace(",", "");
     }
@@ -169,7 +169,15 @@ public class TextReaderLibVa {
         File t = new File(MainPath + "/" + name + "/hidden.info");
         return t.isFile();
     }
-
+    public static String GetBookTitle(String name) {
+        if(new File(MainPath + "/" + name + "/resource.ini").isFile()){
+            return IniLib.GetThing(MainPath + "/" + name + "/resource.ini", "conf", "title");
+        }
+        if(new File(MainPath + "/" + name + "/main.epub").isFile()){
+            return TextReaderLibVc.GetName(MainPath + "/" + name + "/main.epub");
+        }
+        return "Unknow-name";
+    }
     public static int GetMaxTexts(String name) {
         //LibVb
         if (IsFile(MainPath + "/" + name + "/main.index")) return TextReaderLibVb.GetMaxTexts(name);

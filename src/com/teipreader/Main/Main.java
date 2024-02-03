@@ -33,7 +33,7 @@ import static com.teipreader.Main.TeipMake.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "74e946f39f691fe62a5f7195b9392270";
+        String Cheek_code = "91f5a5054b4f36883a89ad9501fd7862";
         String version = "1.3.3";
         String build = "2200b-240202";
 
@@ -136,9 +136,14 @@ public interface Main {
                 int byteread;
                 while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
             }
-            TeipMake.Unzip("./style.zip", "./style/");
+            if(new File("./side-style.zip").isFile()){
+                TeipMake.Unzip("./side-style.zip", "./style/");
+                System.out.println((char) 27 + "[32m[I]: using side load style... (./side-style.zip)" + (char) 27 + "[39;49m");
+            }else {
+                TeipMake.Unzip("./style.zip", "./style/");
+            }
             if (!new File(Config_dirs.StylePath + "/index.html").isFile()) {
-                System.out.println((char) 27 + "[31m[E]: 资源释放失败." + (char) 27 + "[39;49m");
+                System.out.println((char) 27 + "[31m[E]: 无法释放style(或侧载包无效)." + (char) 27 + "[39;49m");
                 System.out.println((char) 27 + "[31m 进程已结束." + (char) 27 + "[39;49m");
                 return;
             } else {
@@ -189,7 +194,6 @@ public interface Main {
             return;
         }
         //检查style文件夹更新
-
         File filea = new File("./style/");
         StringBuilder Blist = new StringBuilder();
         if (file.isDirectory()) {
@@ -206,31 +210,36 @@ public interface Main {
             }
         }
         Blist = new StringBuilder(getTextMD5(String.valueOf(Blist)));
-        if (!is_debug) {
-            if (!Blist.toString().equals(Cheek_code)) {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("[I]: 资源版本不一致!");
-                System.out.println("若要取消这个步骤,请在程序运行目录下创建文件 debug.lock");
-                System.out.println("目前资源版本: S-" + getMD5(Blist.toString()) + "(旧)");
-                System.out.println((char) 27 + "[32m   ↓ 更新" + (char) 27 + "[39;49m");
-                System.out.println("内置资源版本: S-" + Cheek_code + "(新)");
-                System.out.println("回车键继续,这次的配置文件结构已经改变,建议运行配置文件清理工具,否则配置器可能闪退.");
-                scanner.nextLine();
-                System.out.println("正在清除原资源..");
-                CopyFileToThis(new File("./style/API_list.json"),new File("./back1.json"));
-                CopyFileToThis(new File("./style/config.json"),new File("./back2.json"));
-                deleteFileByIO("./style/");
-                System.out.println((char) 27 + "[31m[I]: 资源修复完成,应用将会重启." + (char) 27 + "[39;49m");
-                main(args);
-                return;
+        //如果是有side-load文件的话就不检查.
+        if(new File("./side-style.zip").isFile()){
+            System.out.println((char) 27 + "[31m[I]: 当前正在使用side-load资源,侧载的资源不能保证是安全的,请自行甄别." + (char) 27 + "[39;49m");
+            System.out.println((char) 27 + "[34m[I]: Side-load file cheek code = " + Blist);
+        }else {
+            if (!is_debug) {
+                if (!Blist.toString().equals(Cheek_code)) {
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.println("[I]: 资源版本不一致!");
+                    System.out.println("若要取消这个步骤,请在程序运行目录下创建文件 debug.lock");
+                    System.out.println("目前资源版本: S-" + getMD5(Blist.toString()) + "(旧)");
+                    System.out.println((char) 27 + "[32m   ↓ 更新" + (char) 27 + "[39;49m");
+                    System.out.println("内置资源版本: S-" + Cheek_code + "(新)");
+                    System.out.println("回车键继续,这次的配置文件结构已经改变,建议运行配置文件清理工具,否则配置器可能闪退.");
+                    scanner.nextLine();
+                    System.out.println("正在清除原资源..");
+                    CopyFileToThis(new File("./style/API_list.json"), new File("./back1.json"));
+                    CopyFileToThis(new File("./style/config.json"), new File("./back2.json"));
+                    deleteFileByIO("./style/");
+                    System.out.println((char) 27 + "[31m[I]: 资源修复完成,应用将会重启." + (char) 27 + "[39;49m");
+                    main(args);
+                    return;
+                }
+            } else {
+                if (!Blist.toString().equals(Cheek_code)) {
+                    System.out.println((char) 27 + "[31m[I]: 资源版本有差异,调试模式下已忽略." + (char) 27 + "[39;49m");
+                }
+                System.out.println((char) 27 + "[34m[DEBUG]: Cheek code: " + Blist);
             }
-        } else {
-            if (!Blist.toString().equals(Cheek_code)) {
-                System.out.println((char) 27 + "[31m[I]: 资源版本有差异,调试模式下已忽略." + (char) 27 + "[39;49m");
-            }
-            System.out.println((char) 27 + "[34m[DEBUG]: Cheek code: " + Blist);
         }
-
 
         System.out.println((char) 27 + "[33m[I]: 完成." + (char) 27 + "[39;49m");
         System.out.println((char) 27 + "[36m[T]: Ctrl+c结束进程" + (char) 27 + "[39;49m");

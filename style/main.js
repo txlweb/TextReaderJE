@@ -28,18 +28,19 @@ function Init() {
     sr_b = document.getElementById('shb');
     sr_r = document.getElementById('shr');
     timex = document.getElementById('time');
-    if (getCookie('bs') !== 'TRUE') {
-        alert('为确保您能流畅的使用本软件,建议您使用Chrome浏览器.如果您正在使用chrome浏览器则忽视这则消息.这则消息仅会显示一次.');
-        setCookie('bs', 'TRUE', 60 * 60 * 24 * 365);
-    }
+    //if (getCookie('bs') !== 'TRUE') {
+        //alert('为确保您能流畅的使用本软件,建议您使用Chrome浏览器.如果您正在使用chrome浏览器则忽视这则消息.这则消息仅会显示一次.');
+        //setCookie('bs', 'TRUE', 60 * 60 * 24 * 365);
+    //}
     info = function () {
         console.log('TextReader BETA', "\n    _..,----,.._\n .-;'-.,____,.-';\n(( |            |\n `))            ; \n  ` \          /\n  .-' `,.____.,' '-.\n(     '------'     )\n `-=..________..-\n 要来一杯Java吗? [Dog]");
         console.log('TextReader by.IDSOFT@IDlike');
-        console.log('JavaEdition(WebCore) Vre.2.5.9-20939 update at 2024/1/2');
+        console.log('JavaEdition(WebCore) Vre.2.7.0-240202 update at 2024/2/2');
         console.log('本软件仅供学习交流使用,且在github上开源! https://github.com/txlweb/TextReaderJE');
     }
     info()
     const poinmain = document.getElementById('poin');
+    console.log(poinmain)
     if (!poinmain) {
         var chagepage = document.getElementById('chagepagebar');
         chagepage.innerHTML = '';
@@ -50,14 +51,13 @@ function Init() {
         for (let i = 0; i < childrens.length; i++) {
             if (childrens[i].tagName === 'H1' || childrens[i].tagName === 'h1') {
                 //总共就1个h1标签表示标题,需要去除" 的章节列表"
-                if (parseInt(getCookie(TextGetLeft(childrens[i].innerHTML, " 的章节列表"))) !== parseInt(getCookie('nanxspwss'))) {
-                    if (getUrlParam('idx') == null && window.location.href.slice(-2) !== 'VH' && getCookie(TextGetLeft(childrens[i].innerHTML, " 的章节列表"))) {
+                if (parseInt(getCookie(childrens[i].innerHTML)) !== parseInt(getCookie('nanxspwss'))) {
+                    if (getUrlParam('idx') == null && window.location.href.slice(-2) !== 'VH' && getCookie(childrens[i].innerHTML)) {
                         //调整IDX,直接回到上回浏览位置
-                        if (true) {//是否自动回到上一次浏览的位置
-                            changeURLStatic('idx', parseInt(getCookie(TextGetLeft(childrens[i].innerHTML, " 的章节列表"))));
-                        }
+                        changeURLStatic('idx', parseInt(getCookie(childrens[i].innerHTML)));
                     }
                 }
+                //break;
             }
         }
     } else {
@@ -68,7 +68,7 @@ function Init() {
             if (childrens[i].tagName === 'H1' || childrens[i].tagName === 'h1') {
                 //总共就1个h1标签表示标题
                 setCookie(childrens[i].innerHTML, parseInt(document.getElementById('poin').getAttribute('now')), 60 * 60 * 24 * 365);
-
+                break;
             }
         }
     }
@@ -81,6 +81,7 @@ function Init() {
     //document.getElementById('maintext') //这个是正文框
     if (getUrlParam('idx') != null) {
         var t = setTimeout("IndexChageIdx()", 500); //目录页便捷索引,延时因为他太早加载不出来
+
     }
     InitPoin(poinmain); //加载进度条document.getElementById('poin')
     //init setting window style
@@ -106,6 +107,14 @@ function Init() {
         setCookie('AJMODE', 'TRUE', 60 * 60 * 24 * 365);
         btn.innerHTML = 'ON';
     }
+    btn = document.getElementById('AISPEECH');
+    if (getCookie('AISPEECH') === 'FALSE') {
+        btn.innerHTML = 'FALSE';
+        document.getElementById("AISPEECH_VIEW").style.display="none"
+    } else {
+        btn.innerHTML = 'TRUE';
+    }
+
     if (!getCookie("MarginTopPxs"))
         setCookie("MarginTopPxs", 20, 60 * 60 * 24 * 365);
     //处理黑夜模式
@@ -183,7 +192,16 @@ function AJMODE(btn) {
         btn.innerHTML = 'ON';
     }
 }
-
+function AISPEECH(btn){
+    if (getCookie('AISPEECH') === 'TRUE') {
+        setCookie('AISPEECH', 'FALSE', 60 * 60 * 24 * 365);
+        btn.innerHTML = 'FALSE';
+    } else {
+        setCookie('AISPEECH', 'TRUE', 60 * 60 * 24 * 365);
+        btn.innerHTML = 'TRUE';
+    }
+    window.location.href=window.location.href
+}
 function viewchage() {
     //位置调整
     sr_b.style.left = document.body.scrollWidth / 2 - sr_b.scrollWidth / 2;
@@ -298,14 +316,17 @@ function IndexChageIdx() {
     const childrens = innerHtmlContent.children;
     for (let i = 0; i < childrens.length; i++) {
         if (childrens[i].tagName === 'A' || childrens[i].tagName === 'a') {
-            if (parseInt(childrens[i].getAttribute('idx')) === idxx) {
+            if (parseInt(childrens[i].getAttribute('idx')) == idxx) {
+
                 document.body.scrollTop = childrens[i].offsetTop - 100;
                 childrens[i].style.backgroundColor = '#fe620d';
                 childrens[i].style.color = 'white';
+                changeURLStatic('idx', "");
                 return childrens[i].offsetTop; //防卡,直接跳出循环.
             }
         }
     }
+
 }
 
 function IndexChageIdx_inpage() {
@@ -314,7 +335,7 @@ function IndexChageIdx_inpage() {
     const childrens = innerHtmlContent.children;
     for (let i = 0; i < childrens.length; i++) {
         if (childrens[i].tagName === 'A' || childrens[i].tagName === 'a') {
-            if (parseInt(childrens[i].getAttribute('idx')) === idxx) {
+            if (parseInt(childrens[i].getAttribute('idx')) == idxx) {//千万不能是===,否则这个函数没效果!!!
                 innerHtmlContent.scrollTop = childrens[i].offsetTop - 100;
                 childrens[i].style.backgroundColor = '#fe620d';
                 childrens[i].style.color = 'white';
@@ -607,13 +628,6 @@ function AI_speak(){
             }, 200);
 
             document.getElementById("AI_isOpen").style.display="block"
-            // ad.innerHTML = "";
-            // for (let i = 0; i <json.data.length; i++) {
-            //     var xurl = "http://127.0.0.1:7880/api/tts?speaker=黑塔&text="+json.data[i]+"&format=wav&language=auto&length=1&sdp=0.2&noise=0.6&noisew=0.8&emotion=7&seed=107000";
-            //     console.log(xurl)
-            //     ad.innerHTML = ad.innerHTML+"<audio id='au_"+i+"'><source src=\""+xurl+"\"></audio>"
-            //     //document.getElementById("au_"--/**--+i)
-            // }
         }
     }
 

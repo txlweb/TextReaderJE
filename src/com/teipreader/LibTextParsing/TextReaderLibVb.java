@@ -92,12 +92,12 @@ public class TextReaderLibVb {
             TList2 = new String[2];
             TList2[1] = String.valueOf(List.size());
         }
-        StringBuilder LsHTML = new StringBuilder();
+        StringBuilder LsHTML = new StringBuilder("<h2>"+TList[0]+"</h2>");
         //添加换行
         System.out.println(Arrays.toString(TList2));
         for (int i = Integer.parseInt(TList[1]); i < Integer.parseInt(TList2[1]); i++) {
             String s = List.get(i);
-            LsHTML.append(s).append("<br/>");
+            LsHTML.append("<p>").append(s).append("</p>");
         }
         return LsHTML.toString();
     }

@@ -96,8 +96,8 @@ public class TextReaderLibVc {
                 p = p + "-- ";
             }
             if (p.equals("┝")) {
-                ret = MessageFormat.format("{0}<a class=\"book_list\" idx=\"{3}\" title=\"{5}\">{4}{6}</a>\r\n",//#{5}:
-                        ret, FileName, c, c,
+                ret = MessageFormat.format("{0}<a class=\"book_list\" idx=\"{1}\" title=\"{3}\">{2}{4}</a>\r\n",//#{5}:
+                        ret, c,
                         p, i + 1,
                         refs.get(i).getTitle());
             } else {

@@ -78,7 +78,7 @@ ix {
     height: 100%;
     opacity: 0.4;
     position: fixed;
-    max-width: 1040px;
+
     background-size: cover;
     background: rgba(0, 0, 0, 2);
 }
@@ -144,7 +144,7 @@ pointer {
     height: 70%;
     position: fixed;
     top: calc(100vh - 70vh);
-    max-width: 1040px;
+
     font-size: 22px;
 }
 
@@ -155,7 +155,6 @@ pointer {
     height: 100%;
     opacity: 0.4;
     position: fixed;
-    max-width: 1040px;
     background-size: cover;
     background: rgba(0, 0, 0, 2);
     top: -10%;
@@ -273,7 +272,7 @@ li {
     opacity: 0.4;
     position: fixed;
     top: -8px;
-    max-width: 1040px;
+
     pointer-events: none;
     margin-top: 90px;
     object-fit: contain;
@@ -370,7 +369,7 @@ li {
     font-style: normal;
     transition: all .5s;
     top: -8px;
-    max-width: 1040px;
+
 }
 
 .settingbg {
@@ -389,7 +388,7 @@ li {
     font-style: normal;
     transition: all .5s;
     top: -8px;
-    max-width: 1040px;
+
 }
 
 @keyframes fadenum {
@@ -453,7 +452,7 @@ li {
     background: rgba(0, 0, 0, 0.8);
     z-index: 300;
     top: -8px;
-    max-width: 1040px;
+
 }
 
 .loader_txt {

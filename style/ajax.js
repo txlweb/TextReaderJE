@@ -23,10 +23,21 @@ document.addEventListener('scroll', function () {
                             let f = d - 1;
                             document.getElementById('next').href = a.substr(0, a.lastIndexOf("/") + 1) + d + ".html";
                             document.getElementById('last').href = a.substr(0, a.lastIndexOf("/") + 1) + e + ".html";
+                            document.getElementById('n1').href = a.substr(0, a.lastIndexOf("/") + 1) + d + ".html";
+                            document.getElementById('l1').href = a.substr(0, a.lastIndexOf("/") + 1) + e + ".html";
                             document.getElementById('poin').setAttribute('now', d - 1);
                             InitPoin(document.getElementById('poin'));
                             history.replaceState(null, null, a.substr(0, a.lastIndexOf("/") + 1) + f + ".html");
                             jumped = false;
+                            let innerHtmlContent = document.getElementById('textbar');
+                            childrens = innerHtmlContent.children;
+                            for (let i = 0; i < childrens.length; i++) {
+                                if (childrens[i].tagName === 'H1' || childrens[i].tagName === 'h1') {
+                                    //总共就1个h1标签表示标题
+                                    setCookie(childrens[i].innerHTML, parseInt(document.getElementById('poin').getAttribute('now')), 60 * 60 * 24 * 365);
+                                    break;
+                                }
+                            }
                         }
                     }
                     xhr.open("get", document.getElementById('next').href + "?NOUI", true);
