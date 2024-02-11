@@ -60,6 +60,7 @@
 > 导入epub文件 -b, -epubmake epub文件名 (共计2个参数)<br>
 > 导入teip文件(V1&V2) -a, -add 文件名<br>
 > 更改设置 -c, -config 键 值 (与上文配置文件一致)<br>
+> 制作文件/编码索引(提速) -e, -encode (共计1个参数)<br>
 
 * 加入小说
 

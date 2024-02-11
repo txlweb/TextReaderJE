@@ -413,4 +413,30 @@ public class TeipMake {
         }
         return hs;
     }
+    public static void make_encode_table(String start_path){
+        File file = new File(start_path);
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files != null) {
+                for (File value : files) {
+                    System.out.println("正在索引文件: " + start_path+"/"+value.getName());
+                    if (value.isDirectory()) {
+                        make_encode_table(start_path+"/"+value.getName());
+                    } else if (value.isFile()) {
+                        if (value.getName().length() >= 7) {
+                            if(!value.getName().endsWith(".encode") &&
+                                    !value.getName().endsWith(".jpg") &&
+                                    !value.getName().endsWith(".png") &&
+                                    !new File(start_path+"/"+value.getName()+".encode").isFile()
+                            ){
+                                String encode = EncodingDetect.getJavaEncode(start_path + "/" + value.getName());
+                                System.out.println("FileEncode = "+encode);
+                                TeipMake.WriteFileToThis(start_path+"/"+value.getName()+".encode",encode);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

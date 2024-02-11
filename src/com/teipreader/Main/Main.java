@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static com.teipreader.Main.Config_dirs.MainPath;
 import static com.teipreader.Main.TeipMake.*;
 
 /*
@@ -50,16 +51,16 @@ public interface Main {
         System.out.println();
         if (args.length > 0) {
             System.out.println((char) 27 + "[36m- Command Help -");
-            System.out.println("获取帮助 -h -help (共计1个参数)");
-            System.out.println("导入txt文件 -m, -make txt文件名 保存的压缩包 小说标题 小说图片 切章规则(建议为.*第.*章.*) 作者 简介 (共计8个参数)");
-            System.out.println("导入pdf文件 -p, -pdfmake pdf文件名 索引(-为自动索引) 保存的压缩包 标题 图片 作者 简介 (共计8个参数)");
-            System.out.println("导入epub文件 -b, -epubmake epub文件名 (共计2个参数)");
-            System.out.println("导出txt文件 -o, -out 小说名 导出的txt名 (共计3个参数)");
-            System.out.println("导入teip文件(V1&V2) -a, -add 文件名 (共计2个参数)");
-            System.out.println("更改设置 -c, -config 键 值 (共计3个参数)");
+            System.out.println("获取帮助                -h -help (共计1个参数)");
+            System.out.println("导入txt文件             -m, -make txt文件名 保存的压缩包 小说标题 小说图片 切章规则(建议为.*第.*章.*) 作者 简介 (共计8个参数)");
+            System.out.println("导入pdf文件             -p, -pdfmake pdf文件名 索引(-为自动索引) 保存的压缩包 标题 图片 作者 简介 (共计8个参数)");
+            System.out.println("导入epub文件            -b, -epubmake epub文件名 (共计2个参数)");
+            System.out.println("导出txt文件             -o, -out 小说名 导出的txt名 (共计3个参数)");
+            System.out.println("导入teip文件(V1&V2)     -a, -add 文件名 (共计2个参数)");
+            System.out.println("制作文件/编码索引(提速)   -e, -encode (共计1个参数)");
+            System.out.println("更改设置                -c, -config 键 值 (共计3个参数)");
             System.out.println("[可配置列表(下面给出了默认值及意义)]");
-            System.out.println(
-                    "    MainPath=./rom   #主路径    \n" +
+            System.out.println("    MainPath=./rom   #主路径    \n" +
                             "    Port=8080        #端口\n" +
                             "    UseShare=enable  #启用/禁止分享服务\n" +
                             "    LogRank=1        #日志等级 0=禁止日志 1=用户级日志 2=调试级日志");
@@ -94,10 +95,10 @@ public interface Main {
                 if (new File("tmp/resource.ini").isFile()) {//v1文件特征
                     String title = IniLib.GetThing("tmp/resource.ini", "conf", "title");
                     System.out.println((char) 27 + "[31m[I]: 版本=v1 标题=" + title + (char) 27 + "[39;49m");
-                    TeipMake.Unzip(args[1], Config_dirs.MainPath + "/" + title);
+                    TeipMake.Unzip(args[1], MainPath + "/" + title);
                 } else {
                     System.out.println((char) 27 + "[31m[I]: 版本=v2 " + (char) 27 + "[39;49m");
-                    TeipMake.Unzip(args[1], Config_dirs.MainPath);
+                    TeipMake.Unzip(args[1], MainPath);
                 }
                 System.out.println((char) 27 + "[39;49m");
                 return;
@@ -107,12 +108,18 @@ public interface Main {
                 IniLib.SetThing("./config.ini", "settings", "LogRank", "1");
                 return;
             }
+            if (Objects.equals(args[0], "-encode") || Objects.equals(args[0], "-e") & args.length >= 3) {
+                System.out.println((char) 27 + "[39;49m");
+                make_encode_table(MainPath);
+                return;
+            }
+
             System.out.println((char) 27 + "[39;49m");
             return;
         }//含参处理
         System.out.println((char) 27 + "[33m[I]: 正在读取配置文件..." + (char) 27 + "[39;49m");
         Config_dirs.init_configs();
-        File file = new File(Config_dirs.MainPath);
+        File file = new File(MainPath);
         if (!file.exists()) {
             if (!file.mkdir()) {
                 System.out.println((char) 27 + "[31m[E]: 无法创建目录." + (char) 27 + "[39;49m");
