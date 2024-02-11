@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
+
 public class ServerLibVa {
     public static String StylePath = Config_dirs.StylePath;
 
@@ -58,17 +60,6 @@ public class ServerLibVa {
         return "";
     }
 
-    public static List<String> ReadCFGFile(String strFilePath) {
-        List<String> str = new ArrayList<>();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(strFilePath))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                str.add(line);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return str;
-    }
+
 
 }

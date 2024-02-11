@@ -16,48 +16,14 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
 import static com.teipreader.Main.Config_dirs.MainPath;
 import static com.teipreader.Main.Config_dirs.TempPath;
 
 public class TeipMake {
     private static final char[] hexCode = "0123456789abcdef".toCharArray();
 
-    public static void allClose(Closeable... closeables) {
-        for (Closeable closeable : closeables) {
-            try {
-                closeable.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    public static List<String> ReadCFGFile(String strFilePath) {
-        File file = new File(strFilePath);
-        List<String> rstr = new ArrayList<>();
-        if (!file.exists() || file.isDirectory()) {
-            System.out.println((char) 27 + "[31m[E]: 找不到文件." + (char) 27 + "[39;49m");
-        } else {
-            FileInputStream fileInputStream = null;
-            InputStreamReader inputStreamReader = null;
-            BufferedReader bufferedReader = null;
-            try {
-                fileInputStream = new FileInputStream(file);
-                inputStreamReader = new InputStreamReader(fileInputStream, EncodingDetect.getJavaEncode(strFilePath));
-                bufferedReader = new BufferedReader(inputStreamReader);
-                String str;
-                while ((str = bufferedReader.readLine()) != null) {
-                    rstr.add(str);
-                }
-                return rstr;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                allClose(bufferedReader, inputStreamReader, fileInputStream);
-            }
-        }
-        return rstr;
-    }
 
     public static void EpubMake(String FileName) throws IOException {
         if (!new File(FileName).exists()) return;//检查文件是否存在
@@ -292,11 +258,11 @@ public class TeipMake {
             } else {
                 file.createNewFile();
             }
-            FileWriter fileWriter = new FileWriter(file.getName(), true);
+            FileWriter fileWriter = new FileWriter(file_name, true);
             BufferedWriter bufferWriter = new BufferedWriter(fileWriter);
             bufferWriter.write(data);
             bufferWriter.close();
-            System.out.println("Done");
+            //System.out.println("Done( "+data);
         } catch (IOException e) {
             e.printStackTrace();
         }

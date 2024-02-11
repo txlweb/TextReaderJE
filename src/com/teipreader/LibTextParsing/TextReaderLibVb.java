@@ -12,46 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.teipreader.LibTextParsing.TextReaderLibVa.IsFile;
+import static com.teipreader.LibTextParsing.TextReaderLibVa.ReadCFGFile;
 
 public class TextReaderLibVb {
     public static String MainPath = Config_dirs.MainPath;
 
-    public static void allClose(Closeable... closeables) {
-        for (Closeable closeable : closeables) {
-            try {
-                closeable.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static List<String> ReadCFGFile(String strFilePath) {
-        File file = new File(strFilePath);
-        List<String> rstr = new ArrayList<>();
-        if (!file.exists() || file.isDirectory()) {
-            System.out.println((char) 27 + "[31m[E]: 找不到文件." + (char) 27 + "[39;49m");
-        } else {
-            FileInputStream fileInputStream = null;
-            InputStreamReader inputStreamReader = null;
-            BufferedReader bufferedReader = null;
-            try {
-                fileInputStream = new FileInputStream(file);
-                inputStreamReader = new InputStreamReader(fileInputStream, EncodingDetect.getJavaEncode(strFilePath));
-                bufferedReader = new BufferedReader(inputStreamReader);
-                String str;
-                while ((str = bufferedReader.readLine()) != null) {
-                    rstr.add(str);
-                }
-                return rstr;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                allClose(bufferedReader, inputStreamReader, fileInputStream);
-            }
-        }
-        return rstr;
-    }
 
 
     public static String GetList_HTML_TYPE(String name) {

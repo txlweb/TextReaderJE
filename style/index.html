@@ -15,34 +15,17 @@
         border-radius: 4px;
     }
 </style>
-<script>
 
-    function updateScrollProgress() {
-        scrollProgresss = document.getElementById('scroll-progress');
-        scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-        var progresss = (scrollTop / (scrollHeight - window.innerHeight)) * 100;
-        scrollProgresss.style.width = progresss + '%';
-        scrollProgresss.style.backgroundColor = "rgb(" + progresss * 2.5 + ",0," + (255 - progresss * 2.5) + ")";
-
-    }
-
-    function scrollHandler() {
-        updateScrollProgress()
-    }
-
-    window.addEventListener('scroll', scrollHandler);
-</script>
 <link href="/style.css" rel="stylesheet" type="text/css">
 <title>TextReader 局域网共享(BETA)</title>
 
 <body class="style_body" id="body">
 <div id="scroll-progress"></div>
-<block class="bar">
-    <p class="title">
+<block class="bar" style="padding-top: 22px;">
+    <t class="title"style="font-size: 13px">
         <a class="hw book_block" height="0px" href="/" width="0px"><img height="20px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAABMklEQVR42u2YyQ6FIAxF/f+t8xCjC+MQY9Qf7EtNeCmoKAHUBYurRAQOLZSqBwDeV6TVOAxDiKLorzzP4RWYIAg4ECbf9+ExmGEYgFoEB0/TdLuzZwhqHUa0QlEUcOY2LHddB1ZgqFtwoGVZDgeq65oDLssSjMKoumBdVw7ortukldM07daHitnpJO60Pa3AbUpB4jgG3V2H/c3zDEow4rZt21YrfmRZxgE1TQO3YMSZmIquGBLoBBFQCqPqY1X1fS9dg9ulqioQQ7vNM0jcnSxM7OKCDYtcnWtYHsdxH1VtW+XIOkwboYlzRQcGyzjuzmxPw9Bl4WAcjINxMA7GwXwexmSqqQ3zVHLFcu1DGJrB44syYQdULCeiOmsr5k9JksBlQv6EDhPyt4DE7yfvS3+ufvEBBDEEbYiPAAAAAElFTkSuQmCC" width="20px"/></a>
         TextReader 局域网共享(BETA)
-        <a class="hw book_block" id="set_btn" onclick="DisplaySetting()">设置</a></p>
+        <a class="hw book_block" id="set_btn" onclick="DisplaySetting()">设置</a></t>
 </block>
 <block class="load" id="load">
     <view class="loader_window">
@@ -79,6 +62,8 @@
             <color class="colorselector style_gray_view" onclick="chagestyle('style_gray_view')"></color>
             <color class="colorselector style_yellow_view" onclick="chagestyle('style_yellow_view')"></color>
             <color class="colorselector style_pink" onclick="chagestyle('style_pink')"></color>
+            <color class="colorselector color_change" onclick="chagestyle('color_change')"></color>
+
             <color class="colorselector" id="colorset" onclick="spcolor()">SET</color>
         </block>
         <br>
@@ -143,15 +128,15 @@
 </div>
 <div class="info">
     <img src="/favicon.ico" width="12px">
-    <t>TextReader JE BETA</t>
+    <t>TextReader *BETA</t>
     <br>
-    <t>@IDlike [W] 2.4.3 AL
+    <t>@IDlike [W] 2.7.0 AL
         <t id="time"></t>
     </t>
 </div>
 <br>
 <br>
-<block id="chagepagebar">
+<block id="chagepagebar" class="color_change_text">
     <t id="dbug"></t>
     <block class="NextPage" id="NextPage">
         <h1>继续上拉跳转到下一章</h1>

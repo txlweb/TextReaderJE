@@ -123,14 +123,15 @@
                 for (let i = 0; i < obj.file.length; i++) {
                     if (obj.file[i] != ""){
                         if(
-                               obj.file[i].slice(-3)=="zip"
-                            || obj.file[i].slice(-4)=="teip"
-                            || obj.file[i].slice(-4)=="epub"
-                            || obj.file[i].slice(-5)=="teip2"
+                               obj.file[i].slice(-3).toUpperCase()=="ZIP"
+                            || obj.file[i].slice(-4).toUpperCase()=="TEIP"
+                            || obj.file[i].slice(-4).toUpperCase()=="EPUB"
+                            || obj.file[i].slice(-5).toUpperCase()=="TEIP2"
                         ){
                             fl.innerHTML = fl.innerHTML + "<div><img src='favicon.ico'><a onclick=\"send_data('/api/include/?" + obj.rl_path + "/" + obj.file[i] + "')\">" + obj.rl_path + "/" + obj.file[i] + "</a></div>";
+                        }else if(obj.file[i].slice(-3).toUpperCase()=="SAF") {
                         }else{
-                            fl.innerHTML = fl.innerHTML + "<div><img src='unkfile.ico'><a onclick=\"send_data('/api/include/?" + obj.rl_path + "/" + obj.file[i] + "')\">" + obj.rl_path + "/" + obj.file[i] + "</a></div>";
+                            fl.innerHTML = fl.innerHTML + "<div><img src='unkfile.ico'><img src='not.ico'><a title='不可导入!' onclick=\"send_data()\">" + obj.rl_path + "/" + obj.file[i] + "</a></div>";
                         }
                     }
 

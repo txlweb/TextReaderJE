@@ -3,6 +3,7 @@ package com.teipreader.LibTextParsing;
 import com.teipreader.Lib.EncodingDetect;
 import com.teipreader.Lib.IniLib;
 import com.teipreader.Main.Config_dirs;
+import com.teipreader.Main.TeipMake;
 import com.teipreader.Main.langunges;
 
 import java.io.*;
@@ -34,8 +35,23 @@ public class TextReaderLibVa {
             InputStreamReader inputStreamReader = null;
             BufferedReader bufferedReader = null;
             try {
+                String encode = "UTF-8";
+                if(new File(strFilePath+".encode").isFile()){
+                    try (BufferedReader reader = new BufferedReader(new FileReader(strFilePath+".encode"))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            encode = line;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    encode = EncodingDetect.getJavaEncode(strFilePath);
+                    //System.out.println("FileEncode = "+encode);
+                    TeipMake.WriteFileToThis(strFilePath+".encode",encode);
+                }
                 fileInputStream = new FileInputStream(file);
-                inputStreamReader = new InputStreamReader(fileInputStream, EncodingDetect.getJavaEncode(strFilePath));
+                inputStreamReader = new InputStreamReader(fileInputStream, encode);
                 bufferedReader = new BufferedReader(inputStreamReader);
                 String str;
                 while ((str = bufferedReader.readLine()) != null) {

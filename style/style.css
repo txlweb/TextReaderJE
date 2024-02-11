@@ -198,8 +198,31 @@ bar a {
     width: 100%;
     text-align: center;
     opacity: 0.5;
+    pointer-events: none;
 }
-
+.color_change {
+    background-color: black;
+    animation: rainbow 2s infinite;
+}
+@keyframes rainbow {
+    0% { background-color: red; }
+    20% { background-color: orange; }
+    40% { background-color: yellow; }
+    60% { background-color: green; }
+    80% { background-color: blue; }
+    100% { background-color: indigo; }
+}
+.color_change_text {
+    animation: rainbow_text 2s infinite;
+}
+@keyframes rainbow_text {
+    0% { color: red; }
+    20% { color: orange; }
+    40% { color: yellow; }
+    60% { color: green; }
+    80% { color: blue; }
+    100% { color: indigo; }
+}
 body {
     margin: 0 auto;
     padding: 0;

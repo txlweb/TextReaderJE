@@ -637,3 +637,18 @@ function AI_speak(){
 var aud;
 var auda;
 var load_clock;
+function updateScrollProgress() {
+    scrollProgresss = document.getElementById('scroll-progress');
+    scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+    var progresss = (scrollTop / (scrollHeight - window.innerHeight)) * 100;
+    scrollProgresss.style.width = progresss + '%';
+    scrollProgresss.style.backgroundColor = "rgb(" + progresss * 2.5 + ",0," + (255 - progresss * 2.5) + ")";
+
+}
+
+function scrollHandler() {
+    updateScrollProgress()
+}
+
+window.addEventListener('scroll', scrollHandler);
