@@ -419,7 +419,7 @@ public class TeipMake {
             File[] files = file.listFiles();
             if (files != null) {
                 for (File value : files) {
-                    System.out.println("正在索引文件: " + start_path+"/"+value.getName());
+                    System.out.println("正在索引文件:  " + start_path+"/"+value.getName());
                     if (value.isDirectory()) {
                         make_encode_table(start_path+"/"+value.getName());
                     } else if (value.isFile()) {
