@@ -6,6 +6,7 @@ let configs;
 //启动项
 window.onload = function () {
     Init();
+    updateScrollProgress();
 }
 
 //window.onload =  function (){inline_init();}
@@ -638,11 +639,29 @@ var aud;
 var auda;
 var load_clock;
 function updateScrollProgress() {
+    const main = document.getElementById('poin');
+    let max = 0;
+    let now = 0;
+    //与章节进度联动
+    if(main){
+        max = parseInt(main.getAttribute('max')); //获取自定义参数-max(最大值)
+        now = parseInt(main.getAttribute('now')); //获取自定义参数-now(当前值)
+    }
+
+
     scrollProgresss = document.getElementById('scroll-progress');
     scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-    var progresss = (scrollTop / (scrollHeight - window.innerHeight)) * 100;
-    scrollProgresss.style.width = progresss + '%';
+    if(!main) {
+        var progresss = ((scrollTop / (scrollHeight - window.innerHeight))) * 100;
+    }else{
+        var progresss = (window.innerWidth * (now / max)+(scrollTop / ((scrollHeight - window.innerHeight) * (window.innerWidth / max))))/window.innerWidth*100;
+    }
+    if(main){
+        scrollProgresss.style.width = window.innerWidth * (now / max)+(scrollTop / ((scrollHeight - window.innerHeight) * (window.innerWidth / max))) + "px"
+    }else{
+        scrollProgresss.style.width = progresss + '%';
+    }
     scrollProgresss.style.backgroundColor = "rgb(" + progresss * 2.5 + ",0," + (255 - progresss * 2.5) + ")";
 
 }
