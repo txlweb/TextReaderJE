@@ -34,9 +34,9 @@ import static com.teipreader.Main.TeipMake.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "76318f617579fe9e943fb0b4121cfec1";
+        String Cheek_code = "10dff6985dbc1a47a77bceec1e548817";
         String version = "1.3.3";
-        String build = "2200b-240202";
+        String build = "2210b-240215";
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
         //is_debug=true;
