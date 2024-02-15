@@ -1,0 +1,25 @@
+NAME:自动屏蔽
+BY:IDlike
+@JS-START
+//下面是配置项
+var shields = ["fuck"];
+//这里会在main.js完成后修改函数
+//这里是main.js内代码去除了书内阅读进度版本.
+function replace_fuck_code() {
+    let innerHtmlContent = document.getElementById('maintext');
+    const childrens = innerHtmlContent.children;
+    for (let i = 0; i < childrens.length; i++) {
+        if (childrens[i].tagName === 'P' || childrens[i].tagName === 'p') {
+            for (const shield of shields) {
+                childrens[i].innerHTML = childrens[i].innerHTML.replace(shield,"***")
+                //ps:三星堆
+            }
+
+        }
+    }
+}
+ setInterval(function (){
+     replace_fuck_code()
+ }, 1000);
+
+@JS-END

@@ -1,0 +1,15 @@
+NAME:使用仅<当前页>阅读进度条
+BY:IDlike
+@JS-START
+//被修改函数: updateScrollProgress()
+//这里会在main.js完成后修改函数
+//这里是main.js内代码去除了书内阅读进度版本.
+function updateScrollProgress() {
+    scrollProgresss = document.getElementById('scroll-progress');
+    scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+    var progresss = ((scrollTop / (scrollHeight - window.innerHeight))) * 100;
+    scrollProgresss.style.width = progresss + '%';
+    scrollProgresss.style.backgroundColor = "rgb(" + progresss * 2.5 + ",0," + (255 - progresss * 2.5) + ")";
+}
+@JS-END
