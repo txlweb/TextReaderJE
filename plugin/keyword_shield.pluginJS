@@ -18,7 +18,9 @@ function replace_fuck_code() {
         }
     }
 }
- setInterval(function (){
+ setTimeout(function (){
+     //当页面加载完毕时,开始翻译,这会强制禁止ajax翻页
+     setCookie('AJMODE', 'FALSE', 60 * 60 * 24 * 365);
      replace_fuck_code()
  }, 1000);
 
