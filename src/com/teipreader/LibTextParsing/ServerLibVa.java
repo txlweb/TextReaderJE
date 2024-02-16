@@ -20,7 +20,7 @@ public class ServerLibVa {
             File[] files = file.listFiles();
             if (files != null) {
                 for (File value : files) {
-                    if (value.isFile()&&!value.getPath().contains(".encode")&value.getPath().contains(".plugin")) {
+                    if (value.isFile()&&!value.getPath().contains(".encode")&value.getPath().contains(".plugin") && !value.getPath().contains(".nop")) {
                         System.out.println("Load plugin: "+value.getPath());
                         boolean b1 = true,b2 = true,b3 = false;
                         List<String> Plugin_ = ReadCFGFile(value.getPath());// 读列表
