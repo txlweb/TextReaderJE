@@ -1,0 +1,80 @@
+NAME:打开调试模式插件
+BY:IDlike
+@JS-START
+consoleHELP = " console HELP text  [1/1]page<br>" +
+    "reload() 重载程序" +
+    "没有什么可以帮助的,这里是方便打印一些变量的,与F12别无二致."
+function reload(){
+    window.location.href = window.location.href;
+}
+setTimeout(function (){
+    //注入element
+    var consoleContainer = document.createElement("div");
+    var consoleBG = document.createElement("div");
+    body.appendChild(consoleBG)
+    consoleBG.appendChild(consoleContainer)
+    //设置style
+    consoleBG.style.position = "fixed";
+    consoleBG.style.width = "300px";
+    consoleBG.style.top = "80px";
+    consoleBG.style.height = "200px";
+    consoleBG.style.background = "white"
+    consoleBG.style.zIndex = "100000000"
+    consoleContainer.style.background = "black"
+    consoleContainer.style.top = "0px"
+    consoleContainer.style.height = "20px"
+    consoleContainer.style.color = "white"
+    consoleContainer.innerHTML = "USER DEBUG WINDOW [MOVE WINDOW]    "
+    var close = document.createElement("t");
+    consoleContainer.appendChild(close)
+    close.style.background = "red"
+    close.style.color = "white"
+    close.innerHTML = " [X] "
+    close.onclick = function (){
+        consoleBG.style.display = "none"
+    }
+    //注入输入控件
+    var otmd = document.createElement("div");
+    var incmd = document.createElement("input");
+    var runcmd = document.createElement("button");
+    consoleBG.appendChild(otmd)
+    consoleBG.appendChild(incmd)
+    consoleBG.appendChild(runcmd)
+    otmd.innerHTML = "<p>DEBUG CONSOLE by. IDlike</p>"
+    runcmd.innerHTML = "执行"
+    incmd.type = "text"
+    incmd.value = "alert(\"IDNB!\")"
+    runcmd.onclick = function (){
+        otmd.innerHTML = otmd.innerHTML + "<p>[USER]"+incmd.value+"->" + eval(incmd.value) + "</p>";
+    }
+    var isDragging = false; // 判断是否正在拖动
+    var offsetX = 0; // X轴相对位移量
+    var offsetY = 0; // Y轴相对位移量
+    // 鼠标按下时开始拖动
+    function handleMouseDown(event) {
+        event.preventDefault();
+
+        isDragging = true;
+        offsetX = event.clientX - consoleBG.offsetLeft;
+        offsetY = event.clientY - consoleBG.offsetTop;
+    }
+    // 鼠标移动时更新控制台位置
+    function handleMouseMove(event) {
+        if (isDragging) {
+            var leftPos = event.clientX - offsetX;
+            var topPos = event.clientY - offsetY;
+
+            consoleBG.style.left = leftPos + "px";
+            consoleBG.style.top = topPos + "px";
+        }
+    }
+    // 鼠标松开后停止拖动
+    function handleMouseUp() {
+        isDragging = false;
+    }
+    // 添加事件监听
+    consoleContainer.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+},500)
+@JS-END
