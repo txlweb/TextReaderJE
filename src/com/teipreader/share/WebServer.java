@@ -63,9 +63,9 @@ class RequestHandler implements Runnable {
             if (path.contains("/dl/")) {
                 String[] a = path.split("\\?");
                 if (Config_dirs.Use_Server_LOG)
-                    System.out.println((char) 27 + "[33m[Server]:为小说建立文档@" + URLDecoder.decode(a[1], StandardCharsets.UTF_8) + "@zip" + (char) 27 + "[39;49m");
-                if (new File(MainPath + "/" + URLDecoder.decode(a[1], StandardCharsets.UTF_8)).exists()) {
-                    TeipIO.GetZip(URLDecoder.decode(a[1], StandardCharsets.UTF_8));
+                    System.out.println((char) 27 + "[33m[Server]:为小说建立文档@" + URLDecoder.decode(a[1], String.valueOf(StandardCharsets.UTF_8)) + "@zip" + (char) 27 + "[39;49m");
+                if (new File(MainPath + "/" + URLDecoder.decode(a[1], String.valueOf(StandardCharsets.UTF_8))).exists()) {
+                    TeipIO.GetZip(URLDecoder.decode(a[1], String.valueOf(StandardCharsets.UTF_8)));
                     sendFile(out, new File("tmp.zip"));//goto end
                     in.close();
                     out.close();

@@ -1,6 +1,7 @@
 package com.teipreader.Lib;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class AI_Speech {
         List<String> ret = new ArrayList<>();
         //处理异常的HTML内容 PS:这玩意不能读啊!
 
-        List<String> text = List.of(In_File.split(""));
+        List<String> text = Arrays.asList(In_File.split(""));
         int c = 0;
         StringBuilder tret = new StringBuilder();
         for (int i = 0; i < text.size(); i++) {

@@ -1,0 +1,16 @@
+NAME:插件管理器-!检查哪个插件有问题!
+BY:IDlike
+@JS-START
+setTimeout(function (){
+    const settingwindow = document.getElementById("settingwindow");
+    const plugin_lst = document.createElement("div")
+    settingwindow.appendChild(plugin_lst)
+    for (let i = 0; i < plugin_list.length; i++) {
+        const ap = document.createElement("t")
+        ap.innerHTML = "插件: " + plugin_list[i]
+        plugin_lst.appendChild(ap)
+        const ab = document.createElement("br")
+        plugin_lst.appendChild(ab)
+    }
+},100)
+@JS-END

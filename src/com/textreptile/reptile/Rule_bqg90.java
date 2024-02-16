@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.teipreader.Lib.Download.Dw_File;
@@ -99,7 +100,7 @@ public class Rule_bqg90 {
         for (String line : lines) {
             if (line.contains("<div id=\"chaptercontent\" class=\"Readarea ReadAjax_content\">")) {
                 String[] a = line.split("\">");
-                return List.of(a[1].split("<br />"));
+                return Arrays.asList(a[1].split("<br />"));
             }
         }
         return null;
