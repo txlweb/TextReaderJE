@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>安装/搜索小说 - bqg9x.com</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/layui/layui.js"></script>
+</head>
+<body>
+    <script>
+        layui.use('element', function(){
+            var element = layui.element;
+        });
+        var vv1 = true;
+        function s(){
+            if(document.getElementById("st").value == ""){
+                alert("不能搜索空字符!")
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    const lb = document.getElementById("ls_box");
+                    lb.innerHTML = xhr.responseText;
+                }
+            }
+            xhr.open("get", "/api/S_bqg9x/?"+document.getElementById("st").value, true);
+            xhr.send(null);
+        }
+        function d(v1,v2,v3,v4,v5){
+            if(vv1) {
+                document.getElementById("io").src = "/api/D_bqg9x/?" + v1 + "&&" + v2 + "&&" + v3 + "&&" + v4 + "&&" + v5
+                alert('任务已创建,请耐心等待完成,期间请勿再下载.')
+                vv1=false;
+            }else {
+                alert('不要重复创建任务!暂时不支持多任务下载!')
+            }
+        }
+        setInterval("rld();", 500);
+        function rld() {
+
+            const xhr = new XMLHttpRequest();
+            //fl.innerHTML = "";
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    layui.use('element', function() {
+                        layui.element.progress("ps", xhr.responseText + "%");
+                    })
+                }
+
+            }
+            xhr.open('get', "/api/P_bqg9x/");
+            xhr.send(null);
+        }
+    </script>
+    <style>
+        .rdblk{
+            display: flex;
+            align-items: center;
+            margin: 10px;
+            border-width: 5px;
+            border-color: black;
+            border-style: solid;
+        }
+        img{
+            width: 100px;
+            height: 130px;
+        }
+    </style>
+    <ul class="layui-nav" lay-filter="">
+        <li class="layui-nav-item"><a href="/">返回主页</a></li>
+    </ul>
+    <h2>搜索</h2>
+    <input type="text" id="st"><button onclick="s()">搜索 - 点击下载</button>
+    <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="ps">
+        <div class="layui-progress-bar layui-bg-green" lay-percent="50%"></div>
+    </div>
+    <div id="ls_box"></div>
+    <iframe id="io" onload="vv1 = true;"></iframe>
+</body>
+</html>

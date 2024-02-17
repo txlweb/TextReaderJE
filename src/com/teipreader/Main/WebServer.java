@@ -7,6 +7,7 @@ import com.teipreader.LibTextParsing.ServerLibVa;
 import com.teipreader.LibTextParsing.TextReaderLibVa;
 import com.textreptile.reptile.Rule_biquzw789;
 import com.textreptile.reptile.Rule_bqg90;
+import com.textreptile.reptile.Rule_bqg9x;
 
 import java.awt.*;
 import java.io.*;
@@ -229,6 +230,22 @@ class RequestHandler implements Runnable {
                     RET_HTML.append(line);
                 }
                 System.out.println(RET_HTML);
+                IsSendData = true;
+            }
+            if(path.contains("/api/S_bqg9x/?")){
+                String[] a = URLDecoder.decode(path, String.valueOf(StandardCharsets.UTF_8)).split("\\?");
+                RET_HTML = new StringBuilder(Rule_bqg9x.Search(a[1]));
+                IsSendData = true;
+            }
+            if(path.contains("/api/P_bqg9x/")){
+                RET_HTML = new StringBuilder(String.valueOf(Rule_bqg9x.p));
+                IsSendData = true;
+            }
+            if(path.contains("/api/D_bqg9x/?")){
+                String[] a = URLDecoder.decode(path, String.valueOf(StandardCharsets.UTF_8)).split("\\?");
+                a = a[1].split("&&");
+                Rule_bqg9x.addToThis(a[0],a[1],a[2],a[3],a[4]);
+                RET_HTML = new StringBuilder("ok");
                 IsSendData = true;
             }
             Pattern compile = Pattern.compile(".*/[0-9].*.html.*");
