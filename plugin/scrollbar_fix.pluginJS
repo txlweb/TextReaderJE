@@ -1,0 +1,15 @@
+NAME:滚动修复!!
+BY:IDlike
+@JS-START
+setTimeout(function () {
+    //注入css
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = "::-webkit-scrollbar {width: 5px;background: white;} ::-webkit-scrollbar-thumb {background: #888;}";
+    document.head.appendChild(style);
+    const settingwindow = document.getElementById("settingwindow");
+    //规范设置大小
+    settingwindow.style.maxHeight = "650px"
+    settingwindow.style.overflow = "scroll"
+},500)
+@JS-END

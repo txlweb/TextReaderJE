@@ -1,0 +1,167 @@
+NAME:SFD
+BY:IDlike
+@JS-START
+// SFD 对话小说阅读器组件 这将会在所有组件加载完毕后加载.
+// 使用json格式,可以看文档
+var ds;
+var ii = 0;
+var tt = 0;
+var tk;
+var endl = null;
+setTimeout(init_SFD,500)
+function init_SFD(){
+    //press STYLE
+    const csss = `
+    ts{
+        background-color: #4e9bff;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    tx{
+        background-color: gray;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    tn{
+        background-color: gray;
+        border-radius: 5px;
+        padding: 5px;
+        margin-top: 15px;
+        max-width: 80%;
+    }
+    #textbar div{
+        padding-top: 20px;
+    }
+    #textbar img{
+        width: 50px;
+        height: 50px;
+        background-color: aqua;
+        border-radius: 50px;
+        margin: 10px;
+    }`;
+    var style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = csss;
+
+    //获取数据
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            var t = xhr.responseText
+            const psr = new DOMParser().parseFromString(t,'text/html')
+            var x = psr.getElementsByTagName('p')[0].textContent
+
+            ds = load_d(JSON.parse(x))
+            function load_a_page() {
+                if (ii + 1 >= ds.length && endl == null) {
+                    endl = document.createElement("div")
+                    endl.innerHTML = "本章阅读已结束..."
+                    document.body.appendChild(endl)
+                }
+                ds[ii].style.display = "flex"
+                if (ii + 1 < ds.length) {
+                    ii++;
+                }
+
+            }
+            document.head.appendChild(style);
+            document.body.onclick = load_a_page
+            load_a_page()
+            document.body.onmousedown = function () {
+                console.log("dw")
+                clearInterval(tk)
+                tt = 0
+                tk = setInterval(function () {
+                    tt++;
+                    if (tt > 10) {
+                        for (let i = 0; i < ds.length; i++) {
+                            load_a_page()
+                        }
+                        clearInterval(tk)
+                    }
+                }, 100)
+            }
+            document.body.onmouseup = function () {
+                clearInterval(tk)
+                tt = 0
+            }
+        }
+    }
+    xhr.open("get", window.location.href + "?NOUI", true);
+    xhr.send(null);
+}
+function load_d(data){
+    var imgs = [];
+    const mt = document.getElementById("maintext")
+    mt.innerHTML = ""
+    //加载图片资源
+    for (let i = 0; i < data.speakers.length; i++) {
+        let im = document.createElement("img");
+        im.src = data.speakers[i].icon;
+        im.title = data.speakers[i].name;
+
+        imgs.push(im)
+    }
+    var objs = []
+    //按文本复制图片
+    for (let i = 0; i < data.speaks.length; i++) {
+        console.log(i)
+        if(data.speaks[i].speaker>=0) {
+            //复制图片对象
+            let im = imgs[data.speaks[i].speaker].cloneNode(true);
+            //向maintext添加节点
+            let vw = document.createElement("div")
+            vw.style.display = "flex"
+            mt.appendChild(vw)
+            var mtm = document.createElement("div")
+            mtm.style.display = "flex"
+            //向vw里添加节点
+            var nm = document.createElement("t")
+            nm.innerHTML = imgs[data.speaks[i].speaker].title
+            if (data.self === data.speaks[i].speaker) {
+                var tm = document.createElement("ts")//主角
+                //    align-items: center;
+                //    justify-content: flex-end;
+                vw.style.alignItems = "center";
+                vw.style.justifyContent = "flex-end";
+                //    flex-direction: column;
+                //    align-items: flex-end;
+                mtm.style.flexDirection = "column"
+                mtm.style.alignItems = "flex-end"
+            } else if (data.speaks[i].speaker < 0) {
+                var tm = document.createElement("tn")//旁白
+            } else {
+                var tm = document.createElement("tx")//其他人
+                //flex-direction: row-reverse;
+                //justify-content: flex-end;
+                vw.style.flexDirection = "row-reverse"
+                vw.style.justifyContent = "flex-end"
+                mtm.style.flexDirection = "column"
+                mtm.style.alignItems = "flex-start"
+            }
+            tm.innerHTML = data.speaks[i].text;
+            mtm.style.maxWidth = "80%"
+            vw.style.display = "none"
+            mtm.appendChild(nm)
+            mtm.appendChild(tm)
+            vw.appendChild(mtm)
+            vw.appendChild(im)
+            objs.push(vw)
+        }else{
+            var tm = document.createElement("tn")//旁白
+            let vw = document.createElement("div")
+            tm.innerHTML = data.speaks[i].text;
+            //    display: flex;
+            //    justify-content: center;
+            vw.style.display = "flex"
+            vw.style.justifyContent = "center"
+            vw.style.display = "none"
+            mt.appendChild(vw)
+            vw.appendChild(tm)
+            objs.push(vw)
+        }
+
+
+    }
+    return objs
+}
