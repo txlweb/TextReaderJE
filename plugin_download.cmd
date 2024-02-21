@@ -114,7 +114,14 @@ if "%choice%"=="1" (
 ) else if "%choice%"=="U" (
      cls
      echo 正在下载更新...
-     certutil -urlcache -split -f https://raw.githubusercontent.com/txlweb/TextReaderJE/master/plugin_download.cmd plugin_download.cmd
+     del /f plugin_download_base64.txt
+     certutil -urlcache -split -f https://raw.githubusercontent.com/txlweb/TextReaderJE/master/plugin_download_base64.txt plugin_download_base64.txt
+     if exist "plugin_download_base64.txt" (
+         del /f plugin_download.cmd
+         certutil -decode plugin_download_base64.txt plugin_download.cmd
+     ) else (
+         echo 更新失败!请检查网络环境!
+     )
      echo 下载完成,按任意键重启
      pause
      start plugin_download.cmd
