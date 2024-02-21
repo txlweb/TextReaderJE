@@ -111,9 +111,12 @@ if "%choice%"=="1" (
 ) else if "%choice%"=="Q" (
     echo 退出程序  
     exit /b  
-) else if "%choice%"=="Q" (
-     echo 正在下载更新
+) else if "%choice%"=="U" (
+     cls
+     echo 正在下载更新...
      certutil -urlcache -split -f https://raw.githubusercontent.com/txlweb/TextReaderJE/master/plugin_download.cmd plugin_download.cmd
+     echo 下载完成,按任意键重启
+     pause
      start plugin_download.cmd
      exit /b
  ) else (
