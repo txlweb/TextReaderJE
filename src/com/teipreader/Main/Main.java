@@ -221,7 +221,7 @@ public interface Main {
         if(new File("./side-style.zip").isFile()){
             System.out.println((char) 27 + "[31m[I]: 当前正在使用side-load资源,侧载的资源不能保证是安全的,请自行甄别." + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[34m[I]: Side-load file cheek code = " + Blist);
-        }else {
+        } else {
             if (!is_debug) {
                 if (!Blist.toString().equals(Cheek_code)) {
                     Scanner scanner = new Scanner(System.in);

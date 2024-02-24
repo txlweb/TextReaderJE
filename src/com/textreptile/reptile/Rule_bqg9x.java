@@ -115,36 +115,27 @@ public class Rule_bqg9x {
 //        System.out.println(l_tit.size());
 //        System.out.println(l_typ.size());
         //格式化为json
-        String buffer_json = "";
+        StringBuilder buffer_json = new StringBuilder();
         //if(l_img.size() - l_hrf.size() + l_inf.size() - l_tit.size() + l_typ.size() + l_img.size() == 0){//确保都是一样长的.否则是不对的
             for (int i = 0; i < l_img.size(); i++) {
-                buffer_json = buffer_json + "<div class=\"rdblk\" onclick=\"d('https://novel-api.xiaoppkk.com/"
-                        +l_hrf.get(i*2).replace("-id","-catalog-id")+"','"+
-                        l_tit.get(i)+"','"+
-                        l_typ.get(i).get(0)+"','"+
-                        l_inf.get(i).replace(",","")
-                                .replace("]","")
-                                .replace("[","")
-                                .replace("\"","")
-                                .replace(":","")
-                                .replace("<","")
-                                .replace(">","")+"','"
-                        +l_img.get(i)
-                        +"')\"><img src=\""
-                        +l_img.get(i)+"\"><div class=\"rsblk\"><h3>"+l_tit.get(i)+"</h3><p>简介:"
-                        +l_inf.get(i).replace(",","")
-                        .replace("]","")
-                        .replace("[","")
-                        .replace("\"","")
-                        .replace(":","")
-                        .replace("<","")
-                        .replace(">","")
-                        +"</p><p>作者: "+l_typ.get(i).get(0)+"</p></div></div>";
+                buffer_json.append("<div class=\"rdblk\" onclick=\"d('https://novel-api.xiaoppkk.com/").append(l_hrf.get(i * 2).replace("-id", "-catalog-id")).append("','").append(l_tit.get(i)).append("','").append(l_typ.get(i).get(0)).append("','").append(l_inf.get(i).replace(",", "")
+                        .replace("]", "")
+                        .replace("[", "")
+                        .replace("\"", "")
+                        .replace(":", "")
+                        .replace("<", "")
+                        .replace(">", "")).append("','").append(l_img.get(i)).append("')\"><img src=\"").append(l_img.get(i)).append("\"><div class=\"rsblk\"><h3>").append(l_tit.get(i)).append("</h3><p>简介:").append(l_inf.get(i).replace(",", "")
+                        .replace("]", "")
+                        .replace("[", "")
+                        .replace("\"", "")
+                        .replace(":", "")
+                        .replace("<", "")
+                        .replace(">", "")).append("</p><p>作者: ").append(l_typ.get(i).get(0)).append("</p></div></div>");
             }
         //}
 
         System.out.println(buffer_json);
-        return buffer_json;
+        return buffer_json.toString();
     }
 
 

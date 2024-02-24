@@ -14,7 +14,7 @@ public class ServerLibVa {
     public static String getPluginCode(){
         //加载插件
         //扫plugin目录
-        String buffer_plugin = "";
+        StringBuilder buffer_plugin = new StringBuilder();
         File file = new File("./plugin/");
         int vid = 0;
         if (file.isDirectory()) {
@@ -26,40 +26,40 @@ public class ServerLibVa {
                         System.out.println("Load plugin: "+value.getPath());
                         boolean b1 = true,b2 = true,b3 = false;
                         List<String> Plugin_ = ReadCFGFile(value.getPath());// 读列表
-                        buffer_plugin = buffer_plugin + "<script>\r\nif(plugin_enables["+vid+"]){\r\n";
+                        buffer_plugin.append("<script>\r\nif(plugin_enables[").append(vid).append("]){\r\n");
                         vid++;
-                        for (int i = 0; i < Plugin_.size(); i++) {
-                            if(b3&!Plugin_.get(i).equals("@JS-END")){
-                                buffer_plugin = buffer_plugin + Plugin_.get(i)+"\r\n";
+                        for (String s : Plugin_) {
+                            if (b3 & !s.equals("@JS-END")) {
+                                buffer_plugin.append(s).append("\r\n");
                             }
-                            if(Plugin_.get(i).contains("NAME")&b1){
-                                buffer_plugin = buffer_plugin + "//"+Plugin_.get(i)+"\r\nplugin_list.push(\""+Plugin_.get(i)+"\")\r\n";
-                                b1=false;
+                            if (s.contains("NAME") & b1) {
+                                buffer_plugin.append("//").append(s).append("\r\nplugin_list.push(\"").append(s).append("\")\r\n");
+                                b1 = false;
                             }
-                            if(Plugin_.get(i).contains("BY")&b2){
-                                buffer_plugin = buffer_plugin + "//"+Plugin_.get(i)+"\r\n";
-                                b2=false;
+                            if (s.contains("BY") & b2) {
+                                buffer_plugin.append("//").append(s).append("\r\n");
+                                b2 = false;
                             }
-                            if(Plugin_.get(i).equals("@JS-START")&!b1&!b2){
-                                b3=true;
+                            if (s.equals("@JS-START") & !b1 & !b2) {
+                                b3 = true;
                             }
-                            if(Plugin_.get(i).equals("@JS-END")){
-                                b3=false;
+                            if (s.equals("@JS-END")) {
+                                b3 = false;
                             }
 
                         }
-                        buffer_plugin = buffer_plugin + "}plugin_list[plugin_list.length-1]=\"[OK]\"+plugin_list[plugin_list.length-1];</script>\r\n";
+                        buffer_plugin.append("}plugin_list[plugin_list.length-1]=\"[OK]\"+plugin_list[plugin_list.length-1];</script>\r\n");
 
                     }
                 }
             }
         }
-        String ff =  "<script>var plugin_enables = [true";
+        StringBuilder ff = new StringBuilder("<script>var plugin_enables = [true");
         for (int i = 0; i < vid; i++) {
-            ff = ff + ",true";
+            ff.append(",true");
         }
-        ff = ff + "];var plugin_list = [];</script>\r\n";
-        return ff+buffer_plugin;
+        ff.append("];var plugin_list = [];</script>\r\n");
+        return ff.toString() +buffer_plugin;
     }
     public static String AddTitle(String Old) throws UnsupportedEncodingException {
         List<String> List = ReadCFGFile(StylePath + "/index.html");// 读列表

@@ -401,17 +401,17 @@ public class TeipMake {
     }
 
     private static String byte2hexLower(byte[] b) {
-        String hs = "";
+        StringBuilder hs = new StringBuilder();
         String stmp = "";
         for (byte value : b) {
             stmp = Integer.toHexString(value & 0XFF);
             if (stmp.length() == 1) {
-                hs = hs + "0" + stmp;
+                hs.append("0").append(stmp);
             } else {
-                hs = hs + stmp;
+                hs.append(stmp);
             }
         }
-        return hs;
+        return hs.toString();
     }
     public static void make_encode_table(String start_path){
         File file = new File(start_path);
