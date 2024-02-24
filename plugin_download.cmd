@@ -117,8 +117,9 @@ if "%choice%"=="1" (
      del /f plugin_download_base64.txt
      certutil -urlcache -split -f https://raw.githubusercontent.com/txlweb/TextReaderJE/master/plugin_download_base64.txt plugin_download_base64.txt
      if exist "plugin_download_base64.txt" (
-         del /f plugin_download.cmd
-         certutil -decode plugin_download_base64.txt plugin_download.cmd
+         echo del /f plugin_download.cmd > t.cmd
+         echo certutil -decode plugin_download_base64.txt plugin_download.cmd >> t.cmd
+         start t.cmd
      ) else (
          echo 更新失败!请检查网络环境!
      )
