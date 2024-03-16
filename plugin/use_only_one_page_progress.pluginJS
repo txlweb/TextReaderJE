@@ -1,4 +1,4 @@
-NAME:使用仅<当前页>阅读进度条
+NAME:使用仅当前页阅读进度条
 BY:IDlike
 @JS-START
 //被修改函数: updateScrollProgress()

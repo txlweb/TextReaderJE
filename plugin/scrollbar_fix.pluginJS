@@ -1,4 +1,4 @@
-NAME:滚动修复!!
+NAME:滚动修复 - 一个让滚动条缩小的插件
 BY:IDlike
 @JS-START
 setTimeout(function () {

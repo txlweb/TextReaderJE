@@ -1,4 +1,4 @@
-NAME:SFD
+NAME:SFD-JSON - JSON数据结构的对话小说支持
 BY:IDlike
 @JS-START
 // SFD 对话小说阅读器组件 这将会在所有组件加载完毕后加载.

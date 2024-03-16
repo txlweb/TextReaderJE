@@ -1,0 +1,621 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ReaderNextUI</title>
+    <style>
+        * {
+            /*动效!*/
+            -webkit-transition: .1s ease-in-out;
+            -moz-transition: .1s ease-in-out;
+            -o-transition: .1s ease-in-out;
+            /*样式*/
+            outline: none;
+            -webkit-tap-highlight-color: rgba(255, 0, 0, 0);
+            vertical-align: baseline;
+            font-style: normal;
+
+        }
+        body {
+            margin: 0 auto;
+            padding: 0;
+            min-height: 1080px;
+        }
+        #ctrl_bar{
+            display: flex;
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            height: 80px;
+            flex-direction: column-reverse;
+            background-color: #2E2D3C;
+            color: white;
+            padding-top: 5px;
+        }
+        .d_bar{
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        #setting_bar{
+            position: fixed;
+            z-index: 3;
+            bottom: 0px;
+            width: 100%;
+            font-size: 25px;
+            background-color: #3F3F3F;
+        }
+        #maintext div{
+            padding-top: 40px;
+        }
+        .back{
+            position: fixed;
+            z-index: 2;
+            top: 0px;
+            width: 100%;
+            background-color: #2E2D3C;
+            color: white;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        #light_ctrl_box{
+            display: inline-block;
+            width: 200px;
+            height: 20px;
+            border-radius: 30px;
+            background-color: rgb(42, 42, 42);
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none;   /* Chrome/Safari/Opera */
+            -moz-user-select: none;      /* Firefox */
+            -ms-user-select: none;       /* Internet Explorer/Edge */
+            user-select: none;
+            font-size: 16px;
+            color: white;
+            text-align: center;
+        }
+        #fsa,#fsb{
+            border: #99152b 1px solid;
+            border-radius: 30px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        #fsa:hover{
+            background-color: #99152b;
+        }
+        #fsb:hover{
+            background-color: #99152b;
+        }
+        #fs{
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        #select_color_white{
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: #99152b 5px solid;
+            border-radius: 30px;
+            background-color: white;
+        }
+        #index_page{
+            position: fixed;
+            z-index: 1;
+            bottom: 50px;
+            left: 0px;
+            width: 100%;
+            height: 60%;
+            overflow: scroll;
+            display: none;/*test!!*/
+            background-color: white;
+            font-size: 20px;
+            padding: 0px;
+            border-top: 3px solid black;
+        }
+        #index_page a{
+            display: block;
+            text-decoration: none;
+            color: black;
+            padding-left: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            border-top: 1px solid black;
+        }
+        #index_page a:hover{
+            color: #6e6e6e;
+            background-color: #fe620d;
+        }
+        .d_prs{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+        }
+        #persion_index{
+            width: 300px;
+            background-color: #3F3F3F;
+            height: 18px;
+            border-radius: 30px;
+        }
+        .persion_body{
+            display: block;
+            width: 100px;
+            background-color: #0C0C0C;
+            height: 18px;
+            border-radius: 30px;
+            text-align: center;
+        }
+        ::-webkit-scrollbar {width: 5px;} ::-webkit-scrollbar-thumb {background: #888;}
+    </style>
+
+    <script>
+        // var c_name = "";
+        // var c_id = 0;
+
+        //阻止main.js发挥作用,并使用其中的一些项目
+
+        window.onload = function (){}//阻止启动main!
+        function updateScrollProgress() {}//禁止更新进度条(根本没有!)
+        //自带滚动修复
+
+        //测试参数
+        var c_name = getUrlParam("name");//"bd88a21f696cb499b413ddfefab09e3f"
+        var c_id = getUrlParam("id");
+        //内联变量
+        var c_sid = c_id;
+        var c_all = 0;
+        var tx_FontSize = 16;
+        var loaded = true;
+        var light_overlay;
+        var safe_eye_overlay;
+        var task_ls = [];
+        function page_load(id){
+            const vd = document.createElement('div')
+            vd.id = "text_"+id
+            vd.setAttribute("idx",id)
+            document.getElementById("maintext").appendChild(vd)
+            var url = "/"+c_name+"/"+id+".html"
+            //ajax请求并拼接上去
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    const v_idx = c_id
+                    //document.getElementById("maintext").innerHTML = document.getElementById("maintext").innerHTML + "<div id='text_"+v_idx+"' idx=\""+(v_idx-1)+"\">" + xhr.responseText + "</div>";
+                    vd.innerHTML  = xhr.responseText
+                    setTimeout(function (){loaded = true;},100)
+
+                }
+            }
+            xhr.open("get", url + "?NOUI", true);
+            xhr.send(null);
+            setTimeout(function (){window.location.href = "#text_"+id},100)
+        }
+        function page_load_last(id){
+            const vd = document.createElement('div')
+            vd.id = "text_"+id
+            vd.setAttribute("idx",id)
+            document.getElementById("maintext").insertBefore(vd,document.getElementById("maintext").firstChild)
+            //ajax请求并拼接上去
+            var url = "/"+c_name+"/"+id+".html"
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    const v_idx = c_sid
+                    //document.getElementById("maintext").innerHTML = "<div id='text_"+v_idx+"' idx=\""+v_idx+"\">" + xhr.responseText + "</div>" + document.getElementById("maintext").innerHTML;
+                    vd.innerHTML  = xhr.responseText
+                    setTimeout(function (){loaded = true;},100)
+
+                }
+            }
+            xhr.open("get", url + "?NOUI", true);
+            xhr.send(null);
+            setTimeout(function (){window.location.href = "#text_"+id},100)
+        }
+        function load_next_page(){
+            c_id++
+            changeURLParam("id",c_id)
+            page_load(c_id)
+        }
+        function load_last_page(){
+            c_sid--
+            if(c_sid>0){
+                page_load_last(c_sid)
+            }else{
+                c_sid = 0
+            }
+        }
+        function isInViewport(element) {
+            var a = element.children
+            for (const ee of a) {
+                var rect = ee.getBoundingClientRect();
+                if (
+                    rect.top >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+                ){
+                    return true
+                }
+            }
+            return false
+
+        }
+        function get_now_scroll_ID(){
+            var a = document.getElementById("maintext").children
+            for (const ee of a) {
+                if(isInViewport(ee)){
+                    //console.log(ee.getAttribute("idx"))
+                    return ee.getAttribute("idx")
+                }
+
+            }
+        }
+        function load_to_page(id){
+            console.log(id)
+            c_id = id
+            c_sid = id
+            changeURLParam("id",c_id)
+            document.getElementById("maintext").innerHTML = ""
+            load_next_page()
+            setTimeout(function (){window.location.href = "#text_"+id},100)
+
+            document.body.scrollTop = document.body.scrollTop + 500;
+            document.getElementById("d_ls").click()
+        }
+        function ajax_load_list(){
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    document.getElementById("index_page").innerHTML = xhr.responseText;
+
+                    c_all = 0;
+                    let innerHtmlContent = document.getElementById('index_page');
+                    const childrens = innerHtmlContent.children;
+                    for (let i = 0; i < childrens.length; i++) {
+                        if (childrens[i].tagName === 'A' || childrens[i].tagName === 'a') {
+                            c_all++;
+                            //这里修补跳转,改成执行函数
+                            function sp(s) {return s.slice(s.lastIndexOf('/')+1,s.lastIndexOf('.'));}
+                            if(childrens[i].innerHTML != "[下载本小说]"){
+                                childrens[i].href = "javascript: load_to_page('"+sp(childrens[i].href)+"')"
+                                //console.log("aaa")
+                            }
+
+                            if (parseInt(childrens[i].getAttribute('idx')) == c_id-1) {//千万不能是===,否则这个函数没效果!!!
+                                innerHtmlContent.scrollTop = childrens[i].offsetTop - 100;
+                                childrens[i].style.backgroundColor = '#fe620d';
+                                childrens[i].style.color = 'white';
+                            }
+                        }
+                    }
+                    c_all--;//排除开头的下载链接
+                    update_persion()
+                }
+            }
+            xhr.open("get", "/"+c_name + "/list.html?NOUI", true);
+            xhr.send(null);
+        }
+        var v1,v2=90;
+        function creat_event(){
+
+            //初始加载
+            ajax_load_list()
+            page_load(c_id)
+            load_to_page(c_id)
+            //设置字体
+            tx_FontSize = parseInt(getCookie("FontSize"))
+            document.getElementById("fs").innerHTML = tx_FontSize;
+            document.getElementById("maintext").style.fontSize = tx_FontSize;
+            //persion_index
+            setTimeout(function (){document.body.scrollTop = 100;},100)
+            //日夜间
+            document.getElementById("d_dn").addEventListener("click",function () {
+                if (document.getElementById("d_dn").children[2].innerHTML == "夜间"){
+                    document.body.style.background = "#2a2a2a"
+
+                    document.getElementById("index_page").style.filter = "invert(80%)"
+
+                    document.getElementById("maintext").style.background = "#2a2a2a"
+                    document.getElementById("maintext").style.color = "#dcdcdc"
+                    document.getElementById("d_dn").children[2].innerHTML = "日间"
+                }else{
+                    document.body.style.background = "white"
+                    document.getElementById("index_page").style.filter = "invert(0%)"
+                    document.getElementById("maintext").style.background = "white"
+                    document.getElementById("maintext").style.color = "black"
+                    document.getElementById("d_dn").children[2].innerHTML = "夜间"
+                }
+            })
+            //目录
+            document.getElementById("d_ls").addEventListener("click",function () {
+                //再次点击取消弹出
+                if(document.getElementById("index_page").style.display == "block"){
+                    document.getElementById("index_page").style.display = "none"
+                }else {
+                    document.getElementById("index_page").style.display = "block"
+                }
+                        let innerHtmlContent = document.getElementById('index_page');
+                        const childrens = innerHtmlContent.children;
+                        for (let i = 0; i < childrens.length; i++) {
+                            if (childrens[i].tagName === 'A' || childrens[i].tagName === 'a') {
+                                if (parseInt(childrens[i].getAttribute('idx')) == get_now_scroll_ID()) {//千万不能是===,否则这个函数没效果!!!
+                                    innerHtmlContent.scrollTop = childrens[i].offsetTop - 100;
+                                    childrens[i].style.backgroundColor = '#fe620d';
+                                    childrens[i].style.color = 'white';
+                                }else{
+                                    childrens[i].style.backgroundColor = '';
+                                    childrens[i].style.color = '';
+                                }
+                            }
+                        }
+                        update_persion()
+
+            })
+            document.getElementById("lst").addEventListener("click",function (){
+                load_to_page(get_now_scroll_ID()-2);
+                document.getElementById('d_ls').click();
+            })
+            document.getElementById("nex").addEventListener("click",function (){
+                document.getElementById('d_ls').click();
+                load_to_page(Number(get_now_scroll_ID()));
+            })
+            document.getElementById("fsa").addEventListener("click",function (){
+                tx_FontSize--
+                document.getElementById("fs").innerHTML = tx_FontSize;
+                document.getElementById("maintext").style.fontSize = tx_FontSize;
+                setCookie("FontSize",tx_FontSize)
+            })
+            document.getElementById("fsb").addEventListener("click",function (){
+                tx_FontSize++
+                document.getElementById("fs").innerHTML = tx_FontSize;
+                document.getElementById("maintext").style.fontSize = tx_FontSize;
+                setCookie("FontSize",tx_FontSize)
+            })
+            document.getElementById("d_st").addEventListener("click",function (){
+                document.getElementById("setting_bar").style.display = "block";
+            })
+            //event-
+            document.getElementById("maintext").addEventListener("click",function (){
+                document.getElementById("setting_bar").style.display = "none";
+                document.getElementById("index_page").style.display = "none"
+
+                if(document.getElementById("ctrl_bar").style.display == "none"){
+                    document.getElementById("ctrl_bar").style.display = "flex"
+                }else{
+                    document.getElementById("ctrl_bar").style.display = "none";
+                }
+            })
+            //亮度控制组
+            //创建亮度控制蒙版
+            light_overlay = document.createElement("div")
+            light_overlay.style.position = "fixed"
+            light_overlay.style.width = "100%"
+            light_overlay.style.height = "100%"
+            light_overlay.style.background = "black"
+            light_overlay.style.top = "0px"
+            light_overlay.style.left = "0px"
+            light_overlay.style.zIndex = "5"
+            light_overlay.style.pointerEvents = "none"
+            document.body.appendChild(light_overlay)
+            light_overlay.style.opacity = 1-v2/100
+            document.getElementById("light_ctrl_box").innerHTML = v2
+            document.getElementById("light_ctrl_box").addEventListener("mousedown",function (){
+                v1=true
+            })
+            document.getElementById("light_ctrl_box").addEventListener("mouseup",function (){
+                v1=false
+            })
+            document.getElementById("light_ctrl_box").addEventListener("mousemove",function (e){
+                if(v1){
+                    v2 = Math.floor(v2 + e.movementX)
+                    if(v2<20)v2=20
+                    if(v2>100)v2=100
+                    document.getElementById("light_ctrl_box").innerHTML = v2
+                    light_overlay.style.opacity = 1-v2/100
+
+                }
+            })
+            //
+            safe_eye_overlay = document.createElement("div")
+            safe_eye_overlay.style.position = "fixed"
+            safe_eye_overlay.style.width = "100%"
+            safe_eye_overlay.style.height = "100%"
+            safe_eye_overlay.style.background = "rgb(0,255,0)"
+            safe_eye_overlay.style.top = "0px"
+            safe_eye_overlay.style.left = "0px"
+            safe_eye_overlay.style.zIndex = "6"
+            safe_eye_overlay.style.pointerEvents = "none"
+            safe_eye_overlay.style.opacity = 0.2
+            safe_eye_overlay.style.display = "none"
+            document.body.appendChild(safe_eye_overlay)
+            document.getElementById("safe_eye").addEventListener("click",function (){
+                if(safe_eye_overlay.style.display == "block"){
+                    safe_eye_overlay.style.display = "none"
+                }else{
+                    safe_eye_overlay.style.display = "block"
+                }
+            })
+            //event-滚轮滚动
+            let up = document.getElementById('up_page');
+            up.style.height = "100px"
+            let dw = document.getElementById('down_page');
+            dw.style.height = "100px"
+            document.addEventListener('scroll', function () {
+                if (up.offsetTop + up.offsetHeight > document.body.scrollTop + 20) {//+ document.body.clientHeight
+                    document.body.scrollTop = document.body.scrollTop + 3;
+                }
+                if (up.offsetTop + up.offsetHeight > document.body.scrollTop + 50) {//+ document.body.clientHeight
+                    //console.log("up")
+                    if(loaded) load_last_page()
+                    loaded = false;
+
+
+                    document.body.scrollTop = document.body.scrollTop + 50;
+                }
+                if (dw.offsetTop - dw.offsetHeight < document.body.scrollTop + document.body.clientHeight - 350) {//
+                    document.body.scrollTop = document.body.scrollTop - 1;
+                }
+                if (dw.offsetTop - dw.offsetHeight < document.body.scrollTop + document.body.clientHeight - 100) {//+ document.body.clientHeight
+                    //console.log("dw")
+                    if(loaded) load_next_page()
+                    loaded = false;
+                    document.body.scrollTop = document.body.scrollTop -100;
+
+                }
+                //更新阅读进度条
+                update_persion()
+            })
+            //获取总章节数(打开,目录页)
+            document.getElementById("d_ls").click()
+            document.getElementById("d_ls").click()
+            document.getElementById("maintext").click()
+            document.getElementById("maintext").click()
+        }
+        var lst_k = 0;
+        function update_persion(){
+            document.getElementById("persion_index").children[0].innerHTML = get_now_scroll_ID()+"/"+c_all
+            document.getElementById("persion_index").children[0].style.width = get_now_scroll_ID()/c_all*100+"%"
+            //更新目录
+
+
+        }
+
+        //Lib_cookie do
+        function getCookie(name) {
+            const nameEQ = name + '=';
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1, c.length)
+                }
+                if (c.indexOf(nameEQ) === 0) {
+                    return unescape(c.substring(nameEQ.length, c.length))
+                }
+            }
+            return false
+        }
+
+        function clearCookie(name) {
+            setCookie(name, "", -1);
+        }
+
+        function setCookie(name, value, seconds) {
+            seconds = seconds || 0;
+            let expires = "";
+            if (seconds !== 0) {
+                var date = new Date();
+                date.setTime(date.getTime() + (seconds * 1000));
+                expires = "; expires=" + date.toGMTString();
+            }
+            document.cookie = name + "=" + escape(value) + expires + "; path=/";
+        }
+
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg); //匹配目标参数
+            if (r != null) return decodeURI(r[2]);
+            return null; //返回参数值
+        }
+
+        function changeURLStatic(name, value) {
+            let url = changeURLParam(location.href, name, value); // 修改 URL 参数
+            history.replaceState(null, null, url); // 替换地址栏
+        }
+
+        function changeURLParam(url, name, value) {
+            if (typeof value === 'string') {
+                value = value.toString().replace(/(^\s*)|(\s*$)/, ""); // 移除首尾空格
+            }
+            let url2;
+            if (!value) { // remove
+                let reg = eval('/(([\?|&])' + name + '=[^&]*)(&)?/i');
+                let res = url.match(reg);
+                if (res) {
+                    if (res[2] && res[2] === '?') { // before has ?
+                        if (res[3]) { // after has &
+                            url2 = url.replace(reg, '?');
+                        } else {
+                            url2 = url.replace(reg, '');
+                        }
+                    } else {
+                        url2 = url.replace(reg, '$3');
+                    }
+                }
+            } else {
+                let reg = eval('/([\?|&]' + name + '=)[^&]*/i');
+                if (url.match(reg)) { // edit
+                    url2 = url.replace(reg, '$1' + value);
+                } else { // add
+                    let reg = /([?](\w+=?)?)[^&]*/i;
+                    let res = url.match(reg);
+                    url2 = url;
+                    if (res) {
+                        if (res[0] !== '?') {
+                            url2 += '&';
+                        }
+                    } else {
+                        url2 += '?';
+                    }
+                    url2 += name + '=' + value;
+                }
+            }
+            return url2;
+        }
+
+    </script>
+</head>
+<body onload="creat_event()">
+<div class="back"><t>
+    TextReader NextUI Beta test (v1.0)</t><div style="display: flex;" id="free_memory" onclick="document.getElementById('d_ls').click();load_to_page(get_now_scroll_ID()-1)"><t>清理缓存</t><img title="清理缓存(体验不好,感到卡顿就清理)" style="padding-right: 10px" width="20px" src="data:image/png;base64,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"></div></div>
+<div id="up_page"></div>
+    <div id="textbar">
+        <div id="maintext">
+        </div>
+    </div>
+<div id="down_page"></div>
+    <div id="index_page"></div>
+    <div id="ctrl_bar">
+
+        <div class="d_bar">
+            <div id="d_ls">
+                <img width="30px" style="filter: invert(100%);" src="data:image/png;base64,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" class="im_btn">
+                <br>
+                <t>目录</t>
+            </div>
+            <div id="d_dn">
+                <img width="30px" src="data:image/png;base64,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" class="im_btn">
+                <br>
+                <t id="d_dn_tx">夜间</t>
+            </div>
+            <div id="d_st">
+                <img width="30px" style="filter: invert(100%);" src="data:image/png;base64,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" class="im_btn">
+                <br>
+                <t>设置</t>
+            </div>
+        </div>
+        <!--进度位-->
+        <div class="d_prs">
+            <t id="lst">上一章</t>
+            <div id="persion_index"><div class="persion_body">0/0</div></div>
+            <t id="nex">下一章</t>
+        </div>
+    </div>
+    <div id="setting_bar">
+        <div style="display: flex;align-items: center;justify-content: space-between;">
+            <div>
+                <t>亮度</t>
+                <div id="light_ctrl_box"></div>
+            </div>
+            <t id="safe_eye">
+                <img width="35px" src="data:image/png;base64,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">
+                护眼模式
+            </t>
+        </div>
+        <div><t>字号</t><t id="fsa">A-</t><t id="fs">16</t><t id="fsb">A+</t></div>
+        <br>
+        <div><t>背景</t> [自动调整]<t id="select_color_white"></t></div>
+        <br>
+    </div>
+</body>
+</html>

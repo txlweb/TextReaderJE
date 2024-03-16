@@ -1,4 +1,4 @@
-NAME:插件管理器-!检查哪个插件有问题!
+NAME:插件管理器 V121
 BY:IDlike
 @JS-START
 setTimeout(function (){
@@ -13,4 +13,5 @@ setTimeout(function (){
         plugin_lst.appendChild(ab)
     }
 },100)
+var plugin_mgr_version = 121
 @JS-END
