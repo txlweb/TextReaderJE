@@ -2,8 +2,9 @@ NAME:打开调试模式插件
 BY:IDlike
 @JS-START
 consoleHELP = " console HELP text  [1/1]page<br>" +
-    "reload() 重载程序" +
-    "没有什么可以帮助的,这里是方便打印一些变量的,与F12别无二致."
+    "reload() 重载程序<br>" +
+    "没有什么可以帮助的,这里是方便打印一些变量的,与F12别无二致.<br>" +
+    ""
 function reload(){
     window.location.href = window.location.href;
 }
@@ -43,7 +44,7 @@ setTimeout(function (){
     otmd.innerHTML = "<p>DEBUG CONSOLE by. IDlike</p>"
     runcmd.innerHTML = "执行"
     incmd.type = "text"
-    incmd.value = "alert(\"IDNB!\")"
+    incmd.value = "consoleHELP"
     runcmd.onclick = function (){
         otmd.innerHTML = otmd.innerHTML + "<p>[USER]"+incmd.value+"->" + eval(incmd.value) + "</p>";
     }

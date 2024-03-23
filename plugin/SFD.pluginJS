@@ -8,7 +8,11 @@ var ii = 0;
 var tt = 0;
 var tk;
 var endl = null;
-setTimeout(init_SFD,500)
+if(nextui!==true) {
+    setTimeout(init_SFD, 500)
+}else {
+    alert("[SFD-JSON - JSON数据结构的对话小说支持]\r\n 兼容性警告: 需求'NextUI'不存在才可以生效.")
+}
 function init_SFD(){
     //press STYLE
     const csss = `

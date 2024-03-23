@@ -190,7 +190,7 @@
             }
             xhr.open("get", url + "?NOUI", true);
             xhr.send(null);
-            setTimeout(function (){window.location.href = "#text_"+id},100)
+            setTimeout(function (){changeURLStatic("id",id);},100)
         }
         function page_load_last(id){
             const vd = document.createElement('div')
@@ -211,7 +211,7 @@
             }
             xhr.open("get", url + "?NOUI", true);
             xhr.send(null);
-            setTimeout(function (){window.location.href = "#text_"+id},100)
+            setTimeout(function (){changeURLStatic("id",id);},100)
         }
         function load_next_page(){
             c_id++
@@ -251,13 +251,14 @@
             }
         }
         function load_to_page(id){
+
             console.log(id)
             c_id = id
             c_sid = id
             changeURLParam("id",c_id)
             document.getElementById("maintext").innerHTML = ""
             load_next_page()
-            setTimeout(function (){window.location.href = "#text_"+id},100)
+            setTimeout(function (){changeURLStatic("id",id);},100)
 
             document.body.scrollTop = document.body.scrollTop + 500;
             document.getElementById("d_ls").click()
@@ -440,31 +441,45 @@
             up.style.height = "100px"
             let dw = document.getElementById('down_page');
             dw.style.height = "100px"
+            //更新阅读进度条
             document.addEventListener('scroll', function () {
-                if (up.offsetTop + up.offsetHeight > document.body.scrollTop + 20) {//+ document.body.clientHeight
-                    document.body.scrollTop = document.body.scrollTop + 3;
-                }
-                if (up.offsetTop + up.offsetHeight > document.body.scrollTop + 50) {//+ document.body.clientHeight
-                    //console.log("up")
-                    if(loaded) load_last_page()
-                    loaded = false;
-
-
-                    document.body.scrollTop = document.body.scrollTop + 50;
-                }
-                if (dw.offsetTop - dw.offsetHeight < document.body.scrollTop + document.body.clientHeight - 350) {//
-                    document.body.scrollTop = document.body.scrollTop - 1;
-                }
-                if (dw.offsetTop - dw.offsetHeight < document.body.scrollTop + document.body.clientHeight - 100) {//+ document.body.clientHeight
-                    //console.log("dw")
-                    if(loaded) load_next_page()
-                    loaded = false;
-                    document.body.scrollTop = document.body.scrollTop -100;
-
-                }
-                //更新阅读进度条
                 update_persion()
             })
+            if (true) {
+                document.addEventListener('scroll', function () {
+                    if (up.offsetTop + up.offsetHeight > document.body.scrollTop + 20) {//+ document.body.clientHeight
+                        document.body.scrollTop = document.body.scrollTop + 3;
+                    }
+                    if (up.offsetTop + up.offsetHeight > document.body.scrollTop + 50) {//+ document.body.clientHeight
+                        //console.log("up")
+                        if (loaded) load_last_page()
+                        loaded = false;
+
+
+                        document.body.scrollTop = document.body.scrollTop + 50;
+                    }
+                    if (dw.offsetTop - dw.offsetHeight < document.body.scrollTop + document.body.clientHeight - 350) {//
+                        document.body.scrollTop = document.body.scrollTop - 1;
+                    }
+                    if (dw.offsetTop - dw.offsetHeight < document.body.scrollTop + document.body.clientHeight - 100) {//+ document.body.clientHeight
+                        //console.log("dw")
+                        if (loaded) load_next_page()
+                        loaded = false;
+                        document.body.scrollTop = document.body.scrollTop - 100;
+
+                    }
+
+                })
+            }
+            else
+            {
+                document.getElementById("up_page").addEventListener("click",function (){
+                    document.getElementById("lst").click()
+                })
+                document.getElementById("down_page").addEventListener("click",function (){
+                    document.getElementById("nex").click()
+                })
+            }
             //获取总章节数(打开,目录页)
             document.getElementById("d_ls").click()
             document.getElementById("d_ls").click()
@@ -472,12 +487,10 @@
             document.getElementById("maintext").click()
         }
         var lst_k = 0;
+        //更新目录
         function update_persion(){
             document.getElementById("persion_index").children[0].innerHTML = get_now_scroll_ID()+"/"+c_all
             document.getElementById("persion_index").children[0].style.width = get_now_scroll_ID()/c_all*100+"%"
-            //更新目录
-
-
         }
 
         //Lib_cookie do
@@ -567,13 +580,13 @@
 </head>
 <body onload="creat_event()">
 <div class="back"><t>
-    TextReader NextUI Beta test (v1.0)</t><div style="display: flex;" id="free_memory" onclick="document.getElementById('d_ls').click();load_to_page(get_now_scroll_ID()-1)"><t>清理缓存</t><img title="清理缓存(体验不好,感到卡顿就清理)" style="padding-right: 10px" width="20px" src="data:image/png;base64,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"></div></div>
-<div id="up_page"></div>
+    TextReader NextUI Beta test (v1.2)</t><div style="display: flex;" id="free_memory" onclick="document.getElementById('d_ls').click();load_to_page(get_now_scroll_ID()-1)"><t>清理缓存</t><img title="清理缓存(体验不好,感到卡顿就清理)" style="padding-right: 10px" width="20px" src="data:image/png;base64,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"></div></div>
+<div id="up_page">加载上一章</div>
     <div id="textbar">
         <div id="maintext">
         </div>
     </div>
-<div id="down_page"></div>
+<div id="down_page">加载下一章</div>
     <div id="index_page"></div>
     <div id="ctrl_bar">
 

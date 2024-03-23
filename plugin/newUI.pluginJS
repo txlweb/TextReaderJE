@@ -1,10 +1,10 @@
 NAME:NextUI - 配置: 点击<t id=\"p_onf_nui\" style=\"color: red\">启用插件</t>
 BY:IDlike
 @JS-START
+const nextui = true;
 setTimeout(function (){
+    let s_obj = document.getElementById("p_onf_nui")
     if(plugin_mgr_version>=121){
-
-        let s_obj = document.getElementById("p_onf_nui")
         if(getCookie("NewUI")=="Enable"){
             for (const ee of document.getElementById("textbar").children) {
                 if(ee.tagName == "A" || ee.tagName == "a"){
@@ -28,7 +28,13 @@ setTimeout(function (){
             })
         }
     }else {
-        alert("需求'插件管理器'V121及以上的版本才可以使用.")
+        for (const ee of document.getElementById("textbar").children) {
+            if(ee.tagName == "A" || ee.tagName == "a"){
+                let match = ee.href.match(/\/(.*?)\//g);
+                if (match && match.length > 1) ee.href = "/reader.html?name="+match[1].replaceAll("/","")+"&id=1";
+            }
+        }
+        //alert("[NextUI]\r\n ERROR: 需求'插件管理器'V121及以上的版本才可以即时开关.")
     }
 
 

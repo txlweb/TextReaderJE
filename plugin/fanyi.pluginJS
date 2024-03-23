@@ -27,8 +27,10 @@ function fanyi_this_tagger(o){
         });
     o.innerHTML = "[正在翻译...]"
 }
-setTimeout(function (){
+if(nextui!==true) {
+    setTimeout(fanyi, 500);
+}else{
+    alert("[点击翻译]\r\n 兼容性警告: 需求'NextUI'不存在才可以生效.")
+}
 
-    fanyi()
-}, 500);
 @JS-END
