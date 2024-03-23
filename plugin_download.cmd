@@ -26,8 +26,13 @@ echo 包含插件:
 echo #1 DEBUGGER 添加一个控制台
 echo.
 echo.
+echo 输入4 下载 "内部测试"
+echo 包含插件:
+echo #1 newUI 新UI(测试版)
 echo.
-echo 请输入您的选择 (1: 推荐套餐, 2: 个性套餐, 3: 开发套餐, U: 更新插件列表, Q: 退出):
+echo.
+echo.
+echo 请输入您的选择 (1: 推荐套餐, 2: 个性套餐, 3: 开发套餐, 4:内部测试, U: 更新插件列表, Q: 退出):
 
 
 
@@ -108,7 +113,21 @@ if "%choice%"=="1" (
     echo 下载已经完成,如果上述项目中存在没有完成的项目,请尝试更换网络环境或以管理员身份运行.
 
 
-) else if "%choice%"=="Q" (
+) else if "%choice%"=="3" (
+
+     echo 正在下载:   DEBUGGER 添加一个控制台
+     certutil -urlcache -split -f https://raw.githubusercontent.com/txlweb/TextReaderJE/master/plugin/newUI.pluginJS plugin_debugger.pluginJS
+     if exist "newUI.pluginJS" (
+         if not exist ".\plugin" mkdir ".\plugin"
+         copy "newUI.pluginJS" ".\plugin\newUI.pluginJS"
+         echo 已下载 : newUI.pluginJS
+     ) else (
+         echo 下载失败!请尝试挂个梯子再下!
+     )
+     echo 下载已经完成,如果上述项目中存在没有完成的项目,请尝试更换网络环境或以管理员身份运行.
+
+
+ ) else if "%choice%"=="Q" (
     echo 退出程序  
     exit /b  
 ) else if "%choice%"=="U" (
