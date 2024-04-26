@@ -17,6 +17,7 @@ public class Config_dirs {
     public static boolean Use_Server_LOG_DEBUG = false;
     public static boolean Use_Share = true;
     public static boolean Fire_Wall = true;
+
     public static void init_configs() throws IOException {
         //ini lib version
         //[settings]
@@ -29,6 +30,7 @@ public class Config_dirs {
             IniLib.SetThing("./config.ini", "settings", "LogRank", "1");
             IniLib.SetThing("./config.ini", "settings", "UseShare", "enable");
             IniLib.SetThing("./config.ini", "settings", "FireWall", "enable");
+            IniLib.SetThing("./config.ini", "settings", "HTTPS", "enable");
         }
         String Gl_UseShare = IniLib.GetThing("./config.ini", "settings", "UseShare");
         if (!Objects.equals(Gl_UseShare, "UnknownThing")) {
@@ -43,6 +45,7 @@ public class Config_dirs {
             if (!new File(Gl_MainPath).isDirectory()) new File(Gl_MainPath).mkdir();
             MainPath = Gl_MainPath;
         }
+
         String Gl_Port = IniLib.GetThing("./config.ini", "settings", "Port");
         if (!Objects.equals(Gl_Port, "UnknownThing")) {
             if (Integer.parseInt(Gl_Port) > 0 & Integer.parseInt(Gl_Port) < 25565) {

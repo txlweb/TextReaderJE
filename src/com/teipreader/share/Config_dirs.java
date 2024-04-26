@@ -12,7 +12,7 @@ public class Config_dirs {
     public static int NormPort = 8090;//Web port
     public static boolean Use_Server_LOG = true;
     public static boolean Use_Server_LOG_DEBUG = false;
-
+    public static boolean Use_HTTPS = true;
     public static void init_configs() throws IOException {
         //ini lib version
         //[settings]
@@ -28,6 +28,10 @@ public class Config_dirs {
             if (Integer.parseInt(Gl_Port) > 0 & Integer.parseInt(Gl_Port) < 25565) {
                 NormPort = Integer.parseInt(Gl_Port);
             }
+        }
+        String Gl_HTTPS = IniLib.GetThing("./config.ini", "settings", "HTTPS");
+        if (!Objects.equals(Gl_HTTPS, "UnknownThing")) {
+            Use_HTTPS = Gl_HTTPS.equals("enable");
         }
         String Gl_LogRank = IniLib.GetThing("./config_share.ini", "settings", "LogRank");
         if (!Objects.equals(Gl_LogRank, "UnknownThing")) {

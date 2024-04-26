@@ -1,54 +1,110 @@
 package com.teipreader.Lib;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import com.teipreader.share.Main;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import sun.net.www.http.HttpClient;
+
+import javax.net.ssl.*;
+import java.io.*;
+import java.net.*;
+import java.nio.file.Files;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+
+import static com.teipreader.Main.TeipMake.CopyFileToThis;
 
 public class Download {
-    public static long getFileSize(String url) {
-        long fileSize = 0;
+    public static boolean import_certificate(File JKS_FILE){
         try {
-            URL u = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) u.openConnection();
-            con.setRequestMethod("HEAD");//请求行：HEAD/xxxHTTP/1.1
-            fileSize = con.getContentLength();//获取响应的大小
+            CopyFileToThis(JKS_FILE, new File("/certificate/" + JKS_FILE.getName()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return fileSize;
+        return true;
     }
-
-    public static boolean Dw_File(String dw_url, String save_as) throws MalformedURLException {
-        int bytesum = 0;
-        int byteread;
-        long longer = getFileSize(dw_url);
-        int r = 0;
-        URL url = new URL(dw_url);
+    public static boolean Dw_File(String dw_url, String save_as) {
+        KeyStore keyStore = null;
         try {
-            URLConnection conn = url.openConnection();
-            InputStream inStream = conn.getInputStream();
-            FileOutputStream fs = new FileOutputStream(save_as);
-            byte[] buffer = new byte[1024];
-            while ((byteread = inStream.read(buffer)) != 1) {
-                if (byteread == -1) {
-                    break;
+            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+        } catch (KeyStoreException e) {
+            throw new RuntimeException(e);
+        }
+        //加载基本证书(IDSOFT颁发的共享证书)
+        try (InputStream keyStoreStream = Main.class.getResourceAsStream("/keystore.jks")) {
+            keyStore.load(keyStoreStream, "idsoft".toCharArray());
+        } catch (CertificateException | IOException | NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        //加载用户自定义证书
+        File file = new File("/certificate/");
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File value : files) {
+                if (value.getName().equals(".jks")) {
+                    try (InputStream keyStoreStream = Files.newInputStream(value.toPath())) {
+                        keyStore.load(keyStoreStream, "idsoft".toCharArray());
+                    } catch (CertificateException | IOException | NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-                bytesum += byteread;
-                if (r >= 100) {
-                    System.out.println(bytesum + "/" + longer + "bits");
-                    r = 0;
-                }
-                r = r + 1;
-                fs.write(buffer, 0, byteread);
             }
-            System.out.println(longer + "/" + longer + "bits 下载完毕");
+        }
+        TrustManager[] trustManagers;
+        SSLSocketFactory sslSocketFactory;
+        try {
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
+            trustManagers = trustManagerFactory.getTrustManagers();
+            final SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagers, new java.security.SecureRandom());
+            sslSocketFactory = sslContext.getSocketFactory();
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            throw new RuntimeException(e);
+        }
+        OkHttpClient client = new OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustManagers[0])
+                .hostnameVerifier((hostname, session) -> true) // 注意：这里简单地返回true，不推荐在生产环境中使用
+                .build();
+
+
+        // 创建请求
+        Request request = new Request.Builder()
+                .url(dw_url)
+                .header("User-Agent", "Mozilla/5.0") // 模拟浏览器User-Agent
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                String json = response.body().string();
+                File fp = new File(save_as);
+                if (fp.isFile()) {
+                    if (!fp.delete()) {
+                        return false;
+                    }
+                }
+                try (FileWriter fileWriter = new FileWriter(fp);
+                     BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+                    bufferedWriter.write(json);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            } else {
+                // 请求失败
+                System.out.println("请求失败: " + response.code());
+                return false;
+            }
         } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
         return true;
     }
+
+
 }

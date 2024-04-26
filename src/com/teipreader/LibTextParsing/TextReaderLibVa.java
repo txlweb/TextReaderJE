@@ -46,7 +46,9 @@ public class TextReaderLibVa {
                         e.printStackTrace();
                     }
                 }else {
-                    encode = EncodingDetect.getJavaEncode(strFilePath);
+                    if(new File(strFilePath).length()>0){
+                        encode = EncodingDetect.getJavaEncode(strFilePath);
+                    }
                     //System.out.println("FileEncode = "+encode);
                     TeipMake.WriteFileToThis(strFilePath+".encode",encode);
                 }

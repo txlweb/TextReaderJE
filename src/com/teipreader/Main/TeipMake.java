@@ -222,9 +222,7 @@ public class TeipMake {
         if (new File(V2Save).exists()) new File(V2Save).delete();
     }
 
-    public static void main(String[] args) throws IOException {
-        V1ToV2("a7002491998e236509d2d859d5dfbb12","摆烂魔王才不会遇到退休剑圣");
-    }
+
     public static void GetTextWithThis(String Name) throws IOException {
         if (IsFile(MainPath + "/" + Name + "/main.txt")) {
             if (new File("main.txt").exists()) new File("main.txt").delete();

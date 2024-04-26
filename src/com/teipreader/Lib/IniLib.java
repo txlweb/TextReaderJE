@@ -33,6 +33,7 @@ public class IniLib {
     }
 
     public static String GetThing(String FileName, String Node, String key) {//will return key
+        if(!new File(FileName).isFile()) return "UnknownThing";
         //如果文件尾部没有换行符,就要添加,否则会报错!!!!
         try {
             if (!lastLineisCRLF(FileName))
