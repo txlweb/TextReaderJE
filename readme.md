@@ -9,6 +9,8 @@
 
 这个仓库[https://github.com/txlweb/TextReaderJE/](https://github.com/txlweb/TextReaderJE/)
 
+Android版本仓库[https://github.com/txlweb/TextReader-AndroidEdition](https://github.com/txlweb/TextReader-AndroidEdition)
+
 ## 一些建议
 
 建议使用V2格式的小说或使用epub格式文件直接导入,不要再制作V1小说了!
