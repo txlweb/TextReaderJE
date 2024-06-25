@@ -10,6 +10,7 @@ import javax.net.ssl.*;
 import java.io.*;
 import java.net.*;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -28,7 +29,7 @@ public class Download {
         return true;
     }
     public static boolean Dw_File(String dw_url, String save_as) {
-        KeyStore keyStore = null;
+        KeyStore keyStore;
         try {
             keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
         } catch (KeyStoreException e) {
@@ -68,7 +69,7 @@ public class Download {
         }
         OkHttpClient client = new OkHttpClient.Builder()
                 .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustManagers[0])
-                .hostnameVerifier((hostname, session) -> true) // 注意：这里简单地返回true，不推荐在生产环境中使用
+                .hostnameVerifier((hostname, session) -> true)
                 .build();
 
 
@@ -80,16 +81,14 @@ public class Download {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                String json = response.body().string();
                 File fp = new File(save_as);
                 if (fp.isFile()) {
                     if (!fp.delete()) {
                         return false;
                     }
                 }
-                try (FileWriter fileWriter = new FileWriter(fp);
-                     BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-                    bufferedWriter.write(json);
+                try (InputStream inputStream = response.body().byteStream()) {
+                    Files.copy(inputStream, fp.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return false;

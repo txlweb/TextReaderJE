@@ -17,5 +17,6 @@
     <orderEntry type="library" name="pdfbox-app-2.0.30" level="project" />
     <orderEntry type="library" name="epublib-core-4.0-complete" level="project" />
     <orderEntry type="library" name="squareup.okhttp3.logging.interceptor" level="project" />
+    <orderEntry type="library" name="textreader-libcomic" level="project" />
   </component>
 </module>
