@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static com.teipreader.Lib.Download.Dw_File;
 import static com.teipreader.Main.Config_dirs.MainPath;
 import static com.teipreader.Main.TeipMake.*;
 
@@ -34,9 +35,10 @@ import static com.teipreader.Main.TeipMake.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "a390b0a9bd76bc320f2da7f6e875794a";
+        String Cheek_code = "c7a8832b31398a6c0913ed8c518f709a";
         String version = "1.3.4";
-        String build = "3500b-240625";
+        String build = "3600b-240625";
+
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
         //is_debug=true;
@@ -47,6 +49,21 @@ public interface Main {
         System.out.println((char) 27 + "[33m  TextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m " + version + "-" + build + "+Res-" + Cheek_code);
         System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/TextReaderJE/");
         System.out.println("如果需要帮助请查看jar包内的readme.md");
+        //检查更新
+        String update_api = "http://idlike.133.w21.net/version.ini";
+        System.out.println((char) 27 + "[36m[T]: 正在从 "+update_api+" 检查更新..." + (char) 27 + "[39;49m");
+        try {
+            Dw_File(update_api, "version.ini");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        String wq_v = IniLib.GetThing("version.ini","textreader","ver");
+        String db_v = version + "-" + build + "+Res-" + Cheek_code;
+        if(Objects.equals(wq_v, db_v)){
+            System.out.println((char) 27 + "[31m[I]: 当前为最新版本." + (char) 27 + "[39;49m");
+        }else{
+            System.out.println((char) 27 + "[31m[I]: 最新版本为"+wq_v+",请到github更新." + (char) 27 + "[39;49m");
+        }
         System.out.println();
         System.out.println();
         if (args.length > 0) {
@@ -169,7 +186,7 @@ public interface Main {
             }
         }
         System.out.println((char) 27 + "[33m[I]: 正在准备库文件..." + (char) 27 + "[39;49m");
-        if ((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug) {
+        if ((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug && false) {
             System.out.println((char) 27 + "[31m[I]: 始化库文件,请在完成后重启程序." + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: 所用的库开源地址: " + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: lib-epublib: https://github.com/psiegman/epublib/" + (char) 27 + "[39;49m");

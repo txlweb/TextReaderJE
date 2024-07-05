@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="c++build">
+    <output-path>$PROJECT_DIR$/out/artifacts/c__build</output-path>
+    <root id="archive" name="c++build.jar">
+      <element id="artifact" artifact-name="style" />
+      <element id="module-output" name="TextReaderJE" />
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="epublib-core-4.0-complete" />
+        <element id="library" level="project" name="pdfbox-app-2.0.30" />
+        <element id="library" level="project" name="textreader-libcomic" />
+        <element id="library" level="project" name="squareup.okhttp3.mockwebserver" />
+      </element>
+    </root>
+  </artifact>
+</component>

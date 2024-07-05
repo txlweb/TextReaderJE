@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="textreader-libcomic">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/textreader-libcomic.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

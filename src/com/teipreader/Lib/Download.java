@@ -4,7 +4,7 @@ import com.teipreader.share.Main;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import sun.net.www.http.HttpClient;
+
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -36,7 +36,7 @@ public class Download {
             throw new RuntimeException(e);
         }
         //加载基本证书(IDSOFT颁发的共享证书)
-        try (InputStream keyStoreStream = Main.class.getResourceAsStream("/keystore.jks")) {
+        try (InputStream keyStoreStream = Main.class.getResourceAsStream("keystore.jks")) {
             keyStore.load(keyStoreStream, "idsoft".toCharArray());
         } catch (CertificateException | IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);

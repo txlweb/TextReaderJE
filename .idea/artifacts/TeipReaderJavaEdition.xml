@@ -2,14 +2,16 @@
   <artifact type="jar" build-on-make="true" name="TeipReaderJavaEdition">
     <output-path>$PROJECT_DIR$/out/</output-path>
     <root id="archive" name="TeipReaderJavaEdition.jar">
-      <element id="module-output" name="TextReaderJE" />
       <element id="file-copy" path="$PROJECT_DIR$/readme.md" />
       <element id="archive" name="style.zip">
         <element id="dir-copy" path="$PROJECT_DIR$/style" />
       </element>
       <element id="file-copy" path="$PROJECT_DIR$/favicon.ico" />
-      <element id="library" level="project" name="epublib-core-4.0-complete" />
       <element id="library" level="project" name="pdfbox-app-2.0.30" />
+      <element id="library" level="project" name="epublib-core-4.0-complete" />
+      <element id="library" level="project" name="textreader-libcomic" />
+      <element id="module-output" name="TextReaderJE" />
+      <element id="library" level="project" name="squareup.okhttp3.mockwebserver" />
     </root>
   </artifact>
 </component>
