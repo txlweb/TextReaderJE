@@ -9,6 +9,8 @@
 
 这个仓库[https://github.com/txlweb/TextReaderJE/](https://github.com/txlweb/TextReaderJE/)
 
+next仓库[https://github.com/txlweb/TextReaderJE_next/](https://github.com/txlweb/TextReaderJE_next/)
+
 Android版本仓库[https://github.com/txlweb/TextReader-AndroidEdition](https://github.com/txlweb/TextReader-AndroidEdition)
 
 ## 一些建议
