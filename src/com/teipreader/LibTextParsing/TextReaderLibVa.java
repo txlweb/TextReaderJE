@@ -53,6 +53,7 @@ public class TextReaderLibVa {
                     TeipMake.WriteFileToThis(strFilePath+".encode",encode);
                 }
                 fileInputStream = new FileInputStream(file);
+                if(Objects.equals(encode, "UTF-8UTF-8")) encode = "UTF-8";
                 inputStreamReader = new InputStreamReader(fileInputStream, encode);
                 bufferedReader = new BufferedReader(inputStreamReader);
                 String str;
@@ -122,6 +123,8 @@ public class TextReaderLibVa {
         StringBuilder LsHTML = new StringBuilder();
         //添加换行
         for (String s : List) LsHTML.append(s).append("<br/>");
+        System.out.println(LsHTML.length());
+        if(LsHTML.length() == 0) return "ERROR";
         return LsHTML.toString();
     }
 

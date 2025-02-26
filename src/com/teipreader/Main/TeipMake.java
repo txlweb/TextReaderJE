@@ -24,7 +24,10 @@ public class TeipMake {
     private static final char[] hexCode = "0123456789abcdef".toCharArray();
 
 
-
+    public static void ClearTemp() throws IOException {
+        deleteFileByIO(TempPath);
+        new File(TempPath).mkdirs();
+    }
     public static void EpubMake(String FileName) throws IOException {
         if (!new File(FileName).exists()) return;//检查文件是否存在
         String md5 = getFileMD5(FileName);
@@ -160,7 +163,7 @@ public class TeipMake {
     }
 
     public static String preTxt(String txt, String Rule) {
-        if (Objects.equals(Rule, "")) Rule = ".*第.*章.*";
+        if (Objects.equals(Rule, "")) Rule = ".*第.{0,5}章.*|.*Chapter.*";
         List<String> List = ReadCFGFile(txt);
         StringBuilder T_LIST = new StringBuilder();
         for (int i = 0; i < List.size(); i++) {
@@ -234,17 +237,30 @@ public class TeipMake {
             WriteFileToThis("main.txt", String.valueOf(T_LIST));
             return;
         }
-        StringBuilder mainTXT = new StringBuilder();
-        List<String> List = ReadCFGFile(MainPath + "/" + Name + "/list.info");//读列表
-        for (int i = 0; i < List.size(); i++) {
-            mainTXT.append(List.get(i)).append("\r\n");
-            List<String> tl = ReadCFGFile((MainPath + "/" + Name + "/" + (i + 1) + ".txt").replace(",", ""));//读列表
-            for (String s : tl) {
-                mainTXT.append(s).append("\r\n");
-            }
-        }
         if (new File("main.txt").exists()) new File("main.txt").delete();
-        WriteFileToThis("main.txt", String.valueOf(mainTXT));
+        new File("main.txt").createNewFile();
+        try {
+            FileOutputStream out = new FileOutputStream(new File("main.txt"));
+            StringBuilder mainTXT = new StringBuilder();
+            List<String> List = ReadCFGFile(MainPath + "/" + Name + "/list.info");//读列表
+            for (int i = 0; i < List.size(); i++) {
+                out.write(List.get(i).getBytes());
+                out.write("\r\n".getBytes());
+//                mainTXT.append(List.get(i)).append("\r\n");
+                List<String> tl = ReadCFGFile((MainPath + "/" + Name + "/" + (i + 1) + ".txt").replace(",", ""));//读列表
+
+                for (String s : tl) {
+//                    mainTXT.append(s + "\r\n");
+                    out.write(s.getBytes());
+                    out.write("\r".getBytes());
+//                    System.out.println(s);
+                }
+            }
+            out.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ///WriteFileToThis("main.txt", String.valueOf(mainTXT));
     }
 
     public static void WriteFileToThis(String file_name, String data) {

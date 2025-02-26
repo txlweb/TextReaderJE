@@ -163,9 +163,9 @@ public class TextReaderLibVc {
                 if (i == Integer.parseInt(ID)) return content;
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return "ERROR";
         }
-        return "不存在的章节!";
+        return "ERROR";
     }
 
     public static String GetInfo(String FileName) {

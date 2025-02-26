@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/style" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/configs" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/Start_up" />
       <excludeFolder url="file://$MODULE_DIR$/dw" />
       <excludeFolder url="file://$MODULE_DIR$/rom" />
@@ -18,5 +19,6 @@
     <orderEntry type="library" name="textreader-libcomic" level="project" />
     <orderEntry type="library" name="epublib-core-4.0-complete" level="project" />
     <orderEntry type="library" name="squareup.okhttp3.mockwebserver" level="project" />
+    <orderEntry type="library" name="json" level="project" />
   </component>
 </module>

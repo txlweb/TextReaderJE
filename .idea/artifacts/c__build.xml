@@ -10,6 +10,9 @@
         <element id="library" level="project" name="textreader-libcomic" />
         <element id="library" level="project" name="squareup.okhttp3.mockwebserver" />
       </element>
+      <element id="library" level="project" name="epublib-core-4.0-complete" />
+      <element id="library" level="project" name="pdfbox-app-2.0.30" />
+      <element id="library" level="project" name="textreader-libcomic" />
     </root>
   </artifact>
 </component>

@@ -4,15 +4,33 @@ BY:IDlike
 //下面是配置项
 var to_langunge = "zh-CN";//这个api里没有这个项目...
 function fanyi() {
+
+
     let innerHtmlContent = document.getElementById('maintext');
+    f_fanyi_child(innerHtmlContent);
+    // const childrens = innerHtmlContent.children;
+    // for (let i = 0; i < childrens.length; i++) {
+    //     if (childrens[i].tagName === 'P' || childrens[i].tagName === 'p') {
+    //         let e = document.createElement("p");
+    //         childrens[i].appendChild(e)
+    //         e.innerHTML = "@翻译此行 (中<->英)"
+    //         childrens[i].onclick = function (){fanyi_this_tagger(this)}
+    //         childrens[i].title = "@左键单击翻译此行 (中<->英)"
+    //     }
+    // }
+}
+function f_fanyi_child(father){
+    let innerHtmlContent = father;
     const childrens = innerHtmlContent.children;
     for (let i = 0; i < childrens.length; i++) {
         if (childrens[i].tagName === 'P' || childrens[i].tagName === 'p') {
-            //let e = document.createElement("p");
-            //childrens[i].appendChild(e)
-            //e.innerHTML = "@翻译此行 (中<->英)"
-            childrens[i].onclick = function (){fanyi_this_tagger(this)}
-            //childrens[i].title = "@左键单击翻译此行 (中<->英)"
+            let e = document.createElement("p");
+            // childrens[i].appendChild(e)
+            // e.innerHTML = "@翻译此行 (中<->英)"
+            // childrens[i].onclick = function (){fanyi_this_tagger(this)}
+            // childrens[i].title = "@左键单击翻译此行 (中<->英)"
+        }else {
+            f_fanyi_child(childrens[i])
         }
     }
 }
@@ -27,10 +45,17 @@ function fanyi_this_tagger(o){
         });
     o.innerHTML = "[正在翻译...]"
 }
-if(nextui!==true) {
+if (typeof nextui === "undefined") {
     setTimeout(fanyi, 500);
-}else{
-    alert("[点击翻译]\r\n 兼容性警告: 需求'NextUI'不存在才可以生效.")
+    plugin_list[plugin_list.length-1]="[UNKNOW]"+plugin_list[plugin_list.length-1];
+    // if (nextui !== true) {
+    //
+    // }
+}else {
+    if (nextui !== true) {
+        setTimeout(fanyi, 500);
+    } else {
+        alert("[点击翻译]\r\n 兼容性警告: 需求'NextUI'不存在才可以生效.")
+    }
 }
-
 @JS-END

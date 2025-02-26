@@ -1,8 +1,10 @@
 package com.teipreader.Main;
 
+import com.teipreader.Lib.AI_summary;
 import com.teipreader.Lib.IniLib;
 import com.teipreader.LibTextParsing.CartoonMake;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.math.BigInteger;
@@ -36,8 +38,8 @@ public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
         String Cheek_code = "c7a8832b31398a6c0913ed8c518f709a";
-        String version = "1.3.4";
-        String build = "3600b-240625";
+        String version = "1.4.0";
+        String build = "3653b-250226";
 
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
@@ -49,21 +51,22 @@ public interface Main {
         System.out.println((char) 27 + "[33m  TextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m " + version + "-" + build + "+Res-" + Cheek_code);
         System.out.println("作者: IDlike    GitHub:https://github.com/txlweb/TextReaderJE/");
         System.out.println("如果需要帮助请查看jar包内的readme.md");
-        //检查更新
-        String update_api = "http://idlike.133.w21.net/version.ini";
-        System.out.println((char) 27 + "[36m[T]: 正在从 "+update_api+" 检查更新..." + (char) 27 + "[39;49m");
-        try {
-            Dw_File(update_api, "version.ini");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        String wq_v = IniLib.GetThing("version.ini","textreader","ver");
-        String db_v = version + "-" + build + "+Res-" + Cheek_code;
-        if(Objects.equals(wq_v, db_v)){
-            System.out.println((char) 27 + "[31m[I]: 当前为最新版本." + (char) 27 + "[39;49m");
-        }else{
-            System.out.println((char) 27 + "[31m[I]: 最新版本为"+wq_v+",请到github更新." + (char) 27 + "[39;49m");
-        }
+        //检查更新 （服务器问题，无法提供。）
+//        String update_api = "http://idlike.133.w21.net/version.ini";
+//        System.out.println((char) 27 + "[36m[T]: 正在从 "+update_api+" 检查更新..." + (char) 27 + "[39;49m");
+//        try {
+//            Dw_File(update_api, "version.ini");
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        String wq_v = IniLib.GetThing("version.ini","textreader","ver");
+//        String db_v = version + "-" + build + "+Res-" + Cheek_code;
+//        if(Objects.equals(wq_v, db_v)){
+//            System.out.println((char) 27 + "[31m[I]: 当前为最新版本." + (char) 27 + "[39;49m");
+//        }else{
+//            System.out.println((char) 27 + "[31m[I]: 最新版本为"+wq_v+",请到github更新." + (char) 27 + "[39;49m");
+//        }
         System.out.println();
         System.out.println();
         if (args.length > 0) {
@@ -75,6 +78,14 @@ public interface Main {
             System.out.println("导出txt文件             -o, -out 小说名 导出的txt名 (共计3个参数)");
             System.out.println("导入teip文件(V1&V2)     -a, -add 文件名 (共计2个参数)");
             System.out.println("制作文件/编码索引(提速)   -e, -encode (共计1个参数)");
+            System.out.println("清理临时目录(可能修复问题) -r, -clear (共计1个参数)");
+            System.out.println("AI总结小说(BETA)        -s, -summary 小说名 模型配置 导出的txt名 (共计4个参数)");
+            System.out.println("[可配置列表(下面给出了默认值及配置方法)]");
+            System.out.println("本地部署类： ollama::模型名\n" +
+                    "example：  ollama::deepseek-r1:1.5b （默认参数就是这个）\n" +
+                    "在线API类： api地址::key \n" +
+                    "example：  deepseek::你的apikey (没有实现，文档语焉不详\uD83D\uDE21，我没钱充他家api)\n" +
+                    "example：  openai::模型名(gpt-3.5-turbo)::你的apikey (不知道能不能用，我也没钱充他家api)\n");
             System.out.println("更改设置                -c, -config 键 值 (共计3个参数)");
             System.out.println("[可配置列表(下面给出了默认值及意义)]");
             System.out.println("    MainPath=./rom   #主路径    \n" +
@@ -85,6 +96,18 @@ public interface Main {
             System.out.println(Arrays.toString(args));
             if (Objects.equals(args[0], "-make") || Objects.equals(args[0], "-m") & args.length >= 6) {
                 TeipMake.autoMake(args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
+                System.out.println((char) 27 + "[39;49m");
+                return;
+            }
+            if (Objects.equals(args[0], "-clear") || Objects.equals(args[0], "-r")) {
+                ClearTemp();
+                System.out.println((char) 27 + "[39;49m");
+                return;
+            }
+            if (Objects.equals(args[0], "-summary") || Objects.equals(args[0], "-s") & args.length >= 4) {
+                AI_summary a = new AI_summary(args[1],args[2]);
+                CopyFileToThis(new File(Config_dirs.TempPath + "/" + args[1] + "_final.txt"), new File(args[3]));
+
                 System.out.println((char) 27 + "[39;49m");
                 return;
             }

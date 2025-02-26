@@ -6,11 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class AI_Speech {
-    public static void main(String[] args) {
 
-        List<String> a=(text_split_by_speech("gewropitjw.eruitvh3riuthveryiotghnreuiytg3yertybrtyrtybrtybrtybrtybrtyrtybrtyrtyertybrtyrtybrtyerteybriotykjmtui4rhmt9uerhmtuierhtuierhtuierhtuierhtuimerhtuierhtuierhuitheruitheruitheruihtgvuhrweuionhesuogerufgh3riygwrq8ytgfkjherhnwgeruygqweriyomwtyiorgtcyirqwgfiuwery,rpuowehfuwerhtuiorehgjkedfhg9ueryhg8uerhtiqweruhqwuohm,rxfou3qwephrjiqoweuhjr,xcp4ioquwwryitgwr8ytweruytgcerithperutgerp9uthcr9ughmeruigheruighmergheriutheruigheriutheruitheruitherg,uo,erhtuoerhtpuoerhtpiuerhcuiperhtp5eoht5eihteruihterouhtcpoeriuhtwerotghpero,thwer90th,cre9ofc,gjsdogjsdfklgjc,;oerigjc;oeirfl,gjer0,g[35rjt,0c[234"));
-        System.out.println(a.size());
-    }
     //lib - 语句拆分
     //条件:句号拆分,如果超长那从不超长的逗号开始拆分
     //暂定的长度为 400 字

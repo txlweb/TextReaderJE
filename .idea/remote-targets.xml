@@ -12,6 +12,9 @@
             <option name="javaVersionString" value="11.0.21" />
           </config>
         </ContributedStateBase>
+        <ContributedStateBase type="JavaLanguageRuntime">
+          <config />
+        </ContributedStateBase>
       </target>
     </targets>
   </component>

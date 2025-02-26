@@ -45,12 +45,14 @@ public class Download {
         File file = new File("/certificate/");
         if (file.isDirectory()) {
             File[] files = file.listFiles();
-            for (File value : files) {
-                if (value.getName().equals(".jks")) {
-                    try (InputStream keyStoreStream = Files.newInputStream(value.toPath())) {
-                        keyStore.load(keyStoreStream, "idsoft".toCharArray());
-                    } catch (CertificateException | IOException | NoSuchAlgorithmException e) {
-                        throw new RuntimeException(e);
+            if (files != null) {
+                for (File value : files) {
+                    if (value.getName().equals(".jks")) {
+                        try (InputStream keyStoreStream = Files.newInputStream(value.toPath())) {
+                            keyStore.load(keyStoreStream, "idsoft".toCharArray());
+                        } catch (CertificateException | IOException | NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
@@ -87,11 +89,13 @@ public class Download {
                         return false;
                     }
                 }
-                try (InputStream inputStream = response.body().byteStream()) {
-                    Files.copy(inputStream, fp.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return false;
+                if (response.body() != null) {
+                    try (InputStream inputStream = response.body().byteStream()) {
+                        Files.copy(inputStream, fp.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
                 }
             } else {
                 // 请求失败

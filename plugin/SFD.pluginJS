@@ -8,11 +8,35 @@ var ii = 0;
 var tt = 0;
 var tk;
 var endl = null;
-if(nextui!==true) {
-    setTimeout(init_SFD, 500)
+if (typeof nextui === "undefined") {
+    if(getCookie("NewUI")!="Enable"){
+        setTimeout(init_SFD, 500)
+    }
 }else {
-    alert("[SFD-JSON - JSON数据结构的对话小说支持]\r\n 兼容性警告: 需求'NextUI'不存在才可以生效.")
+    if (nextui != true) {
+        setTimeout(init_SFD, 500)
+    } else {
+        alert("[SFD-JSON - JSON数据结构的对话小说支持]\r\n 兼容性警告: 需求'NextUI'不存在才可以生效.")
+    }
 }
+function isJSON(str) {
+    if (typeof str == 'string') {
+        try {
+            var obj=JSON.parse(str);
+            if(typeof obj == 'object' && obj ){
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch(e) {
+            //console.log('error：'+str+'!!!'+e);
+            return false;
+        }
+    }
+    console.log('It is not a string!')
+}
+
 function init_SFD(){
     //press STYLE
     const csss = `
@@ -52,6 +76,7 @@ function init_SFD(){
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4) {
             var t = xhr.responseText
+            if(!isJSON(t)) return;
             const psr = new DOMParser().parseFromString(t,'text/html')
             var x = psr.getElementsByTagName('p')[0].textContent
 

@@ -21,6 +21,9 @@ Android版本仓库[https://github.com/txlweb/TextReader-AndroidEdition](https:/
 
 关于AI朗读:现在已经加入了双缓存,可以不卡的阅读,目前可以用get接口,post类接口不能用
 ## 一些帮助
+* 新东西:AI总结
+
+目前不完善，目前可用的：本地部署的ollama模型，可以自己配置，其他详见“命令行帮助”部分
 
 * 新东西:插件
 
@@ -78,8 +81,18 @@ Android版本仓库[https://github.com/txlweb/TextReader-AndroidEdition](https:/
 > 导入pdf文件 -p, -pdfmake pdf文件名 索引(-为自动索引) 保存的压缩包 标题 图片 作者 简介 (共计8个参数)<br>
 > 导入epub文件 -b, -epubmake epub文件名 (共计2个参数)<br>
 > 导入teip文件(V1&V2) -a, -add 文件名<br>
+> 清理临时目录(可能修复问题) -r, -clear (共计1个参数)<br>
+> AI总结小说(BETA)        -s, -summary 小说名 模型配置 导出的txt名 (共计4个参数)<br>
+> 如果你不知道模型配置应该填什么，那就填ollama::deepseek-r1:1.5b。<br>
 > 更改设置 -c, -config 键 值 (与上文配置文件一致)<br>
 > 制作文件/编码索引(提速) -e, -encode (共计1个参数)<br>
+
+
+* AI总结
+
+目前API写死在代码里了，已经接入了本地ollama的接口，openai的接口可能可用（未测试，没有可用的api）
+
+
 
 * 加入小说
 
@@ -91,9 +104,35 @@ Android版本仓库[https://github.com/txlweb/TextReader-AndroidEdition](https:/
 
 ## 常见问题
 
-* 打开白屏/不正确显示<br>
+* 打开白屏/不正确显示
+
   权限不足，无法创建文件和目录。
-* 无法启动报错<br>
-  由于端口被占用或在没有su权限时端口受限，修改配置文件就行了
-* 安装小说文件<br>
+* 无法启动报错
+
+  由于端口被占用或在没有su权限时端口受限（linux/android），修改配置文件就行了
+* 安装小说文件
+
   可以在设置页里打开文件选择器来安装一个打包好的文件 或 从一个URL获取列表并下载安装 或 使用切章器操作txt.
+* 怎么安装ollama
+
+ 在官网 https://ollama.com/ 上下载安装，并安装。
+ 
+在命令行中执行：
+> ollama run deeepseek-r1:1.5b
+
+这个几乎所有电脑都能用，但是你的电脑够好可以用更好的。
+
+# AI总结开启，使用方案
+
+安装ollama
+
+在官网 https://ollama.com/ 上下载安装，并安装。
+
+在命令行中执行：
+> ollama run deeepseek-r1:1.5b
+
+运行本程序，配置参数，等待输出
+
+> java -jar TextReaderJavaEdition.jar -s 小说名 ollama::deepseek-r1:1.5b 输出文件名
+
+如果不出意外，一段时间后（根据文章长度，大概30分钟？）打开文件，查看结果。

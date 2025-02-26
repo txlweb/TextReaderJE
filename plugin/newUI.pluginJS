@@ -34,7 +34,7 @@ setTimeout(function (){
                 if (match && match.length > 1) ee.href = "/reader.html?name="+match[1].replaceAll("/","")+"&id=1";
             }
         }
-        //alert("[NextUI]\r\n ERROR: 需求'插件管理器'V121及以上的版本才可以即时开关.")
+        alert("[NextUI]\r\n ERROR: 需求'插件管理器'V121及以上的版本才可以即时开关.")
     }
 
 

@@ -64,6 +64,7 @@ public class TextReaderLibVb {
             String s = List.get(i);
             LsHTML.append("<p>").append(s).append("</p>");
         }
+        if(LsHTML.length() == 0) return "ERROR";
         return LsHTML.toString();
     }
 
