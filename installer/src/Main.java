@@ -37,7 +37,7 @@ public class Main {
 //            }
 //            System.exit(1);
 //        }
-        System.out.println((char) 27 + "[33m Text Reader v1.4.1 ");
+        System.out.println((char) 27 + "[33m  TextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m 1.4.1-3953b-250302+Res-ccc147af93ba08f213c5fdb6ac4ef65d 安装程序");
         System.out.println((char) 27 + "[33m *如果安装失败，请尝试以管理员身份运行。");
 
         Scanner scanner = new Scanner(System.in);

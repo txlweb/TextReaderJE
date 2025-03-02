@@ -41,7 +41,7 @@ public interface Main {
         //配置位置
         String Cheek_code = "ccc147af93ba08f213c5fdb6ac4ef65d";
         String version = "1.4.1";
-        String build = "3653b-250226";
+        String build = "3953b-250302";
 
 
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
