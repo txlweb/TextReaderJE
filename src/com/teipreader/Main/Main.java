@@ -18,6 +18,8 @@ import java.util.Scanner;
 import static com.teipreader.Lib.Download.Dw_File;
 import static com.teipreader.Main.Config_dirs.MainPath;
 import static com.teipreader.Main.TeipMake.*;
+import static com.teipreader.Main.kill_http_useful.findProcessByPort;
+import static com.teipreader.Main.kill_http_useful.killProcessByPID;
 
 /*
 +~~~~~~+~~~~~~+~~~~~~~~~~~+
@@ -37,8 +39,8 @@ import static com.teipreader.Main.TeipMake.*;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "c7a8832b31398a6c0913ed8c518f709a";
-        String version = "1.4.0";
+        String Cheek_code = "ccc147af93ba08f213c5fdb6ac4ef65d";
+        String version = "1.4.1";
         String build = "3653b-250226";
 
 
@@ -175,6 +177,19 @@ public interface Main {
         File file2 = new File(Config_dirs.StylePath + "/index.html");
         if (!file2.exists()) {
             System.out.println((char) 27 + "[32m[I]: 正在尝试释放资源..." + (char) 27 + "[39;49m");
+            if(new File("./style.zip").isFile()) {
+                System.out.println((char) 27 + "[32m[I]: 或许是native?" + (char) 27 + "[39;49m");
+                TeipMake.Unzip("./style.zip", "./style/");
+                if (!new File(Config_dirs.StylePath + "/index.html").isFile()) {
+                    System.out.println((char) 27 + "[31m[E]: 无法释放style(或侧载包无效)." + (char) 27 + "[39;49m");
+                    System.out.println((char) 27 + "[31m 进程已结束." + (char) 27 + "[39;49m");
+                    return;
+                } else {
+                    new File("style.zip").delete();
+                    System.out.println((char) 27 + "[32m[I]: 释放完成!" + (char) 27 + "[39;49m");
+                }
+                return;
+            }
             System.out.println((char) 27 + "[32m" + Objects.requireNonNull(RunShare.class.getClassLoader().getResource("style.zip")).getPath() + (char) 27 + "[39;49m");
             //写出到外部在解压
             InputStream in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("style.zip")).openStream();
@@ -209,7 +224,8 @@ public interface Main {
             }
         }
         System.out.println((char) 27 + "[33m[I]: 正在准备库文件..." + (char) 27 + "[39;49m");
-        if ((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug && false) {
+
+        if ((!new File("./epublib-core-4.0-complete.jar").isFile() || !new File("./pdfbox-app-2.0.30.jar").isFile()) && !is_debug && !new File("exeLock").isFile()) {
             System.out.println((char) 27 + "[31m[I]: 始化库文件,请在完成后重启程序." + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: 所用的库开源地址: " + (char) 27 + "[39;49m");
             System.out.println((char) 27 + "[32m[T]: lib-epublib: https://github.com/psiegman/epublib/" + (char) 27 + "[39;49m");
@@ -290,14 +306,27 @@ public interface Main {
 
         System.out.println((char) 27 + "[33m[I]: 完成." + (char) 27 + "[39;49m");
         System.out.println((char) 27 + "[36m[T]: Ctrl+c结束进程" + (char) 27 + "[39;49m");
-        String os = System.getProperty("os.name").toLowerCase();//启动浏览器,但是很烦人
-        if (os.startsWith("windows")) {
-            URI uri = URI.create("http://127.0.0.1:" + Config_dirs.NormPort + "/");
-            try {
-                Desktop desktop = Desktop.getDesktop();
-                desktop.browse(uri);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        Integer pid = findProcessByPort(Config_dirs.NormPort);
+        if (pid != null) {
+            System.out.println("无法继续启动，现在需要结束PID"+pid+" 来继续启动。 是否结束？ (Y/N)");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (input.equals("y")) {
+                System.out.println("端口被 PID " + pid + " 占用，正在结束...");
+                killProcessByPID(pid);
+            }
+
+        }
+        if(!new File("exeLock").isFile()) {
+            String os = System.getProperty("os.name").toLowerCase();//启动浏览器,但是很烦人
+            if (os.startsWith("windows")) {
+                URI uri = URI.create("http://127.0.0.1:" + Config_dirs.NormPort + "/");
+                try {
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.browse(uri);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         if (Config_dirs.Use_Share) {

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/plugin_download.cmd" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/build/build_GraalVM.cmd" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/build/clear.cmd" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/build/env.cmd" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/plugin_download.cmd" charset="GBK" />
     <file url="file://$PROJECT_DIR$/rom/114514/resource.ini" charset="GBK" />
     <file url="file://$PROJECT_DIR$/rom/没有人比我更懂一拳圣女/resource.ini" charset="GBK" />

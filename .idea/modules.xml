@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TextReaderJE.iml" filepath="$PROJECT_DIR$/TextReaderJE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/installer/installer.iml" filepath="$PROJECT_DIR$/installer/installer.iml" />
     </modules>
   </component>
 </project>

@@ -3,6 +3,6 @@ Main-Class: com.teipreader.Main.Main
 Created-By: IDlike
 Signature-Version: beta1.2.6-19520
 Name: TextReader JavaEdition
-Class-Path: ./annotations-13.0.jar ./epublib-core-4.0-complete.jar ./hamcrest-core-1.3.jar ./junit-4.12.jar ./kotlin-stdlib-1.3.40.jar ./kotlin-stdlib-common-1.3.40.jar ./mockwebserver-4.0.1.jar ./okhttp-4.0.1.jar ./okio-2.2.2.jar ./pdfbox-app-2.0.30.jar ./textreader-libcomic.jar
+Class-Path: ./annotations-13.0.jar ./epublib-core-4.0-complete.jar ./hamcrest-core-1.3.jar ./junit-4.12.jar ./kotlin-stdlib-1.3.40.jar ./kotlin-stdlib-common-1.3.40.jar ./mockwebserver-4.0.1.jar ./okhttp-4.0.1.jar ./okio-2.2.2.jar ./pdfbox-app-2.0.30.jar ./textreader-libcomic.jar ./json-20151123.jar
 
 

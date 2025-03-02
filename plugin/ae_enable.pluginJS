@@ -1,0 +1,38 @@
+NAME:com.idlike.textreader.ae.webjs
+BY:IDlike
+@JS-START
+setTimeout(function (){
+    //hook 设置按钮
+    return
+
+    var a = document.getElementById("settingwindow").children
+    for (let i = 0; i < a.length; i++) {
+        if(i == 32){//a[i].className == "a" || a[i].className == "A"
+            a[i].innerHTML = "笔趣阁下载"
+            a[i].href = "/dw_bqg90x.html"
+        }
+    }
+    //功能-提取上下张,目录到悬浮
+    var b = document.getElementById("n1").parentNode;
+    if(b){
+        b.appendChild(document.getElementById("set_btn"))
+        b.style.position = "fixed";
+        b.style.width = "100%"
+        b.style.zIndex = "99999999999999999999999"
+        b.style.bottom = "50px"
+        b.style.left = "0px"
+        b.style.background = "white"
+        b.style.fontsize ="22px"
+        document.getElementById("scroll-progress").style.top = "78px"
+
+        document.getElementById("textbar").addEventListener('click', function (){
+            var b = document.getElementById("n1").parentNode;
+            if(b.style.display == "none"){
+                b.style.display = "flex"
+            }else{
+                b.style.display = "none"
+            }
+        })
+    }
+},200)
+@JS-END
