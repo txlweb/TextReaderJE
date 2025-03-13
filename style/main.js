@@ -137,8 +137,22 @@ function Init() {
     SetBrs();
     setInterval("clock_up();", 500);
     inline_init();
+    //补丁-AI总结
+    t=document.getElementById("title");
+    if(t){
+        t.innerHTML="章节目录 <br><a onclick='aisumm(this)'>点击用AI总结本文！</a>"
+    }
 }
-
+function aisumm(e){
+    e.onclick = null;
+    e.innerHTML="<iframe src='' id='fffppp' style='width: 100%'>"
+    ixx=0
+    document.getElementById("fffppp").onload = function (){
+        document.getElementById("fffppp").src="./summary.html?pp="+ixx
+        ixx++
+    }
+    document.getElementById("fffppp").src='./summary.html?deepseek::sk-3fc57eba21ea4eb18b1b59ac6bdae1d6'
+}
 function clock_up() {
     let time = new Date();
     timex.innerHTML = time.toLocaleString();
@@ -147,7 +161,10 @@ function clock_up() {
     for (let i = 0; i < childrens.length; i++) {
         if (childrens[i].tagName === 'A' || childrens[i].tagName === 'a') {
             if (childrens[i].children[0]) {
-                childrens[i].children[0].src = childrens[i].children[0].getAttribute('res');
+                if(childrens[i].children[0].getAttribute('loaded') !== "yes"){
+                    childrens[i].children[0].src = childrens[i].children[0].getAttribute('res');
+                    childrens[i].children[0].setAttribute("loaded","yes");
+                }
 
             }
         }

@@ -2,42 +2,24 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.util.Scanner;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 
 public class Main {
 
-    public static void main(String[] args) throws URISyntaxException, InterruptedException {
-//        if (!requestAdminPrivileges()) {
-//            System.out.println((char) 27 + "[33m Text Reader v1.4.0 安装程序  [！请以管理员身份运行！]");
-//            System.out.println((char) 27 + "[31m[E]: 我们无权安装TextReader." + (char) 27 + "[39;49m");
-//            String currentPath = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
-//            System.out.println((char) 27 + "[33m Current executable path: " + currentPath);
-//
-//            // PowerShell 脚本命令
-//            String psCommand = "powershell -Command \"Start-Process '" + currentPath + "' -Verb RunAs\"";
-//            System.out.println((char) 27 + "[33m Exec power shell: "+psCommand);
-//
-//            try {
-//                // 执行 PowerShell 脚本
-//                Process process = Runtime.getRuntime().exec(psCommand);
-//
-//                // 等待命令执行完成
-//                process.waitFor();
-//
-//                // 可选：获取执行结果
-//                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//                String line;
-//                while ((line = reader.readLine()) != null) {
-//                    System.out.println(line);
-//                }
-//            } catch (IOException | InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            System.exit(1);
-//        }
-        System.out.println((char) 27 + "[33m  TextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m 1.4.1-3953b-250302+Res-ccc147af93ba08f213c5fdb6ac4ef65d 安装程序");
+    public static void main(String[] args) throws URISyntaxException, InterruptedException, IOException {
+        // 获取目标目录
+        String destDir = System.getProperty("user.home") + "\\AppData\\Roaming\\idlike\\textreader";
+
+        // 检查当前目录是否是目标目录
+        File currentDir = new File(System.getProperty("user.dir"));
+        if (currentDir.getAbsolutePath().equals(new File(destDir).getAbsolutePath())) {
+            // 如果在目标目录中，则运行 TeipReaderJavaEdition.jar
+
+            runTeipReaderJavaEdition(args);
+            return;
+        }
+
+        // 否则，继续安装流程
+        System.out.println((char) 27 + "[33m  TextReader " + (char) 27 + "[31mBeta" + (char) 27 + "[39;49m 1.4.3-3953b-250312+Res-f677d8fda1d0b6489cbde999af550705 安装程序");
         System.out.println((char) 27 + "[33m *如果安装失败，请尝试以管理员身份运行。");
 
         Scanner scanner = new Scanner(System.in);
@@ -55,20 +37,32 @@ public class Main {
 
     }
 
-//    private static boolean requestAdminPrivileges() {
-//        File testFile = new File("C:\\Windows\\System32\\testingUCA");
-//        try {
-//            if (testFile.createNewFile()) {
-//                testFile.delete();
-//                return true;
-//            }
-//        } catch (IOException e) {
-//            return false;
-//        }
-//        return false;
-//    }
+    private static void runTeipReaderJavaEdition(String[] args) {
+        try {
+            // 构建 Java 命令
+            String destDir = System.getProperty("user.home") + "\\AppData\\Roaming\\idlike\\textreader";
+            String javaPath = new File(destDir+"\\jdk-21.0.5+11\\bin\\java.exe").getAbsolutePath();
+            String jarPath = new File("TeipReaderJavaEdition.jar").getAbsolutePath();
 
-    private static void install() {
+            // 构建完整的命令
+            StringBuilder command = new StringBuilder();
+            command.append("\"").append(javaPath).append("\" -jar \"").append(jarPath).append("\"");
+            for (String arg : args) {
+                command.append(" \"").append(arg).append("\"");
+            }
+
+            // 构建 cmd 命令
+            String cmdCommand = "cmd.exe /c start \"TeipReader Java Edition\" " + command.toString();
+            // 执行 cmd 命令
+            Process process = Runtime.getRuntime().exec(cmdCommand);
+
+            // 等待进程启动
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    private static void install() throws IOException {
         String destDir = System.getProperty("user.home") + "\\AppData\\Roaming\\idlike\\textreader";
         System.out.println("目标路径: " + destDir);
 
@@ -78,11 +72,19 @@ public class Main {
             return;
         }
 
-        File archiveFile = new File(".\\archive.zip");
-        try (InputStream is = Main.class.getResourceAsStream("/archive.zip");
-             FileOutputStream fos = new FileOutputStream(archiveFile)) {
+        // 下载 JDK
+        File jdkFile = new File(destDir+"\\jdk-21.0.5+11\\bin\\java.exe");
+        if (!jdkFile.isFile()) Online.download_jdk();
+        if (!jdkFile.isFile()) {
+            System.out.println("JDK 下载失败！尝试手动安装？");
+            return;
+        }
+
+        // 复制 TeipReaderJavaEdition.jar 到目标目录
+        try (InputStream is = Main.class.getResourceAsStream("TeipReaderJavaEdition.jar");
+             FileOutputStream fos = new FileOutputStream(new File(destDir, "TeipReaderJavaEdition.jar"))) {
             if (is == null) {
-                System.out.println("未找到 archive.zip");
+                System.out.println("未找到 TeipReaderJavaEdition.jar");
                 return;
             }
             byte[] buffer = new byte[1024];
@@ -90,45 +92,35 @@ public class Main {
             while ((bytesRead = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, bytesRead);
             }
-            System.out.println("文件释放成功");
+            System.out.println("TeipReaderJavaEdition.jar 复制成功");
         } catch (IOException e) {
-            System.out.println("安装失败: " + e.getMessage());
+            System.out.println("复制 TeipReaderJavaEdition.jar 失败: " + e.getMessage());
             return;
         }
-        try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(archiveFile.toPath()))) {
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
-                File newFile = new File(destDir, entry.getName());
-                if (entry.isDirectory()) {
-                    newFile.mkdirs();
-                } else {
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    try (FileOutputStream fos = new FileOutputStream(newFile)) {
-                        while ((bytesRead = zis.read(buffer)) != -1) {
-                            fos.write(buffer, 0, bytesRead);
-                        }
-                    }
-                }
-                zis.closeEntry();
-            }
-            System.out.println("解压完成");
-        } catch (IOException e) {
-            System.out.println("解压失败: " + e.getMessage());
+        Online.unzipFileWithProgress(new File(destDir, "TeipReaderJavaEdition.jar").getPath(),destDir);
+        // 复制自身到目标目录
+        try {
+            File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            new File(destDir, "main.exe").delete();
+            Files.copy(currentJar.toPath(), new File(destDir, "main.exe").toPath());
+            System.out.println("程序自身复制成功");
+        } catch (Exception e) {
+            System.out.println("复制程序自身失败: " + e.getMessage());
             return;
         }
 
+        // 创建快捷方式
         try {
-            String setupExePath = destDir + "\\setup.exe";
+            String setupExePath = destDir + "\\main.exe";
             File setupExe = new File(setupExePath);
             if (setupExe.exists()) {
                 String shortcutPath = System.getProperty("user.home") + "\\Desktop\\TextReader.lnk";
                 String psCommand = "powershell -Command \""
                         + "$WshShell = New-Object -ComObject WScript.Shell; "
-                        + "$Shortcut = $WshShell.CreateShortcut('"+shortcutPath+"'); "
-                        + "$Shortcut.TargetPath = '"+setupExePath+"'; "
+                        + "$Shortcut = $WshShell.CreateShortcut('" + shortcutPath + "'); "
+                        + "$Shortcut.TargetPath = '" + setupExePath + "'; "
                         + "$Shortcut.WorkingDirectory = '" + new File(setupExePath).getParent() + "'; "
-                        + "$Shortcut.IconLocation = '"+destDir+"\\style\\favicon.ico'; "
+                        + "$Shortcut.IconLocation = '" + destDir + "\\style\\favicon.ico'; "
                         + "$Shortcut.Save();\"";
 
                 // 执行 PowerShell 脚本
@@ -137,18 +129,13 @@ public class Main {
                 // 等待命令执行完成
                 process.waitFor();
 
-                // 可选：获取执行结果
+                // 输出执行结果
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     System.out.println(line);
                 }
                 System.out.println("快捷方式已创建： " + shortcutPath);
-
-//                ProcessBuilder pb = new ProcessBuilder(setupExePath);
-//                pb.directory(new File(destDir));
-//                pb.start();
-//                System.out.println("正在运行 <初始化>...");
             } else {
                 System.out.println("安装失败 （无法初始化）！");
             }

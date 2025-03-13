@@ -3,11 +3,13 @@ import com.teipreader.LibTextParsing.TextReaderLibVa;
 import com.teipreader.Main.Config_dirs;
 import okhttp3.*;
 import okio.BufferedSource;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class OllamaSummarizer extends Thread{
 
@@ -34,8 +36,8 @@ public class OllamaSummarizer extends Thread{
     //   本地部署类： ollama::模型名
     //   example：  ollama::deepseek-r1:1.5b （默认参数就是这个）
     //   在线API类： api地址::key (没有实现)
-    //   example：  deepseek::你的apikey (没有实现，文档语焉不详😡，我没钱充他家api)
-    //   example：  openai::模型名(gpt-3.5-turbo/)::你的apikey (不知道能不能用，我也没钱充他家api)
+    //   example：  deepseek::你的apikey (已实现，使用v3，有点小贵)
+    //   example：  openai::你的apikey::模型名(gpt-3.5-turbo/) (不知道能不能用，我也没钱充他家api)
 
     @Override
     public void run() {
@@ -54,6 +56,12 @@ public class OllamaSummarizer extends Thread{
             this.reqapi_online_gpt();
             return;
         }
+        if(Objects.equals(parts[0], "deepseek")) {
+            if(parts.length != 2) return;
+            this.reqapi_deepseek();
+            return;
+        }
+
         state = -2;
     }
     private void reqapi_local_ollama(){
@@ -113,64 +121,186 @@ public class OllamaSummarizer extends Thread{
             //throw new RuntimeException(e);
         }
     }
-    private void reqapi_online_gpt() {
-        // 解析传入的model参数，获取OpenAI、模型版本和API密钥
-        String[] modelParts = model.split("::");
+    public void reqapi_online_gpt() {
+        String[] parts = model.split("::");
+        String API_URL = "https://api.openai.com/v1/chat/completions"; // OpenAI API 地址
 
-        String apiKey = modelParts[2];
-        String modelVersion = modelParts[1];
-
-        // 构建API请求URL
-        String url = "https://api.openai.com/v1/completions";  // 流式请求时的URL
-
-        // 构造请求体
-        JSONObject requestBodyJson = new JSONObject();
-        requestBodyJson.put("model", modelVersion);
-        requestBodyJson.put("prompt", text);
-        requestBodyJson.put("max_tokens", 150);
-        requestBodyJson.put("temperature", 0.7);
-        requestBodyJson.put("stream", true); // 开启流式返回
-
-        // 创建RequestBody
-        RequestBody requestBody = RequestBody.create(requestBodyJson.toString(), MediaType.parse("application/json"));
-        OkHttpClient client = new OkHttpClient();
-        // 创建请求对象
-        Request request = new Request.Builder()
-                .url(url)
-                .header("Authorization", "Bearer " + apiKey)
-                .post(requestBody)
+        // 创建 OkHttpClient 实例
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(120, TimeUnit.SECONDS) // 设置读取超时为 120 秒
+                .connectTimeout(10, TimeUnit.SECONDS) // 设置连接超时为 10 秒
+                .writeTimeout(10, TimeUnit.SECONDS) // 设置写入超时为 10 秒
                 .build();
 
-        // 发起请求
+        // 创建请求体
+        JSONObject jsonBody = new JSONObject();
+        JSONArray messages = new JSONArray();
+        messages.put(new JSONObject()
+                .put("role", "developer")
+                .put("content", new JSONObject().put("type", "text").put("text", "你是一个总结故事梗概的助手，尽可能简洁地给出用户发给你的下文的故事梗概，并分析文中出现的人物形象（仅主要人物），不要续写！中文回答！")));
+        messages.put(new JSONObject()
+                .put("role", "user")
+                .put("content", new JSONObject().put("type", "text").put("text", text)));
+        jsonBody.put("messages", messages);
+
+        // 设置 response_format 为 JSON 模式
+        JSONObject responseFormat = new JSONObject();
+        responseFormat.put("type", "json_object");
+        jsonBody.put("response_format", responseFormat);
+
+        // 定义期望的 JSON 模式
+        JSONObject jsonSchema = new JSONObject();
+        jsonSchema.put("type", "object");
+        JSONObject properties = new JSONObject();
+        properties.put("answer", new JSONObject().put("type", "string"));
+        properties.put("explanation", new JSONObject().put("type", "string"));
+        jsonSchema.put("properties", properties);
+        jsonSchema.put("required", new JSONArray().put("answer"));
+        jsonBody.put("json_schema", jsonSchema);
+
+        // 将 JSON 转为 RequestBody
+        RequestBody body = RequestBody.create(
+                jsonBody.toString(), MediaType.parse("application/json; charset=utf-8")
+        );
+
+        // 构建请求
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", parts[1]) // 使用 parts[1] 作为 API Key
+                .build();
+        System.out.println(jsonBody.toString());
+        // 发送请求并获取响应
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                System.out.println("Request failed: " + response);
+                // 如果响应码不是 2xx，抛出异常
+                System.out.println((char) 27 + "[31m[E]: [HTTP REQ(OPENAI)] Unexpected code " + response);
+                state = response.code();
                 return;
             }
 
-            // 处理流式返回内容
-            try (BufferedSource source = response.body().source()) {
-                while (!source.exhausted()) {
-                    String line = source.readUtf8Line(); // 读取一行数据
-                    if (line != null && line.startsWith("data: ")) {
-                        String responseData = line.substring(6).trim(); // 去掉 'data: ' 前缀
-                        if (!responseData.equals("[DONE]")) {
-                            // 将每个数据块追加到 fullResponse 中
-                            JSONObject responseObject = new JSONObject(responseData);
-                            String text = responseObject.getJSONArray("choices").getJSONObject(0).getString("text");
-                            fullResponse.append(text);
-                        }
+            // 读取响应内容
+            fullResponse.delete(0, fullResponse.length());
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.body().byteStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // 解析 JSON 响应
+                    JSONObject jsonResponse = new JSONObject(line);
+                    if (jsonResponse.has("choices")) {
+                        // 提取 choices 中的消息内容
+                        String content = jsonResponse.getJSONArray("choices")
+                                .getJSONObject(0)
+                                .getJSONObject("message")
+                                .getString("content");
+                        fullResponse.append(content);
                     }
                 }
+            } catch (IOException e) {
+                state = -2;
+                throw new RuntimeException(e);
             }
 
-            // 打印完整的响应
-            System.out.println("Response: \n" + fullResponse.toString());
+            // 请求成功
+            state = 0;
+
         } catch (IOException e) {
             state = -2;
             //throw new RuntimeException(e);
         }
     }
+    public void reqapi_deepseek() {
+        String[] parts = model.split("::");
+        String API_URL = "https://api.deepseek.com/chat/completions"; // DeepSeek API 地址
+
+        // 创建 OkHttpClient 实例
+        OkHttpClient client = new OkHttpClient.Builder()
+                .readTimeout(120, TimeUnit.SECONDS) // 设置读取超时为 120 秒
+                .connectTimeout(10, TimeUnit.SECONDS) // 设置连接超时为 10 秒
+                .writeTimeout(10, TimeUnit.SECONDS) // 设置写入超时为 10 秒
+                .build();
+
+        // 创建请求体
+        JSONObject jsonBody = new JSONObject();
+        jsonBody.put("model", "deepseek-chat"); // 模型名称
+        jsonBody.put("stream", false); // 是否流式响应
+
+        // 构造 messages 数组
+        JSONArray messages = new JSONArray();
+        messages.put(new JSONObject()
+                .put("role", "system")
+                .put("content", "你是一个总结故事梗概的助手，尽可能简洁的给出用户发给你的下文的故事梗概，并分析文中出现的人物形象（仅主要人物），不要续写！")); // 系统角色
+        messages.put(new JSONObject()
+                .put("role", "user")
+                .put("content", text)); // 用户输入
+        jsonBody.put("messages", messages);
+
+        // 其他参数
+        jsonBody.put("frequency_penalty", 0);
+        jsonBody.put("max_tokens", 2048);
+        jsonBody.put("presence_penalty", 0);
+        jsonBody.put("response_format", new JSONObject().put("type", "text"));
+        jsonBody.put("stop", JSONObject.NULL);
+        jsonBody.put("stream_options", JSONObject.NULL);
+        jsonBody.put("temperature", 1);
+        jsonBody.put("top_p", 1);
+        jsonBody.put("tools", JSONObject.NULL);
+        jsonBody.put("tool_choice", "none");
+        jsonBody.put("logprobs", false);
+        jsonBody.put("top_logprobs", JSONObject.NULL);
+
+        // 将 JSON 转为 RequestBody
+        RequestBody body = RequestBody.create(
+                jsonBody.toString(), MediaType.parse("application/json; charset=utf-8")
+        );
+
+        // 构建请求
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Authorization", "Bearer " + parts[1]) // 使用 parts[1] 作为 API Key
+                .build();
+        System.out.println(jsonBody.toString());
+        // 发送请求并获取响应
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                // 如果响应码不是 2xx，抛出异常
+                System.out.println((char) 27 + "[31m[E]: [HTTP REQ(DEEPSEEK)] Unexpected code " + response);
+                state = response.code();
+                return;
+            }
+
+            // 读取响应内容
+            fullResponse.delete(0, fullResponse.length());
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.body().byteStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // 解析 JSON 响应
+                    JSONObject jsonResponse = new JSONObject(line);
+                    if (jsonResponse.has("choices")) {
+                        // 提取 choices 中的消息内容
+                        String content = jsonResponse.getJSONArray("choices")
+                                .getJSONObject(0)
+                                .getJSONObject("message")
+                                .getString("content");
+                        fullResponse.append(content);
+                    }
+                }
+            } catch (IOException e) {
+                state = -2;
+                throw new RuntimeException(e);
+            }
+
+            // 请求成功
+            state = 0;
+
+        } catch (IOException e) {
+            state = -2;
+            //throw new RuntimeException(e);
+        }
+    }
+
     public OllamaSummarizer(String text_, String model_) {
         this.text = text_;
         if(!Objects.equals(model_, "") && model_!=null) this.model = model_;

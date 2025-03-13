@@ -3,12 +3,10 @@
     <output-path>$PROJECT_DIR$/out/artifacts/c__build_installer</output-path>
     <root id="archive" name="setup.jar">
       <element id="module-output" name="installer" />
-      <element id="archive" name="archive.zip">
-        <element id="dir-copy" path="$PROJECT_DIR$/out/artifacts/c__build" />
-      </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/installer/META-INF/MANIFEST.MF" />
       </element>
+      <element id="artifact" artifact-name="TeipReaderJavaEdition" />
     </root>
   </artifact>
 </component>

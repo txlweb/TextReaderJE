@@ -1,5 +1,6 @@
 package com.teipreader.Main;
 
+import com.teipreader.Lib.AI_summary;
 import com.teipreader.Lib.Download;
 import com.teipreader.Lib.ImportFileLib;
 import com.teipreader.Lib.IniLib;
@@ -87,6 +88,7 @@ class RequestHandler implements Runnable {
         tmp_key=Main.getMD5(tmp_key+randomNum);
         System.out.println("New key = "+tmp_key);
     }
+    private AI_summary tsk = new AI_summary("","");
     @Override
     public void run() {
         try {
@@ -157,6 +159,22 @@ class RequestHandler implements Runnable {
                 if (Config_dirs.Use_Server_LOG)
                     System.out.println((char) 27 + "[33m[Server]:" + URLDecoder.decode(a[1], String.valueOf(StandardCharsets.UTF_8)) + "@List" + (char) 27 + "[39;49m");
                 IsSendData = true;
+            }
+            if(path.contains("/summary.html")){// xxx/summary.html
+                if(tsk == null){
+
+                }
+                if(tsk.getContext_del() == "未开启任务。"){
+                    String[] a = path.split("/");
+                    String[] b = path.split("\\?");
+                    System.out.println(URLDecoder.decode(b[1], String.valueOf(StandardCharsets.UTF_8)));
+                    tsk = new AI_summary(URLDecoder.decode(a[1], String.valueOf(StandardCharsets.UTF_8)),URLDecoder.decode(b[1], String.valueOf(StandardCharsets.UTF_8)));
+                    tsk.start();
+                }
+                if(tsk.getContext_del()=="AI 生成进度&统计\r\n 已经完全完成。") tsk = null;
+                RET_HTML = new StringBuilder(tsk.getContext_del());
+                IsSendData = true;
+
             }
             if (path.contains("/api/openFile/")) {
                 String[] a = path.split("\\?");
@@ -340,7 +358,7 @@ class RequestHandler implements Runnable {
             } else {
                 if (IsSendData) {
                     if (Objects.equals(RET_HTML.toString(), "")) {
-                        sendText(out, "<h1>404 Error</h1>");
+                        sendText404(out, "<h1>404 Error</h1>");
                         return;
                     } else {
                         sendText(out, RET_HTML.toString());
@@ -369,7 +387,10 @@ class RequestHandler implements Runnable {
         byte[] data = datas.getBytes();
         sendResponse(out, 200, "OK", "text/html", data);
     }
-
+    private void sendText404(OutputStream out, String datas) throws IOException {
+        byte[] data = datas.getBytes();
+        sendResponse(out, 404, "OK", "text/html", data);
+    }
     private void sendError(OutputStream out, int statusCode, String statusText) throws IOException {
         String contentType = "text/html";
         String content = "<html><head><title>" + statusCode + " " + statusText + "</title></head><body><h1>"

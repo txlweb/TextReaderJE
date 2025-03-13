@@ -39,11 +39,11 @@ import static com.teipreader.Main.kill_http_useful.killProcessByPID;
 public interface Main {
     static void main(String[] args) throws IOException {
         //配置位置
-        String Cheek_code = "ccc147af93ba08f213c5fdb6ac4ef65d";
-        String version = "1.4.1";
-        String build = "3953b-250302";
+        String Cheek_code = "f677d8fda1d0b6489cbde999af550705";
+        String version = "1.4.3";
+        String build = "3953b-250312";
 
-
+        new File("tmp").mkdir();
         boolean is_debug = RunShare.class.getClassLoader().getResource("debug.lock") != null || new File("./debug.lock").isFile();
         //is_debug=true;
         if (is_debug) {
@@ -251,6 +251,17 @@ public interface Main {
                 in.close();
             } else {
                 System.out.println((char) 27 + "[32m[E]: 没有内置库 lib-pdfbox" + (char) 27 + "[39;49m");
+            }
+            if (RunShare.class.getClassLoader().getResource("okhttp-4.0.1.jar") != null) {
+                InputStream in = Objects.requireNonNull(RunShare.class.getClassLoader().getResource("okhttp-4.0.1.jar")).openStream();
+                try (OutputStream ot = new FileOutputStream("./okhttp-4.0.1.jar")) {
+                    byte[] bytes = new byte[1024];
+                    int byteread;
+                    while ((byteread = in.read(bytes)) != -1) ot.write(bytes, 0, byteread);
+                }
+                in.close();
+            } else {
+                System.out.println((char) 27 + "[32m[E]: 没有内置库 lib-okhttp" + (char) 27 + "[39;49m");
             }
             System.out.println((char) 27 + "[32m[I]: 释放完成!应用将会重启." + (char) 27 + "[39;49m");
             main(args);
